@@ -1,0 +1,242 @@
+- LOBBY PR0
+-- By Kamu
+--- Email Kamu@bluepoo.com
+---- Lobby = 372
+----- Burnt Lobby = 374
+;========================
+; Cook Or No Cook
+; SLEEPBAG compatable pos 0
+; Anti-Jagex Enabled
+; Start with cage and 60 coins
+;========================
+
+-GoToIfQuestion(@YesCook,"Do you want to cook the lobbies?")
+GoTo(@Normal)
+@YesCook:
+SetVarNum(%Cook,1)
+@Normal:
+
+-GoToIfQuestion(@Filter,"Do you have chat messages blocked?")
+GoTo(@Beginning)
+@Filter:
+OnChatMessage(@RunAndHideChat)
+@Beginning:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+-OnPrivateMessage(@RunAndHidePM)
+
+@fishing:
+-ResetLastServerMessage()
+GoToIfBagFull(@leave)
+Action(369,684)
+AtObject2(368,684)
+Wait(12)
+GoToIfLastServerMessageIs(@zzz,"@gam@You are too tired to catch this fish")
+GoTo(@fishing)
+
+@zzz:
+UseItem(0)
+Wait(350)
+GoTo(@fishing)
+
+@leave:
+--Leave Dock
+MoveTo(371,691)
+MoveTo(371,706)
+MoveTo(370,706,-2,2)
+MoveTo(365,708,-2,2)
+MoveTo(346,710)
+MoveTo(340,710,-3,3)
+MoveTo(331,713)
+MoveTo(326,713)
+
+@board2ship:
+OnCoordsChanged(-1,%a,%a)
+--Board Ship from Island
+RepeatNextCommandUntilQuestMenu(50,2)
+Action(325,713)
+AtObject(324,710)
+Answer(1)
+WaitForQuestMenu(100)
+Answer(0)
+Wait(80)
+GoToIfCountInInventoryEqual(@board2ship,30,10)
+GoSub(@goback)
+
+--Move To Bank
+MoveTo(269,635)
+GoToIfVarEqualNum(@ToCook,%Cook,1)
+GoTo(@ToBank)
+@ToCook:
+MoveTo(276,636)
+MoveTo(276,638)
+@Check:
+GoToIfInInventory(@Cook,372)
+GoToIfInInventory(@Drop,374)
+GoTo(@ToBankFromCook)
+
+@Cook:
+--Cook(228,638,227,638,372)
+Action(276,638)
+AtObjectWithItemByID(275,638,372)
+Wait(10)
+GoTo(@Check)
+
+@Drop:
+DropItemByID(374)
+Wait(10)
+GoTo(@Check)
+
+@ToBankFromCook:
+MoveTo(228,636)
+MoveTo(220,636)
+
+@ToBank:
+MoveTo(269,619,1,-1)
+MoveTo(270,609)
+MoveTo(274,609,1,-1)
+MoveTo(275,596,-1,-1,-1,-4,0,-5)
+MoveTo(276,591,2,-2,3,-2,4,-3)
+MoveTo(286,588,1,-1)
+MoveTo(287,585,3,-3,3,-6)
+MoveTo(290,573,-1,-1)
+MoveTo(285,572)
+
+--Talk To Banker
+; THNX TO KAIT FOR 1337BANKING!
+@Banking:
+GoToIfCoordsIn(@AmInsideBank,280,564,286,573)
+GoTo(@GoInsideBank)
+
+@GoInsideBank:
+MoveTo(290,573,-1,-1)
+MoveTo(285,572)
+GoTo(@Banking)
+
+@AmInsideBank:
+GoToIfNPCNear(@ISeeBanker,95)
+
+Debug("I don't see any bankers here!")
+MoveTo(285,570,1,1)
+MoveTo(291,571)
+GoTo(@Banking)
+
+; Talk to the nearest banker every time
+@ISeeBanker:
+ResetQuestMenu()
+SetVarsNearestNPCIn(%x,%y,%ID,280,564,286,573,95)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(30)
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@Banking)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+Withdraw(10,25)
+Withdraw(10,25)
+Withdraw(10,5)
+Withdraw(10,5)
+Wait(10)
+CloseBank()
+
+Wait(20)
+GoToIfInInventory(@Banking,372)
+GoToIfInInventory(@Banking,374)
+--Journey Back
+MoveTo(282,568)
+MoveTo(290,571)
+MoveTo(290,583,1,1)
+MoveTo(278,584,-1,-1,-4,-1)
+MoveTo(274,597,-1,1)
+MoveTo(274,599,0,9,1,10)
+MoveTo(270,609,-1,1)
+MoveTo(269,625)
+MoveTo(269,641)
+MoveTo(269,649,-1,1)
+
+--Board Ship To Island
+@board:
+OnCoordsChanged(-1,%a,%a)
+RepeatNextCommandUntilQuestMenu(50,2)
+Action(268,650)
+AtObject(265,650)
+Answer(1)
+Wait(80)
+GoToIfCountInInventoryEqual(@board,60,10)
+GoSub(@goback)
+-- Goto Dock
+MoveTo(337,713)
+MoveTo(339,711,0,-1)
+MoveTo(362,710)
+MoveTo(367,710,4,-4)
+MoveTo(371,693)
+MoveTo(371,685,-1,-1)
+GoTo(@fishing)
+
+- Anti Jagex
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnPrivateMessage(@RunAndHidePM)
+Ret()
+
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+ERet()
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(16 13 05 )
+Debug("Saying 'Wtf'")
+Wait(10)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+SaveScreenshot()
+StopAndLogOut()
+Wait(1)
+
+
+

@@ -1,0 +1,12 @@
+OnNPCAppeared(@NewNPC,%ID,%NPCX,%NPCY,%NPCType)
+
+-
+@LoopStart:
+Wait(100)
+GoTo(@LoopStart)
+-
+@NewNPC:
+Debug("A NPC appears. ID, X, Y, Type.")
+DebugVar(%ID,%NPCX,%NPCY,%NPCType)
+ERet()
+ERet()

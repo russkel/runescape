@@ -1,0 +1,77 @@
+- Auto-Certer :Iron:
+- By Kamu! Kamu@bluepoo.com
+- Start full load of iron
+- Draynor Bank
+
+SetSkipDestMode(1)
+SetSkipDestTime(40)
+
+@Walktocerter:
+MoveMouse(490,10)
+MoveTo(171,634,1,-1,5,-1,6,-2,8,-2,11,-5)
+
+-talk to certer
+RepeatNextCommandUntilQuestMenu(50,2)
+---Action(183,629)
+TalkToNPC(693)
+Answer(1)
+WaitForQuestMenu(50)
+Answer(0)
+WaitForQuestMenu(50)
+Answer(4)
+Wait(25)
+
+RepeatNextCommandUntilQuestMenu(50,2)
+-Action(185,629)
+TalkToNPC(693)
+Answer(1)
+WaitForQuestMenu(50)
+Answer(0)
+WaitForQuestMenu(50)
+Answer(0)
+Wait(25)
+- Walk back to bank
+MoveMouse(490,10)
+MoveTo(178,630,-1,1,-2,1,-3,2,-5,2,-6,3,-6,6,-7,7)
+
+-Find Banker
+RepeatNextCommandUntilQuestMenu(50,2)
+Action(170,636)
+TalkToNPC(681,679,687)
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+- Withdraw iron
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Withdraw(151,1)
+Wait(40)
+CloseBank()
+Wait(10)

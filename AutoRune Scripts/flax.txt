@@ -1,0 +1,12 @@
+@Start:
+SetVarNum(%x,250)
+SetVarNum(%y,166)
+FindColorSpiralAt(13553490,%x,%y,-1,-1,-1,-1)
+DebugVar(%x,%y)
+ClickRVar(%x,%y)
+Wait(3)
+AddVarNum(%y,30)
+ClickVar(%x,%y)
+Wait(5)
+GoTo(@Start)
+Stop()

@@ -1,0 +1,139 @@
+- Shrimp Cooker!
+-- Made By Kamu
+--- Base Script Made By DaDogg
+-- Start in Edgey Bank
+- Here We Go
+
+@Beggining:
+OnPrivateMessage(@Pm)
+OnCoordsChanged(@Teleport,%oldX,%oldY)
+OnServerMessage(@Serv)
+
+---Talk To Banker
+@Bank:
+SetVarNum(%a,30)
+RepeatNextCommandUntilQuestMenu(50,1)
+TalkToNPC(660,657,661)
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+GoTo(@WithDraw)
+--WithDraw Shrimp
+@WithDraw:
+Withdraw(372,1)
+Wait(1)
+AddVarNum(%a,-1)
+GoToIfVarEqualNum(@CloseBank,%a,0)
+GoTo(@WithDraw)
+@CloseBank:
+CloseBank()
+---Walk to range
+GoToIfInInventory(@Bank,373)
+
+@Route1:
+
+MoveTo(216,450,2,-2)
+MoveTo(217,447,1,-1)
+MoveTo(220,446,1,1,5,1)
+MoveTo(225,442)
+MoveTo(225,441,1,-1)
+
+GoTo(@Range)
+
+---MoveToRange
+@Range:
+OnCoordsChanged(-1,%a,%a)
+Action(226,440)
+AtObject(226,439)
+Wait(45)
+GoSub(@goback)
+MoveTo(224,1386)
+GoTo(@Cook)
+
+--BeginCooking
+@Cook:
+@Cook2:
+Action(223,1386)
+AtObjectWithItemByID(222,1385,372)
+Wait(20)
+GoToIfInInventory(@Cook2,372)
+
+
+---ReturnToBank
+@Return:
+GoToIfInInventory(@drop,353)
+MoveTo(223,1385,1,-1)
+MoveTo(226,1384)
+OnCoordsChanged(-1,%a,%a)
+Action(226,1384)
+AtObject(226,1383)
+Wait(40)
+GoSub(@goback)
+MoveTo(226,442,-1,1,-1,2,-5,2,-8,5,-8,7,-10,9)
+GoTo(@Bank)
+
+@drop:
+-- DROP Burnt Swordiez
+DropItemByID(353)
+Wait(40)
+GoToIfInInventory(@drop,353)
+GoTo(@Return)
+
+---Precautions
+
+@Serv:
+
+GoToIfLastServerMessageIs(@PSleep,"@gre@You are too tired to gain experience, get some rest!")
+ERet()
+
+@PSleep:
+MoveTo(225,1386)
+@Sleep:
+Action(225,1386)
+AtObject(226,1386)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,25)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()
+
+@goback:
+OnCoordsChanged(@Teleport,%oldX,%oldY)
+Ret()
+
+@Pm:
+Debug("Jageks Pmed you")
+StopAndLogOut()
+Ret()
+@Chat:
+Debug("Jageks attempted to chat with you")
+StopAndLogOut()
+Ret()
+@Idle:
+Debug("gone idle")
+StopAndLogOut()
+Ret()
+@Teleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@TeleLog,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@TeleLog,%x,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@TeleLog,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@TeleLog,%y,%diff)
+ERet()
+@TeleLog:
+Debug("Admin have teleported you")
+StopAndLogOut()
+GoTo(@Beggining)

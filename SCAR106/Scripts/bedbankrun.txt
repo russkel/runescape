@@ -1,0 +1,223 @@
+//A working mining script
+//Start at Falador south gate
+program IronTest;
+var
+  s: string;
+  x, y: Integer;
+  l1, l2, l3, l4, l5, l6, l7: Integer;
+  MinePath, BedPath, BankPath: Integer;
+  iron: Integer;
+  username, password: string;
+  
+procedure LogInIfNeeded; export;
+begin
+  //if logged out press Cancel
+  if(LoginScreen)then
+  begin
+    Writeln('Clearing username, password fields');
+    ClickMouse(400,280,True);
+    Wait(2000);
+  end;
+  //If logged out select Existing User
+  if(StartScreen)then
+  begin
+    Writeln('Choosing existing user');
+    ClickMouse(340,280,True);
+    Wait(4000);
+  end;
+  //If logged out, log in
+  if(LoginScreen)then
+  begin
+    Writeln('Trying to log in');
+    ClickMouse(100,260,True);
+    Wait(500);
+    SendKeysSilent(username);
+    Wait(2000);
+    ClickMouse(120,310,True);
+    Wait(500);
+    SendKeysSilent(password);
+    Wait(2000);
+    ClickMouse(380,250,True);
+    Wait(6000);
+  end;
+  //If we have Welcome to RuneScape open, close it
+  if(GetColor(56,117)=16777215)and
+    (GetColor(57,118)=0)and
+    (GetColor(455,216)=16777215)and
+    (GetColor(454,215)=0)
+  then
+  begin
+    Writeln('Closing Welcome box');
+    ClickMouse(250,208,True);
+    Wait(2000);
+  end;
+  SetTimeOut(20,'LOGINIFNEEDED');
+end;
+
+  
+procedure GoByPath(path: Integer);
+var
+  HowFar: Integer;
+  x, y: Integer;
+  r: Extended;
+  Dest: Boolean;
+begin
+  repeat
+    MoveMouse(460,15);
+    Wait(300);
+    ProcessMap;
+    HowFar:= ProcessPath(Path, x, y, r, 0.1);
+    
+    Status('HowFar='+IntToStr(HowFar)+' x='+IntToStr(x) + ' y='+IntToStr(y)+' r='+FloatToStr(r));
+    if(r > 0.6)then
+    begin
+      if(HowFar = 0)then
+        ClickMap(x, y, True)
+      else
+        ClickMap(x + Random(3)-1, y + Random(3) - 1, True);
+    end;
+    Dest:= (HowFar=0)and(x<=19)and(x>=17)and(y<=19)and(y>=17);
+    if(not Dest)then
+      Wait(5000);
+  until(Dest);
+end;
+
+//Find a banker and deposit all iron
+procedure DoBanking;
+begin
+  Wait(200);
+  repeat
+    repeat
+      repeat
+        x:= Random(500);
+        y:= Random(340);
+        FindColorSpiral(x,y,10661355,x-50,y-50,x+50,y+50);
+        MoveMouse(x, y);
+        Wait(200);
+      until(IsTextAt(6,2,'Banker: Talk'))or(IsTextAt(6,0,'l d like to access my bank account please'));
+      ClickMouse(x, y, True);
+      Wait(4000);
+    until(IsTextAt(6,0,'l d like to access my bank account please'));
+    ClickMouse(17,8,True);
+    Wait(6000);
+  until(FindBitmap(iron,x,y));
+  ClickMouse(x,y,True);
+  Wait(1000);
+  while(IsTextAt(334,264,'25'))do
+  begin
+    ClickMouse(335,270,True);
+    Wait(300);
+  end;
+  while(IsTextAt(304,264,'Five'))do
+  begin
+    ClickMouse(305,270,True);
+    Wait(300);
+  end;
+  while(IsTextAt(274,264,'One'))do
+  begin
+    ClickMouse(275,270,True);
+    Wait(300);
+  end;
+  //Close bank window
+  ClickMouse(410,5,True);
+  Wait(400);
+end;
+
+
+procedure DoSleeping;
+begin
+  Wait(200);
+  repeat
+    x:= Random(500);
+    y:= Random(340);
+    FindColorSpiral(x,y,10329501,x-50,y-50,x+50,y+50);
+    MoveMouse(x, y);
+    Wait(200);
+  until(IsTextAt(6,2,'Bed: rest'));
+  ClickMouse(x, y, True);
+  Wait(10000);
+end;
+
+procedure DoMining;
+var t: Integer;
+begin
+  t:= GetSystemTime;
+  repeat
+    x:= 270;
+    y:= 150;
+    x:= x + Random(30)-15;
+    y:= y + Random(30)-15;
+    if(FindColorSpiral(x,y,592914,x-100,y-100,x+100,y+100))then
+    begin
+      MoveMouse(x, y);
+      Wait(200);
+      if(IsTextAt(6,2,'Hard rock: Mine'))then
+      begin
+        ClickMouse(x, y, True);
+        Wait(2800 + Random(200));
+      end;
+    end else
+    begin
+      MoveMouse(x, y);
+      Wait(1000);
+    end;
+    s:= GetChatMsg;
+  until(s = 'You are too tired to mine this rock') or (Pos('You have been standing here for 5', s) = 1) or (GetSystemTime - t > 300000);
+end;
+  
+  
+begin
+  //Initialization stuff
+  iron:= LoadBitmap('.\Pics\iron.bmp');
+  l1:= CreateLandmark(13, 8, '000001010001000001040007000006040002000001040004000001010001000002010001000001040007000006040004000004040005000005010001000002040005000001010001000005040006000004040004000002040004000001040004000003010001');
+  l2:= CreateLandmark(10, 9, '02000500000502000300002001000100000101000100000C010001000018010002000003');
+  l3:= CreateLandmark(13, 6, '00000301000100000102000200000B020002000002010001000008020002000005010001000004010001020002000001010001000005010001000002020003000009020004000006');
+  l4:= CreateLandmark(11, 8, '01000100000D01000100001B01000100000F010001000006010001000016');
+  l5:= CreateLandmark(11, 7, 'B0000B00000B04001A000003040008000001010001000001040008000003040004');
+  l6:= CreateLandmark(6, 5, '020002E30001100001000002020002E30001100001000002420002E20001500001400001000001B00004B10001100001000006');
+  l7:= CreateLandmark(6, 10, '000002E00001040001000004E10001040001000004E00001040001000004E00001040001000004E00001040001000002020002E00001040001000002020002E30001040001000002020002E20001040001000004E00001700003000002A00001B00003');
+  BedPath:= CreatePath;
+  AddLandmarkToPath(BedPath, l6, 0, 1);
+  AddLandmarkToPath(BedPath, l5, 5, 0);
+  AddLandmarkToPath(BedPath, l4, 5, -5);
+  AddLandmarkToPath(BedPath, l3, 6, -10);
+  AddLandmarkToPath(BedPath, l2, 6, -10);
+  AddLandmarkToPath(BedPath, l1, 4, -10);
+  BankPath:= CreatePath;
+  AddLandmarkToPath(BankPath, l7, 5, 1);
+  AddLandmarkToPath(BankPath, l6, 5, 1);
+  MinePath:= CreatePath;
+  AddLandmarkToPath(MinePath, l1, 1, 1);
+  AddLandmarkToPath(MinePath, l2, 0, 9);
+  AddLandmarkToPath(MinePath, l3, -6, 20);
+  AddLandmarkToPath(MinePath, l4, -5, 20);
+//  AddLandmarkToPath(MinePath, l5, -5, 15);
+  AddLandmarkToPath(MinePath, l6, -10, 20);
+  AddLandmarkToPath(MinePath, l7, 0, 10);
+  
+  username:= Readln('Enter your username: ');
+  password:= Readln('Enter your password: ');
+  SetTimeOut(20,'LOGINIFNEEDED');
+  
+  //Main program loop (it never ends)
+  repeat
+    //Go to mining site
+    GoByPath(MinePath);
+    //Close minimap
+    Wait(100);
+    MoveMouse(10,10);
+    Wait(200);
+    //Mine iron
+    DoMining;
+    //Going to bed
+    GoByPath(BedPath);
+    //Sleeping in bed
+    DoSleeping;
+    //Going to bank
+    GoByPath(BankPath);
+    //Bank stuff
+    DoBanking;
+    //Banking complete, return to mines
+
+  until(False);
+end.

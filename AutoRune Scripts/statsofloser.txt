@@ -1,0 +1,8 @@
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+DebugVar(%x)
+DebugVar(%y)
+DebugVar(%lvl)
+DebugVar(%hp)
+Wait(10)
+

@@ -1,0 +1,350 @@
+;---------------
+; HOBBOS
+; WITH FOOD
+; SOUTH FELLY
+; HOBOGOBLINS [67]
+
+SetOnPlaceTime(600)
+OnLogin(@Init)
+@Init:
+@Boo:
+EnableEvents()
+; Set up some events
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnStatsChanged(@StatsChange,%Stat)
+OnServerMessage(@ServMes)
+OnItemAppeared(@NewItem,%ItemID,%X,%Y)
+-OnChatMessage(@RunAndHideChat)
+
+; Set it to train strength or whatever
+FightMode(1)
+; Ignore those NPCs that are in fight
+CheckFighters(1)
+; Let AR know, that we are not in fight
+SetVarNum(%FightOver,1)
+
+
+@MainLoop:
+GoToIfCoordsIn(@GoIn,354,616,357,620)
+------------####
+-GoToIfCountInInventoryEqual(@BackToBank,0,357)
+------------####
+
+; Don't attack if we are already fighting
+GoToIfVarEqualNum(@DontAttack,%FightOver,0)
+; Attack if any enemies visible
+GoToIfNPCNear(@Attack,67)
+; Otherwise don;t attack
+GoTo(@DontAttack)
+
+
+@Attack:
+; Attack only if my HP is above certain number
+; or unknown
+SetVarMyHP(%HP)
+GoToIfVarEqualNum(@Attack2,%HP,0)
+GoToIfVarBelowNum(@EatFood,%HP,20)
+
+
+@Attack2:
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,67)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@DontAttack)
+
+@EatFood:
+;UseItemByID(373)
+UseItem(11)
+Wait(10)
+;UseItemByID(373)
+UseItem(11)
+Wait(10)
+;UseItemByID(373)
+UseItem(11)
+Wait(10)
+;UseItemByID(373)
+UseItem(11)
+Wait(10)
+
+@DontAttack:
+Wait(5,6)
+
+; count how many loops we are idling
+AddVarNum(%IdleC,1)
+; if more than 20 loops - attack next enemy
+GoToIfVarAboveNum(@FightNext,%IdleC,20)
+; if more than 4 loops - burry all bones we have
+GoToIfVarAboveNum(@IHaveBones,%IdleC,4)
+GoTo(@MainLoop)
+
+
+@FightNext:
+; tell AR that we are not fighting
+SetVarNum(%FightOver,1)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@MainLoop)
+
+
+@IHaveBones:
+; don't dig bones if we are fighting
+GoToIfVarEqualNum(@NotWorthToDig,%FightOver,0)
+; dig only if I do have bones
+GoToIfInInventory(@IReallyHaveBones,20)
+GoTo(@NotWorthToDig)
+@IReallyHaveBones:
+GoSub(@DigBones)
+@NotWorthToDig:
+GoTo(@MainLoop)
+
+
+;--- OnStatChaged
+@StatsChange:
+@CanMove:
+;If my HitPoints skill changed, it means
+;fight is over
+GoToIfVarEqualNum(@SetCanMove,%Stat,3)
+ERet()
+@SetCanMove:
+SetVarNum(%FightOver,1)
+SetVarNum(%IdleC,0)
+ERet()
+
+
+;--- OnServerMessage
+@ServMes:
+;-- If someone stole your enemy
+GoToIfLastServerMessageIs(@ResetGo,"I can't get close enough")
+;-- or your victim runs away
+GoToIfLastServerMessageIs(@ResetGo,"Your opponent is retreating")
+---------
+GoToIfLastServerMessageIs(@Sleep,"@gre@You are too tired to gain experience, get some rest!")
+---------
+ERet()
+
+@Sleep:
+Debug("Sleeping")
+UseItem(5)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,35)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()
+
+
+;-- then let AR know that fight is over
+@ResetGo:
+SetVarNum(%FightOver,1)
+ERet()
+
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+Ret()
+
+- Anti Jagex
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+ERet()
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Wait(40,50)
+Say(16 13 05 )
+Debug("Saying 'Wtf'")
+Wait(40)
+Say(A3 D0 0B 3D 50 )
+Wait(35)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+Wait(30)
+SaveScreenshot()
+RedirectDest(0,50,0,0,0,0,0,0)
+StopAndLogOut()
+
+;--- New item appeared
+@NewItem:
+;-- If we're not fighting or burying bones
+; then take the item
+GoToIfVarEqualNum(@TakeItems,%FightOver,1)
+ERet()
+@TakeItems:
+SetVarMyX(%MX)
+SetVarMyY(%MY)
+;Only take the item if it's right under my feet
+GoToIfVarNotEqual(@DontGrabAnything,%X,%MX)
+GoToIfVarNotEqual(@DontGrabAnything,%Y,%MY)
+;-- Only take certain items
+GoToIfVarNotEqualNum(@DontGrabBones,%ItemID,20)
+-GoTo(@GrabBones)
+@DontGrabBones:
+GoToIfVarNotEqualNum(@DontGrabCoins,%ItemID,10)
+GoTo(@GrabCoins)
+@DontGrabCoins:
+@DontGrabAnything:
+;=== Bones
+-GoToIfVarEqualNum(@Grab,%ItemID,20)
+;=== Coins
+GoToIfVarEqualNum(@Grab,%ItemID,10)
+;=== Cosmic
+GoToIfVarEqualNum(@Grab,%ItemID,46)
+;=== Chaos
+GoToIfVarEqualNum(@Grab,%ItemID,41)
+;=== Nature
+GoToIfVarEqualNum(@Grab,%ItemID,40)
+;=== Laws
+GoToIfVarEqualNum(@Grab,%ItemID,42)
+ERet()
+
+@Grab:
+ActionVarVar(%X,%Y)
+TakeItemVarVarVar(%X,%Y,%ItemID)
+Wait(15)
+ERet()
+
+
+
+;---Pick up bones
+@GrabBones:
+ActionVarVar(%X,%Y)
+TakeItemVarVar(%X,%Y,20)
+Wait(10)
+GoTo(@DontGrabBones)
+
+;---Pick up coins
+@GrabCoins:
+ActionVarVar(%X,%Y)
+TakeItemVarVar(%X,%Y,10)
+Wait(10)
+GoTo(@DontGrabCoins)
+
+
+
+;--- Dig all bones
+@DigBones:
+; Don't dig if we are in fight
+GoToIfVarEqualNum(@DontDig,%FightOver,0)
+@DigBonesLoop:
+UseItemByID(20)
+Wait(20)
+; if we still have bones, keep digging
+GoToIfInInventory(@DigBonesLoop,20)
+@DontDig:
+Ret()
+-
+
+@BackToBank:
+MoveTo(363,609)
+MoveTo(363,610,-2,2,-2,3,-4,5,-6,5,-7,6,-8,6,-14,12)
+MoveTo(355,616,-1,1,-3,1,-5,3,-10,3,-13,6)
+MoveTo(337,622,-10,-10)
+MoveTo(325,612,-13,-13)
+MoveTo(309,599,-14,-14)
+MoveTo(292,582,0,-7,-3,-10)
+
+@Banking:
+GoToIfCoordsIn(@AmInsideBank,280,564,286,573)
+GoTo(@GoInsideBank)
+
+@GoInsideBank:
+MoveTo(290,573,-1,-1)
+MoveTo(285,572)
+GoTo(@Banking)
+
+@AmInsideBank:
+GoToIfNPCNear(@ISeeBanker,95)
+
+Debug("I don't see any bankers here!")
+MoveTo(285,570,1,1)
+MoveTo(291,571)
+GoTo(@Banking)
+
+; Talk to the nearest banker every time
+@ISeeBanker:
+ResetQuestMenu()
+SetVarsNearestNPCIn(%x,%y,%ID,280,564,286,573,95)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(30)
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@Banking)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+SetVarNum(%a,19)
+@wd:
+Withdraw(373,1)
+Wait(1)
+AddVarNum(%a,-1)
+GoToIfVarEqualNum(@Done,%a,0)
+GoTo(@wd)
+@Done:
+Wait(10)
+CloseBank()
+
+GoToIfCountInInventoryEqual(@BackToHellHole,19,373)
+GoTo(@Banking)
+
+@BackToHellHole:
+MoveTo(286,571)
+MoveTo(287,572,0,5,3,8,3,16)
+MoveTo(301,599,1,0,6,5)
+MoveTo(308,604,10,10,11,10,12,11)
+MoveTo(331,615,5,5)
+MoveTo(352,620,1,-1)
+MoveTo(355,619,5,-5,5,-6,6,-7,6,-8,9,-11)
+GoTo(@Boo)
+
+@GoIn:
+MoveTo(354,618)
+MoveTo(356,618,4,-4,4,-5,5,-6,5,-9,6,-10,6,-12,8,-14)
+GoTo(@Boo)
+

@@ -1,0 +1,11 @@
+@Sleep:
+UseItem(0)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,25)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()

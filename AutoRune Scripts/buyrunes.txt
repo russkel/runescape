@@ -1,0 +1,28 @@
+-- Count Them
+SetVarCountInShop(%mind,35)
+SetVarCountInShop(%air,33)
+SetVarCountInShop(%fire,31)
+
+-- Now Buy Them
+@Mind:
+BuyItem(35,3)
+Wait(1)
+AddVarNum(%mind,-1)
+GoToIfVarEqualNum(@Air,%mind,0)
+Goto(@Mind)
+
+@Air:
+BuyItem(33,4)
+Wait(1)
+AddVarNum(%air,-1)
+GoToIfVarEqualNum(@Fire,%air,0)
+Goto(@Air)
+
+@Fire:
+BuyItem(31,4)
+Wait(1)
+AddVarNum(%fire,-1)
+GoToIfVarEqualNum(@Fire,%fire,0)
+Goto(@Fire)
+
+Stop()

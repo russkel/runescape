@@ -1,0 +1,181 @@
+//Start in Karajama
+program FishTest;
+const
+  MyWait = 200; //Change it to 50 for fast computers
+
+var
+  l1, l2, l3, l4, l5: Integer;
+  BedPath, FishPath: Integer;
+  username, password: string;
+  
+procedure LogInIfNeeded; export;
+begin
+  //if logged out press Cancel
+  if(LoginScreen)then
+  begin
+    Writeln('Clearing username, password fields');
+    ClickMouse(400,280,True);
+    Wait(2000);
+  end;
+  //If logged out select Existing User
+  if(StartScreen)then
+  begin
+    Writeln('Choosing existing user');
+    ClickMouse(340,280,True);
+    Wait(4000);
+  end;
+  //If logged out, log in
+  if(LoginScreen)then
+  begin
+    Writeln('Trying to log in');
+    ClickMouse(100,260,True);
+    Wait(500);
+    SendKeysSilent(username);
+    Wait(2000);
+    ClickMouse(120,310,True);
+    Wait(500);
+    SendKeysSilent(password);
+    Wait(2000);
+    ClickMouse(380,250,True);
+    Wait(6000);
+  end;
+  //If we have Welcome to RuneScape open, close it
+  if(GetColor(56,117)=16777215)and
+    (GetColor(57,118)=0)and
+    (GetColor(455,216)=16777215)and
+    (GetColor(454,215)=0)
+  then
+  begin
+    Writeln('Closing Welcome box');
+    ClickMouse(250,208,True);
+    Wait(2000);
+  end;
+  SetTimeOut(20,'LOGINIFNEEDED');
+end;
+
+
+procedure GoByPath(path: Integer);
+var
+  HowFar: Integer;
+  x, y: Integer;
+  r: Extended;
+  Dest: Boolean;
+begin
+  repeat
+    MoveMouse(460,15);
+    Wait(200);
+    ProcessMap;
+    HowFar:= ProcessPath(Path, x, y, r, 0.2);
+    Status('HowFar='+IntToStr(HowFar)+' x='+IntToStr(x) + ' y='+IntToStr(y)+' r='+FloatToStr(r));
+    if(r > 0.6)then
+    begin
+      if(HowFar = 0)then
+        ClickMap(x, y, True)
+      else
+        ClickMap(x + Random(3)-1, y + Random(3) - 1, True);
+    end;
+    Dest:= (HowFar=0)and(x<=19)and(x>=17)and(y<=19)and(y>=17);
+    if(not Dest)then
+      Wait(5000);
+  until(Dest);
+end;
+
+procedure DoFishing;
+var x, y: Integer;
+    s: string;
+    f: Extended;
+    StartTime: Integer;
+    xx, yy: Integer;
+    r: Extended;
+    InitX, InitY: Integer;
+begin
+  Status('Start fishing');
+  StartTime:= GetSystemTime;
+  //Initial clicking coordinates
+  InitX:= 300;
+  InitY:= 190;
+  x:= InitX;
+  y:= InitY;
+  repeat
+    f:= 3;
+    //Move the mouse around until we find fish
+    x:= x - 1 + Random(3);
+    y:= y - 1 + Random(3);
+    SpiralFindObj(x,y, -1, x-100, y-100, x+100, y+100, 5, 'fish: Harpoon', MyWait, 60000);
+    //if we are fishing 2 minutes or longer, wal a bit left and back
+    if(GetSystemTime - StartTime > 60000)then
+    begin
+      repeat
+        MoveMouse(460,15);
+        Wait(300);
+        ProcessMap;
+        ClickMap(17,17+Random(3),True);
+        Wait(2000);
+        ProcessMap;
+        FindLandmark(l5,xx,yy,r);
+      until(xx>=15);
+      ClickMap(19,18,True);
+      Wait(2000);
+      MoveMouse(10,10);
+      Wait(200);
+      StartTime:= GetSystemTime;
+    end else
+    //Otherwise click on fishing spot
+    begin
+      ClickMouse(x, y, True);
+      Wait(3400);
+    end;
+    s:= GetChatMsg;
+  until(s = 'You are too tired to catch this fish') or (Pos('You have been standing here for 5', s) = 1);
+end;
+
+procedure DoSleeping;
+var x, y: Integer;
+begin
+  Status('Sleeping');
+  //Move the mouse around chaotically until we find bed
+  repeat
+    x:= Random(500);
+    y:= Random(340);
+    FindColorSpiral(x,y,ConvertColor(14935011),x-50,y-50,x+50,y+50);
+    MoveMouse(x, y);
+    Wait(200);
+  until(IsTextAt(6,2,'Bed: rest'));
+  //Click on bed and wait 10 seconds
+  ClickMouse(x, y, True);
+  Wait(10000);
+end;
+
+begin
+  //Landmark and path initialization
+  l1:= CreateLandmark(6, 8, '080002680001180001080002000002E00001110001000001010001600001700001F00001700003E00001B00002B10001B00001F10001E00001110001000003E00002100001000003E00002710001700003F00002B00002B20001B00002');
+  l2:= CreateLandmark(8, 6, '000001010001000002010001000002010001400008B20008020008010001000002010001000001600001700002000005E00001B10001B00001');
+  l3:= CreateLandmark(8, 7, '000001A00001F00001500001000002010001000001020001000001A00001F00001700004020003A20001B20004020008000001600001700003710001700002000001E00001B00006000001E00001100001000005');
+  l4:= CreateLandmark(10, 9, '000003020001000004080002010001000002020001000001010001000003600001000003020001000004600001F00001000003020001000004E00001D00001000003020001000004E00001D00001000001010001000001020001000003600001F00001900001000003020001000003E00001900001000001010001000002020001000003800001000005020001000003600001100001000001');
+  l5:= CreateLandmark(6, 7, '080001000004080001090001000004090002000004090001080001000004080002000004090001080001000004080001090001000004090001');
+  BedPath:= CreatePath;
+  AddLandmarkToPath(BedPath, l1, 4, 5);
+  AddLandmarkToPath(BedPath, l2, 4, 3);
+  AddLandmarkToPath(BedPath, l3, 10, 3);
+  AddLandmarkToPath(BedPath, l4, 5, 15);
+  AddLandmarkToPath(BedPath, l5, 1, 20);
+  FishPath:= CreatePath;
+  AddLandmarkToPath(FishPath, l5, 4, 1);
+  AddLandmarkToPath(FishPath, l4, 5, 0);
+  AddLandmarkToPath(FishPath, l3, -5, -15);
+  AddLandmarkToPath(FishPath, l2, -8, 3);
+  AddLandmarkToPath(FishPath, l1, 0, 10);
+  
+  
+  username:= Readln('Enter your username: ');
+  password:= Readln('Enter your password: ');
+  SetTimeOut(20,'LOGINIFNEEDED');
+
+  //Main program loop (it never ends)
+  repeat
+    GoByPath(FishPath);
+    DoFishing;
+    GoByPath(BedPath);
+    DoSleeping;
+  until(False);
+end.

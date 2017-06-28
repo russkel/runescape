@@ -1,0 +1,169 @@
+- Iron Miner
+-- Varrock SE Mine
+--- Made By Kamu
+-- For AutoRune 2.1
+- kamu@bluepoo.com
+
+; a bit modified by Kaitnieks
+
+GoToIfQuestion(@Filter,"Do you have chat messages blocked?")
+GoTo(@Beginning)
+@Filter:
+OnChatMessage(@RunAndHideChat)
+@Beginning:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnPrivateMessage(@RunAndHidePM)
+
+@startmining:
+WatchObjects(1)
+
+@rock1:
+GoToIfBagFull(@bankrun)
+ResetLastServerMessage()
+ResetLastItemGained()
+Action(27,544)
+AtObject(27,543)
+Wait(27)
+GoToIfLastServerMessageIs(@zzz,"@gam@You are too tired to mine this rock")
+
+@rock2:
+GoToIfBagFull(@bankrun)
+ResetLastServerMessage()
+ResetLastItemGained()
+Action(27,544)
+AtObject(28,544)
+Wait(27)
+GoToIfLastServerMessageIs(@zzz,"@gam@You are too tired to mine this rock")
+SetVarObject(%d,27,543)
+GoToIfVarEqualNum(@rock1,%d,102)
+GoTo(@rock2)
+
+@zzz:
+MoveTo(26,544)
+MoveTo(26,536)
+MoveTo(26,529,2,-2)
+MoveTo(28,523,5,-5)
+MoveTo(33,514,3,-3)
+MoveTo(39,508)
+MoveTo(53,508)
+MoveTo(60,508)
+MoveTo(60,517)
+MoveTo(59,517)
+MoveTo(56,519)
+MoveTo(57,519)
+OnCoordsChanged(-1,%a,%a)
+-- climb ladder
+Action(57,519)
+AtObject(58,519)
+WaitForCoordChange()
+MoveTo(57,1705)
+- zzzzzzzz
+Action(57,1705)
+AtObject(56,1706)
+Wait(100)
+MoveTo(57,1703)
+- go down ladder
+Action(57,1703)
+AtObject(58,1703)
+WaitForCoordChange()
+GoSub(@goback)
+MoveTo(56,519)
+MoveTo(56,517)
+MoveTo(59,517)
+MoveTo(59,508)
+MoveTo(55,508)
+MoveToRandomly(54,512,52,511)
+GoTo(@banking)
+
+@bankrun:
+MoveTo(26,544)
+MoveTo(26,536)
+MoveTo(26,529,2,-2)
+MoveTo(28,523,5,-5)
+MoveTo(33,514,3,-3)
+MoveTo(39,508)
+MoveTo(53,508)
+MoveToRandomly(54,512,52,511)
+@banking:
+RepeatNextCommandUntilQuestMenu(50,1)
+TalkToNPC(535,531,530)
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+Wait(10)
+CloseBank()
+Wait(10)
+GoToIfInInventory(@banking,151)
+- go back mining
+MoveTo(55,508)
+MoveTo(39,508)
+MoveTo(39,509,-2,2,-2,8,-8,14)
+MoveTo(28,526)
+MoveTo(28,537)
+MoveTo(25,537)
+MoveTo(25,543)
+
+GoTo(@startmining)
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnPrivateMessage(@RunAndHidePM)
+Ret()
+
+- Anti Jagex
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+GoTo(@rock1)
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(16 13 05 )
+Debug("Saying 'Wtf'")
+Wait(10)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+SaveScreenshot()
+StopAndLogOut()
+Wait(1)
+

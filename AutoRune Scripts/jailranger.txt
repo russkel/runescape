@@ -1,0 +1,140 @@
+SetOnPlaceTime(600)
+OnLogin(@Init)
+@Init:
+EnableEvents()
+; Set up some events
+OnStatsChanged(@StatsChange,%Stat)
+OnServerMessage(@ServMes)
+; Set it to train strength or whatever
+FightMode(1)
+; Ignore those NPCs that are in fight
+CheckFighters(1)
+; Let AR know, that we are not in fight
+SetVarNum(%FightOver,1)
+@MainLoop:
+; Don't attack if we are already fighting
+GoToIfVarEqualNum(@DontAttack,%FightOver,0)
+; Attack if any enemies visible
+GoToIfNPCNear(@Attack,21)
+@next:
+GoToIfNPCNear(@Attack2,137)
+GoToIfNPCNear(@Attack3,192)
+GoToIfNPCNear(@Attack4,64)
+@next2:
+-GoToIfNPCNear(@Attack5,189)
+; Otherwise don;t attack
+GoTo(@DontAttack)
+@Attack:
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,21)
+-Debug("Mugger")
+-DebugVar(%y)
+GoToIfVarBelowNum(@next,%y,655)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@DontAttack)
+@Attack2:
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,137)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@DontAttack)
+@Attack3:
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,192)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@DontAttack)
+@Attack4:
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,64)
+-Debug("theif")
+-DebugVar(%y)
+GoToIfVarBelowNum(@next2,%y,655)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@DontAttack)
+@Attack5:
+Action(281,665)
+TakeItem(281,665,80)
+Wait(10)
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,189)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@DontAttack)
+@DontAttack:
+Wait(5,6)
+; count how many loops we are idling
+AddVarNum(%IdleC,1)
+; if more than 20 loops - attack next enemy
+GoToIfVarAboveNum(@FightNext,%IdleC,20)
+; if more than 4 loops - burry all bones we have
+GoTo(@MainLoop)
+@FightNext:
+; tell AR that we are not fighting
+SetVarNum(%FightOver,1)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@MainLoop)
+;--- OnStatChaged
+@StatsChange:
+@CanMove:
+;If my HitPoints skill changed, it means
+;fight is over
+GoToIfVarEqualNum(@SetCanMove,%Stat,3)
+GoToIfVarEqualNum(@SetCanMove,%Stat,4)
+ERet()
+@SetCanMove:
+SetVarNum(%FightOver,1)
+SetVarNum(%IdleC,0)
+ERet()
+;--- OnServerMessage
+@ServMes:
+DebugLastServerMessage()
+;-- If someone stole your enemy
+GoToIfLastServerMessageIs(@ResetGo,"I can't get close enough")
+GoToIfLastServerMessageIs(@ResetGo,"I can't get a clear shot from here")
+;-- or your victim runs away
+GoToIfLastServerMessageIs(@ResetGo,"Your opponent is retreating")
+---------
+GoToIfLastServerMessageIs(@Sleep,"@gre@You are too tired to gain experience, get some rest!")
+---------
+ERet()
+@Sleep:
+DebugLastServerMessage()
+UseItem(7)
+Wait(200)
+ERet()
+;-- then let AR know that fight is over
+@ResetGo:
+SetVarNum(%FightOver,1)
+Action(285,659)
+TakeItem(285,659,11)
+Wait(10)
+

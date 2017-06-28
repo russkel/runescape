@@ -1,0 +1,96 @@
+;will trade with player cepurnieks
+;and accept everything she gives
+@VeryStart:
+EnableEvents()
+ResetLastServerMessage()
+OnTradeAccepted(@TradeAccepted)
+OnTrade1(@Trade1)
+
+
+@Loopy:
+GoToIfInInventory(@banking,171)
+Wait(20)
+;DebugLastServerMessage()
+GoToIfLastServerMessageIs(@TradeFol,"@bor@Cepurnieks: wishes to trade with you")
+ResetLastServerMessage()
+GoTo(@Loopy)
+
+
+@banking:
+OnTimer(@VeryStart,1,1200)
+
+@BankingTalk:
+ResetQuestMenu()
+ResetLastServerMessage()
+SetVarsRandomNPCIn(%x,%y,%ID,87,689,93,700,268)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(15)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+WaitForQuestMenu(15)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+WaitForQuestMenu(15)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@BankingTalk)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+Wait(5)
+DepositEverything()
+Wait(10)
+CloseBank()
+Wait(10)
+GoToIfInInventory(@banking,171)
+GoTo(@Loopy)
+
+
+
+
+
+@TradeFol:
+ResetLastServerMessage()
+SetVarPlayerByName(%ID,"cepurnieks")
+GoToIfVarNotEqualNum(@FoundPlayer,%ID,-1)
+Debug("cant trade")
+GoTo(@Loopy)
+
+@FoundPlayer:
+ResetLastServerMessage()
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+DebugVar(%ID,%x,%y,%lvl,%HP)
+GoToIfPlayerVisibleVar(@visible,%ID)
+GoTo(@visible)
+
+GoTo(@Loopy)
+
+@visible:
+Debug("I can see them")
+TradePlayerVar(%ID)
+
+GoTo(@Loopy)
+
+
+
+;Event - trade accepted
+@TradeAccepted:
+Debug("Trade accepted")
+Wait(10)
+Accept1()
+Wait(30)
+Accept2()
+Wait(30)
+ERet()
+
+
+
+@Trade1:
+Wait(10)
+Put0Trade(171,0,171,0,171,0,171,0,171,0,171,0,171,0,171,0,171,0,171,0,171,0,171,0)
+Wait(20)
+ERet()
+
+

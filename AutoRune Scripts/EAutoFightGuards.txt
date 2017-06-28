@@ -1,0 +1,188 @@
+;---------------
+; Easy Auto-Fight Guards
+; Start at black knights castle
+; guards enterance
+; Created by Kaitnieks
+
+; To disable item picking up
+; just delete line: OnItemAppeared(@NewItem,%ItemID,%X,%Y)
+
+
+SetOnPlaceTime(600)
+OnLogin(@Init)
+@Init:
+EnableEvents()
+; Set up some events
+OnStatsChanged(@StatsChange,%Stat)
+OnServerMessage(@ServMes)
+OnItemAppeared(@NewItem,%ItemID,%X,%Y)
+
+; Set it to train strength
+FightMode(1)
+; Ignore those NPCs that are in fight
+CheckFighters(1)
+; Let AR know, that we are not in fight
+SetVarNum(%FightOver,1)
+
+
+@MainLoop:
+; Don't attack if we are already fighting
+GoToIfVarEqualNum(@DontAttack,%FightOver,0)
+; Attack if any guards visible
+GoToIfNPCNearIn(@Attack,222,447,215,436,65,100)
+; Otherwise don;t attack
+GoTo(@DontAttack)
+
+
+@Attack:
+; Attack only if my HP is above 20
+; or unknown
+SetVarMyHP(%HP)
+GoToIfVarEqualNum(@Attack2,%HP,0)
+GoToIfVarBelowNum(@DontAttack,%HP,20)
+
+
+@Attack2:
+; get coords and ID of nearest guard
+SetVarsNearestNPCIn(%x,%y,%ID,222,447,215,436,65,100)
+; attack the guard
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+
+
+@DontAttack:
+Wait(5,6)
+
+; count how many loops we are idling
+AddVarNum(%IdleC,1)
+; if more than 20 loops - attack next guard
+GoToIfVarAboveNum(@FightNext,%IdleC,20)
+; if more than 4 loops - burry all bones we have
+GoToIfVarAboveNum(@IHaveBones,%IdleC,4)
+GoTo(@MainLoop)
+
+
+@FightNext:
+; tell AR that we are not fighting
+SetVarNum(%FightOver,1)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@MainLoop)
+
+
+@IHaveBones:
+; don't dig bones if we are fighting
+GoToIfVarEqualNum(@NotWorthToDig,%FightOver,0)
+; dig only if I do have bones
+GoToIfInInventory(@IReallyHaveBones,20)
+GoTo(@NotWorthToDig)
+@IReallyHaveBones:
+GoSub(@DigBones)
+@NotWorthToDig:
+GoTo(@MainLoop)
+
+
+;--- OnStatChaged
+@StatsChange:
+@CanMove:
+;If my HitPoints skill changed, it means
+;fight is over
+GoToIfVarEqualNum(@SetCanMove,%Stat,3)
+ERet()
+@SetCanMove:
+SetVarNum(%FightOver,1)
+SetVarNum(%IdleC,0)
+ERet()
+
+
+;--- OnServerMessage
+@ServMes:
+;-- If someone stole your guard
+GoToIfLastServerMessageIs(@ResetGo,"I can't get close enough")
+;-- or your guard runs away
+GoToIfLastServerMessageIs(@ResetGo,"Your opponent is retreating")
+ERet()
+;-- then let AR know that fight is over
+@ResetGo:
+SetVarNum(%FightOver,1)
+ERet()
+
+
+;--- New item appeared
+@NewItem:
+;-- If we're not fighting or burying bones
+; then take the item
+GoToIfVarEqualNum(@TakeItems,%FightOver,1)
+ERet()
+@TakeItems:
+-Debug("Item appears")
+-DebugVar(%ItemID,%X,%Y)
+SetVarMyX(%MX)
+SetVarMyY(%MY)
+;Only take the item if it's right under my feet
+GoToIfVarNotEqual(@DontGrabAnything,%X,%MX)
+GoToIfVarNotEqual(@DontGrabAnything,%Y,%MY)
+;-- Only take certain items
+GoToIfVarNotEqualNum(@DontGrabBones,%ItemID,20)
+GoTo(@GrabBones)
+@DontGrabBones:
+GoToIfVarNotEqualNum(@DontGrabCoins,%ItemID,10)
+GoTo(@GrabCoins)
+@DontGrabCoins:
+GoToIfVarNotEqualNum(@DontGrabChaos,%ItemID,41)
+GoTo(@GrabChaos)
+@DontGrabChaos:
+GoToIfVarNotEqualNum(@DontGrabNature,%ItemID,40)
+GoTo(@GrabNature)
+@DontGrabNature:
+@DontGrabAnything:
+ERet()
+
+
+
+;---Pick up bones
+@GrabBones:
+ActionVarVar(%X,%Y)
+TakeItemVarVar(%X,%Y,20)
+Wait(10)
+GoTo(@DontGrabBones)
+
+;---Pick up coins
+@GrabCoins:
+ActionVarVar(%X,%Y)
+TakeItemVarVar(%X,%Y,10)
+Wait(10)
+GoTo(@DontGrabCoins)
+
+;--Pick up chaos runes
+@GrabChaos:
+ActionVarVar(%X,%Y)
+TakeItemVarVar(%X,%Y,41)
+Wait(10)
+GoTo(@DontGrabChaos)
+
+;--Pick up nature runes
+@GrabNature:
+ActionVarVar(%X,%Y)
+TakeItemVarVar(%X,%Y,40)
+Wait(10)
+GoTo(@DontGrabNature)
+
+
+;--- Dig all bones
+@DigBones:
+; Don't dig if we are in fight
+GoToIfVarEqualNum(@DontDig,%FightOver,0)
+@DigBonesLoop:
+UseItemByID(20)
+Wait(20)
+; if we still have bones, keep digging
+GoToIfInInventory(@DigBonesLoop,20)
+@DontDig:
+Ret()
+-
+

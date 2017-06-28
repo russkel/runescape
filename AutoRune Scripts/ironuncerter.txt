@@ -1,0 +1,114 @@
+
+- Auto-Certer :Coal:
+- By Kamu! Kamu@bluepoo.com
+- Start full load of iron
+- Draynor Bank
+- Modified by Kaitnieks
+
+@VeryStart:
+WatchObjects(1)
+EnableEvents()
+
+Debug("(Re)starting script")
+
+OnCoordsChanged(@Coords,%LX,%LY)
+
+GoToIfCoordsIn(@InBank,223,634,216,638)
+Debug("Starting outside bank")
+MoveTo(228,630)
+SetSkipDestMode(0)
+SetCheatDestTime(30)
+MoveTo(226,630,-1,1,-2,1,-3,2,-5,2,-6,3,-6,7,-7,8)
+
+GoTo(@InBank)
+
+@Loop:
+OnTimer(@Timer,1,900)
+
+SetSkipDestMode(1)
+SetSkipDestTime(40)
+
+@Walktocerter:
+MoveMouse(490,10)
+MoveTo(219,634,1,-1,5,-1,6,-2,7,-2,9,-4)
+
+-talk to certer
+SetObject(230,631,1)
+SetObject(230,632,1)
+SetObject(226,633,1)
+SetObject(227,633,1)
+SetObject(230,627,1)
+SetObject(227,629,1)
+SetObject(226,629,1)
+
+RepeatNextCommandUntilQuestMenu(50,3)
+SetVarsNearestNPC(%x,%y,%ID,225)
+FarActionVar(%x,%y)
+TalkToNPCVar(%ID)
+Answer(0)
+WaitForQuestMenu(50)
+Answer(0)
+WaitForQuestMenu(50)
+Answer(2)
+Wait(25)
+
+RepeatNextCommandUntilQuestMenu(50,3)
+SetVarsNearestNPC(%x,%y,%ID,225)
+FarActionVar(%x,%y)
+TalkToNPCVar(%ID)
+Answer(0)
+WaitForQuestMenu(50)
+Answer(0)
+WaitForQuestMenu(50)
+Answer(2)
+Wait(25)
+- Walk back to bank
+MoveMouse(490,10)
+SetSkipDestMode(1)
+SetSkipDestTime(30)
+SetCheatDestTime(30)
+FarMoveTo(228,630)
+MoveTo(226,630,-1,1,-2,1,-3,2,-5,2,-6,3,-6,6)
+
+
+@InBank:
+
+-Find Banker
+RepeatNextCommandUntilQuestMenu(50,2)
+Action(219,635)
+TalkToNPC(707,709,715)
+Answer(0)
+WaitForBankWindow(50)
+Wait(10)
+DepositEverything()
+- Withdraw coal certs
+Withdraw(517,5)
+Withdraw(517,1)
+Wait(10)
+CloseBank()
+Wait(10)
+
+GoToIfCountInInventoryEqual(@JustStop,5,518)
+
+GoTo(@Loop)
+
+
+
+@Timer:
+GoTo(@VeryStart)
+
+
+@Coords:
+GoToIfCoordsIn(@GoodC,235,625,215,639)
+Debug("We're not at the right place")
+Wait(10)
+SaveScreenshot()
+Wait(10)
+StopAndLogOut()
+Wait(10)
+@GoodC:
+ERet()
+
+
+@JustStop:
+StopAndLogOut()

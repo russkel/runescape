@@ -1,0 +1,357 @@
+; Start location: Black Knights Castle
+; Created by Kaitnieks
+; Resurected by Buckna
+
+; Version 1.2
+; -Bury's Bones
+; -Controlled Mode
+; -Pick's up most stackables
+; -Option to fight Black knights as well
+; -Heals when under 15hp
+; -Heals till over 50hp
+
+
+SetOnPlaceTime(600)
+OnLogin(@Init)
+@Init:
+EnableEvents()
+OnStatsChanged(@StatsChange,%Stat)
+OnServerMessage(@ServMes)
+OnItemAppeared(@NewItem,%ItemID,%X,%Y)
+SetVarTime(%LastChatTime)
+OnChatMessage(@Chat)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+
+SetTraceMode(1)
+FightMode(0)
+CheckFighters(1)
+SetVarNum(%FightOver,1)
+
+; Take the start position
+@GoBack:
+MoveToRandomly(270,442,269,442,268,442)
+
+@MainLoop:
+SetVarMyY(%y)
+SetVarMyHP(%HP)
+--DebugVar(%HP)
+GoToIfVarEqualNum(@Attack,%HP,0)
+GoToIfVarBelowNum(@MustHeal,%HP,10)
+@Attack:
+; if we have left our fighting area
+; then return to start position
+GoToIfVarBelowNum(@GoBack,%y,432)
+GoToIfVarAboveNum(@GoBack,%y,447)
+
+GoToIfVarEqualNum(@DontAttack,%FightOver,0)
+GoToIfNPCNearIn(@Attack2,270,447,263,436,65,100)
+--KnightsToo--GoToIfNPCNearIn(@Attack2,270,447,263,436,65,100,66)
+GoTo(@DontAttack)
+@Attack2:
+SetVarsNearestNPCIn(%x,%y,%ID,270,447,263,436,65,100)
+---KnightsToo---SetVarsNearestNPCIn(%x,%y,%ID,270,447,263,436,65,100,66)
+--SetCoordsNearer(%x,%y)
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+SetVarNum(%FightOver,0)
+SetVarNum(%IdleC,0)
+
+GoTo(@DontAttack)
+@MustHeal:
+Debug("Going to heal")
+GoTo(@GoHeal)
+@DontAttack:
+Wait(5,6)
+
+AddVarNum(%IdleC,1)
+GoToIfVarAboveNum(@FightNext,%IdleC,20)
+GoToIfVarAboveNum(@IHaveBones,%IdleC,4)
+GoTo(@MainLoop)
+
+@FightNext:
+SetVarNum(%FightOver,1)
+SetVarNum(%IdleC,0)
+GoTo(@MainLoop)
+
+@IHaveBones:
+GoToIfVarEqualNum(@NotWorthToDig,%FightOver,0)
+GoToIfInInventory(@IReallyHaveBones,20)
+GoTo(@NotWorthToDig)
+@IReallyHaveBones:
+GoSub(@DigBones)
+@NotWorthToDig:
+GoTo(@MainLoop)
+
+
+;--- OnStatChaged
+@StatsChange:
+@CanMove:
+;If my HitPoints skill changed, it means
+;fight is over
+GoToIfVarEqualNum(@SetCanMove,%Stat,3)
+ERet()
+@SetCanMove:
+SetVarNum(%FightOver,1)
+SetVarNum(%IdleC,0)
+ERet()
+
+
+;--- OnServerMessage
+@ServMes:
+;--If you are tired
+GoToIfInLastServerMessageIs(@Sleep,"tired")
+;-- If someone stole your rat
+GoToIfLastServerMessageIs(@ResetGo,"I can't get close enough")
+;-- or your rat runs away
+GoToIfLastServerMessageIs(@ResetGo,"Your opponent is retreating")
+ERet()
+;-- then make your char to choose another rat
+@ResetGo:
+SetVarNum(%FightOver,1)
+ERet()
+
+;-- Sleep Code
+@Sleep:
+Wait(10)
+SetVarNum(%Seconds,100)
+UseItem(0)
+GoTo(@Rest)
+
+@Rest:
+Wait(5)
+AddVarNum(%Seconds,-1)
+GoToIfVarEqualNum(@Sleep,%Seconds,0)
+GoToIfLastServerMessageIs(@Done,"You wake up - feeling refreshed")
+GoTo(@Rest)
+
+@Done:
+ResetLastServerMessage()
+ERet()
+
+;--- New item appeared
+@NewItem:
+;-- If we're not fighting or burying bones
+; then take the item
+GoToIfVarEqualNum(@TakeItems,%FightOver,1)
+ERet()
+@TakeItems:
+SetVarMyX(%MyEx)
+SetVarMyY(%MyWhy)
+;Only take the item if it's right under my feet
+; Coins
+GoToIfVarEqualNum(@Grab,%ItemID,10)
+; Bones
+GoToIfVarEqualNum(@Grab,%ItemID,20)
+; Chaos Rune
+GoToIfVarEqualNum(@Grab,%ItemID,41)
+; Nature Rune
+GoToIfVarEqualNum(@Grab,%ItemID,40)
+; Cosmic Rune
+GoToIfVarEqualNum(@Grab,%ItemID,46)
+; Law Rune
+GoToIfVarEqualNum(@Grab,%ItemID,42)
+; Fire Rune
+GoToIfVarEqualNum(@Grab,%ItemID,31)
+; Water Rune
+GoToIfVarEqualNum(@Grab,%ItemID,32)
+; Air Rune
+GoToIfVarEqualNum(@Grab,%ItemID,33)
+; Earth Rune
+GoToIfVarEqualNum(@Grab,%ItemID,34)
+; Mind Rune
+GoToIfVarEqualNum(@Grab,%ItemID,35)
+; Body Rune
+GoToIfVarEqualNum(@Grab,%ItemID,36)
+; Death Rune
+GoToIfVarEqualNum(@Grab,%ItemID,38)
+; Blood Rune
+GoToIfVarEqualNum(@Grab,%ItemID,619)
+; Bronze Arrows
+GoToIfVarEqualNum(@Grab,%ItemID,11)
+@Meh:
+ERet()
+@Grab:
+GoToIfVarNotEqual(@Meh,%X,%MyEx)
+GoToIfVarNotEqual(@Meh,%Y,%MyWhy)
+ActionVarVar(%X,%Y)
+TakeItemVarVarVar(%X,%Y,%ItemID)
+Wait(15)
+ERet()
+
+
+;--- Dig all bones
+@DigBones:
+GoToIfVarEqualNum(@DontDig,%FightOver,0)
+@DigBonesLoop:
+UseItemByID(20)
+Wait(20)
+GoToIfInInventory(@DigBonesLoop,20)
+@DontDig:
+Ret()
+-
+
+
+;Go to monks and heal
+@GoHeal:
+; if we are not back in 16 mins, logout
+OnTimer(@Logout,1,10000)
+; turn off the events
+OnLogin(-1)
+OnStatsChanged(-1,%Stat)
+OnServerMessage(-1)
+OnItemAppeared(-1,%ItemID,%X,%Y)
+WatchObjects(1)
+SetObject(261,469,0)
+MoveTo(266,445)
+MoveTo(266,447,2,2,2,4,3,5,3,14,5,16)
+MoveTo(271,472,-4,4,-6,4,-7,3,-7,1,-10,-2)
+MoveTo(261,469)
+
+@CheckDoor:
+SetVarObject(%d,261,469)
+GoToIfVarEqualNum(@DoorOpen,%d,63)
+Action(261,469)
+AtObject(261,469)
+Wait(10)
+SetVarObject(%d,261,469)
+DebugVar(%d)
+GoToIfVarEqualNum(@DoorOpen,%d,0)
+DebugVar(%d)
+GoTo(@CheckDoor)
+@DoorOpen:
+
+MoveTo(262,468,0,-7)
+; Tell AR where the obstacles are
+---- 1st row
+SetObject(264,467,1)
+SetObject(263,467,1)
+SetObject(261,467,1)
+SetObject(260,467,1)
+---- 2st row
+SetObject(264,465,1)
+SetObject(263,465,1)
+SetObject(261,465,1)
+SetObject(260,465,1)
+---- 3st row
+SetObject(264,463,1)
+SetObject(263,463,1)
+SetObject(261,463,1)
+SetObject(260,463,1)
+---- 4st row
+SetObject(264,461,1)
+SetObject(263,461,1)
+SetObject(261,461,1)
+SetObject(260,461,1)
+---- Altar
+SetObject(261,459,1)
+SetObject(262,459,1)
+---- recharge
+--DONTRECHARGE---Action(262,460)
+--DONTRECHARGE---AtObject(261,459)
+--DONTRECHARGE---Wait(20)
+---heal
+
+;Heal until HP over 50
+@Heal:
+SetVarMyHP(%HP)
+GoToIfVarEqualNum(@StopHeal,%HP,0)
+GoToIfVarAboveNum(@StopHeal,%HP,37)
+GoToIfNPCNearIn(@DoHeal,265,458,259,468,93)
+GoTo(@WaitHeal)
+@DoHeal:
+ResetQuestMenu()
+SetVarsNearestNPCIn(%x,%y,%ID,265,458,259,468,93)
+FarActionVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(70)
+GoToIfQuestMenu(@Answer)
+GoTo(@WaitHeal)
+@Answer:
+Answer(0)
+@WaitHeal:
+Wait(20)
+GoTo(@Heal)
+@StopHeal:
+
+
+FarMoveTo(262,468)
+
+@CheckDoor2:
+SetVarObject(%d,261,469)
+GoToIfVarEqualNum(@DoorOpen2,%d,63)
+Action(261,468)
+AtObject(261,469)
+Wait(10)
+SetVarObject(%d,261,469)
+GoToIfVarEqualNum(@DoorOpen2,%d,0)
+GoTo(@CheckDoor2)
+@DoorOpen2:
+
+MoveTo(261,472,4,4,6,4,6,-2,7,-3,7,-10,8,-11,8,-13,10,-15)
+MoveTo(271,449,-1,-1,-1,-6,-3,-8)
+
+WatchObjects(0)
+OnTimer(-1,1,10000)
+OnLogin(@Init)
+GoTo(@Init)
+
+@Logout:
+Debug("timed out")
+SaveScreenshot()
+StopAndLogOut()
+
+;=== On Chat message
+@Chat:
+GoToIfInLastChatMessageIs(@MeMentioned," ")
+ERet()
+@MeMentioned:
+SaveScreenshot()
+Debug("Someone has mentioned my name")
+SetVarTime(%t)
+SubVar(%t,%LastChatTime)
+DebugVar(%t)
+GoToIfVarAboveNum(@MustReply,%t,2000)
+ERet()
+@MustReply:
+Wait(50,70,100)
+SetVarTime(%LastChatTime)
+GoToRandom(@SayGoAway,@SayLeaveAlone,@SayGiveBreak)
+ERet()
+@SayGoAway:
+Say(D5 40 3D 13 D3 EB EB EB )
+Debug("Saying: go away...")
+ERet()
+@SayLeaveAlone:
+Say(B1 3D 81 0D 01 03 B4 71 )
+Debug("Saying: leave me alone")
+ERet()
+@SayGiveBreak:
+Say(D5 5D 81 0D 01 03 0D 79 13 D9 )
+Debug("Saying: give me a break")
+ERet()
+
+
+;===Event OnCoordsChanged CoordsChange
+; If we moved 40 or more tiles instantly
+; then most likely we got teleported
+; save snapshot and log out
+@CoordsChange:
+SetVar(%x1,%oldX)
+SetVar(%y1,%oldY)
+SetVar(%x2,%oldX)
+SetVar(%y2,%oldY)
+AddVarNum(%x1,-20)
+AddVarNum(%y1,-20)
+AddVarNum(%x2,20)
+AddVarNum(%y2,20)
+GoToIfCoordsInVars(@NoTeleporting,%x1,%y1,%x2,%y2)
+SetVarMyX(%x)
+SetVarMyY(%y)
+DebugVar(%oldX,%oldY,%x,%y)
+Debug("You were teleported! Better let's log out...")
+SaveScreenshot()
+Say(D5 5D 81 0D 01 03 0D 79 13 D9 )
+Debug("Saying: give me a break")
+StopAndLogOut()
+@NoTeleporting:
+ERet()

@@ -1,0 +1,26 @@
+-- Selling/buing iron helmets
+-- at Peska's shop
+
+--- Sell Test
+@Loop:
+SetVarItemCount(%a,5)
+GoToIfVarEqualNum(@DontBuy,%a,0)
+SellItem(5,84)
+Wait(10)
+@DontBuy:
+Wait(5)
+GoTo(@Loop)
+Stop()
+
+
+
+---- Buy Test
+;@Loop:
+;SetVarCountInShop(%a,5)
+;GoToIfVarEqualNum(@DontBuy,%a,0)
+;BuyItem(5,84)
+;Wait(10)
+;@DontBuy:
+;Wait(5)
+;GoTo(@Loop)
+;Stop()

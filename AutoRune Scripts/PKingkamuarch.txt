@@ -1,0 +1,7 @@
+@attack:
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+ActionVarVar(%x,%y)
+AttackPlayerVar(%ID)
+Wait(10)
+

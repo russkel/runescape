@@ -1,0 +1,610 @@
+;--------------
+;  Coal mining in miners guild
+;  Version 3
+;  written by Kaitnieks
+;  Fixed/reserected by Kriffe and KAMU
+;
+;  Start location: Miners guild or around it
+;  Start condition: Own pickaxe invisible
+;--------------
+; !!! Importnat - this script
+;     changes server every hour
+;     you need to turn Login on disconnect on
+;     for this script to work
+;     or disable the serverchange feature
+
+
+
+
+
+;---Entry point, set up all events here
+@ReInitialize:
+Wait(30)
+SetSkipDestTime(44)
+SetRetryDestTime(15)
+SetRetryDestMode(0)
+OnRetryDest(@ABitStuck)
+OnItemLost(@ItemLost,%ItemID,%ItemPos)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+;OnLogin(@JustLoggedIn)
+OnTimer(@MiningTimeOut,1,0)
+
+; vvv is world switching
+;OnTimer(@Timer3,3,72000)
+; ^^^ not reliable
+
+SetVarTime(%LastChatTime)
+--OnChatMessage(@Chat)
+
+GoSub(@CheckPickaxe)
+WatchObjects(1)
+SetTraceMode(1)
+Debug("Initialized, ready for action!")
+
+
+
+;---Check if we are at miners guild, if
+;we're not, try to get there
+@GetToMines:
+Debug("Checking where are we. Go to guild if needed.")
+;Do this so we don't try to talk to bankers again
+;in case we came here from the DoDepositing
+RepeatNextCommandUntilQuestMenu(-1,-1)
+SetVarNum(%AtStart,0)
+@GetToStartLoop:
+GoSub(@GetToStart)
+GoToIfVarEqualNum(@GetToStartLoop,%AtStart,0)
+
+
+
+;---Main Loop - mine, bank, rest and back
+@MainLoop:
+GoSub(@DoMining)
+@LeaveMiningGuild:
+GoSub(@DoWalkingToBank)
+GoSub(@DoWalkingToMines)
+GoSub(@DoClimbingDown)
+GoSub(@ServerChange)
+GoTo(@MainLoop)
+
+
+
+;===Event OnServerMessage SM
+; on certain server messages cancel waiting
+; so it moves on to the next rock
+@SM:
+GoToIfLastServerMessageIs(@Sleep,"@gam@You are too tired to mine this rock")
+GoToIfLastServerMessageIs(@NextRock,"@gam@There is currently no ore available in this rock")
+GoToIfLastServerMessageIs(@RunAndHidePick,"@gam@You need a pickaxe to mine the rock")
+ERet()
+@StopMining:
+SetVarNum(%stopmine,1)
+SetVarRandom(%i,20)
+ERet()
+@NextRock:
+SetVarNum(%i,0)
+ERet()
+
+;===Sleeping bag
+@Sleep:
+UseItem(0)
+ResetLastServerMessage()
+SetVarNum(%secs,0)
+@JustWait:
+Wait(10)
+AddVarNum(%secs,1)
+GoToIfVarAboveNum(@Sleep,%secs,70)
+GoToIfLastServerMessageIsNot(@JustWait,"You wake up - feeling refreshed")
+SetVarNum(%times,0)
+ERet()
+
+;===Event OnCoordsChanged CCWaitingClimbing
+; cancel waiting if we have climbed up
+@CCWaitingClimbing:
+SetVarMyY(%y)
+GoToIfVarBelowNum(@CCStopWait,%y,3000)
+ERet()
+
+;===Event OnCoordsChanged CCWaitingClimbingDown
+; cancel waiting if we have climbed down
+@CCWaitingClimbingDown:
+SetVarMyY(%y)
+GoToIfVarAboveNum(@CCStopWait,%y,3000)
+ERet()
+
+@CCStopWait:
+SetVarNum(%i,0)
+ERet()
+
+
+;===Procedure ServerChange
+@ServerChange:
+GoToIfVarEqualNum(@MustChange,%ChangeServer,1)
+Ret()
+@MustChange:
+SetVarNum(%ChangeServer,0)
+GoSub(@ChangeServer)
+Ret()
+
+
+;===Procedure DoMining
+; mines coal until hands are full
+; also uses timer to detect - if we
+; haven't gained anything for longer time
+; then we stop (for security purposes)
+@DoMining:
+
+OnServerMessage(@SM)
+SetVarNum(%stopmine,0)
+-- mark locations of obstacles
+-- so it doesn't get stuck
+-- soft rocks
+
+SetObject(275,3396,666)
+SetObject(275,3395,666)
+SetObject(273,3396,666)
+SetObject(273,3394,666)
+SetObject(272,3394,666)
+SetObject(272,3397,666)
+SetObject(271,3397,666)
+SetObject(269,3390,110,98)
+SetObject(269,3391,110,98)
+SetObject(268,3399,666)
+SetObject(267,3399,666)
+SetObject(265,3397,666)
+SetObject(270,3390,666)
+SetObject(272,3391,666
+SetObject(272,3392,666)
+SetObject(268,3396,110,98)
+SetObject(267,3396,110,98)
+SetObject(266,3394,110,98)
+SetObject(265,3394,110,98)
+SetObject(265,3391,110,98)
+SetObject(267,3389,110,98)
+SetObject(266,3387,110,98)
+SetObject(265,3387,110,98)
+SetObject(269,3390,110,98)
+SetObject(269,3391,110,98)
+
+-- wall bits
+SetObject(265,3386,1)
+SetObject(264,3387,1)
+SetObject(263,3387,1)
+
+
+@MiningLoopItem:
+Wait(3)
+OnTimer(@MiningTimeOut,1,900)
+
+@MiningLoop:
+GoToIfCoordsIn(@CoordsOkToMine,277,3400,263,3381)
+GoTo(@GetToMines)
+@CoordsOkToMine:
+MineNearestIn(275,3399,265,3387,110)
+SetVarNum(%i,20,25,30)
+ResetLastItemGained()
+@WaitLoop:
+Wait(1)
+GoToIfBagFull(@MiningTimeOut)
+GoToIfItemGained(@MiningLoopItem)
+AddVarNum(%i,-1)
+GoToIfVarAboveNum(@WaitLoop,%i,0)
+GoToIfVarEqualNum(@MiningLoop,%stopmine,0)
+OnServerMessage(-1)
+OnTimer(0,1,0)
+Ret()
+
+
+;===Procedure DoWalkingToBank
+; moves to bank, also checks for bankers
+; appear to obtain their IDs
+; leaves mine, climbs up the ladder
+; then 2 options
+;   a) walks to bank and DoDepositing
+;   b) skips bank and goes to sleep
+; this way it will deposit only every 2nd load
+@DoWalkingToBank:
+SetVarNum(%BankerI,0)
+OnNPCAppeared(@NewNPC,%ID,%x,%y,%type)
+OnCoordsChanged(@CCWaitingClimbing,%LX,%LY)
+SetVarMyY(%y)
+SetVarNum(%tries,0)
+@RetryClimbUp:
+AddVarNum(%tries,1)
+GoToIfVarAboveNum(@GetToMines,%tries,6)
+-- soft rocks
+SetObject(265,3397,666)
+SetObject(270,3390,666)
+SetObject(272,3391,666
+SetObject(272,3392,666)
+SetObject(268,3396,110,98)
+SetObject(267,3396,110,98)
+SetObject(266,3394,110,98)
+SetObject(265,3394,110,98)
+SetObject(265,3391,110,98)
+SetObject(267,3389,110,98)
+SetObject(266,3387,110,98)
+SetObject(265,3387,110,98)
+SetObject(269,3390,110,98)
+SetObject(269,3391,110,98)
+FarAction(274,3398)
+AtObject(274,3398)
+@WaitCoordC:
+SetVarNum(%i,60)
+@WaitLoop2:
+Wait(1)
+AddVarNum(%i,-1)
+GoToIfVarAboveNum(@WaitLoop2,%i,0)
+SetVarMyY(%y)
+GoToIfVarAboveNum(@RetryClimbUp,%y,3000)
+OnNPCAppeared(-1,%ID,%x,%y,%type)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+Wait(20)
+MoveTo(273,564,1,-1,1,-2,13,-2,14,-1,14,7,12,7,10,5)
+GoSub(@DoDepositing)
+MoveTo(287,571)
+Ret()
+
+
+;===Procedure DoDepositing
+; talk to bankers, deposit everything
+; try talking 7 times, if it fails,
+; go get back to mines - this can happen
+; if OnNPCAppeared didn't work and all IDs
+; were invalid - coming to bank for 2nd time
+; should fix it
+@DoDepositing:
+SetVarNum(%times,0)
+
+@GetBanker:
+ResetQuestMenu()
+AddVarNum(%times,1)
+GoToIfVarAboveNum(@GetToMines,%times,7)
+SetVarRandom(%r,5)
+GetVarFromArray(%r,%r,%B1,%B2,%B3,%B4,%B5)
+SetVarNPCCoordsVar(%x,%y,%r)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%r)
+WaitForQuestMenu(50)
+; Get Stuck Behind Banl :|
+GoToIfCountInInventoryEqual(@GetToStart,0,155)
+; ^^^ fix by KAMU
+GoToIfQuestMenu(@BankerTalks)
+GoTo(@GetBanker)
+@BankerTalks:
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+Wait(10)
+CloseBank()
+Wait(10)
+Ret()
+
+
+;===Procedure DoWalkingToMines
+; Go back to guild
+; Just remeber, KAMU 0\/\/ns you! =D
+@DoWalkingToMines:
+MoveTo(287,563,-8,0,-9,-1,-13,-1,-13,2)
+Ret()
+
+
+
+;===Procedure DoClimbingDown
+; Climb down the ladder, get to
+; the center of mines
+; Try climbing 3 times, if it fails
+; check where the hell we are
+@DoClimbingDown:
+Wait(1)
+OnCoordsChanged(@CCWaitingClimbingDown,%LX,%LY)
+SetVarNum(%tries,0)
+@RetryClimbDown:
+AddVarNum(%tries,1)
+GoToIfVarAboveNum(@GetToMines,%tries,3)
+Action(274,565)
+AtObject(274,566)
+SetVarNum(%i,100)
+@WaitToClimbDown:
+Wait(1)
+AddVarNum(%i,-1)
+GoToIfVarAboveNum(@WaitToClimbDown,%i,0)
+SetVarMyY(%y)
+GoToIfVarBelowNum(@RetryClimbDown,%y,3000)
+Wait(10)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+MoveTo(274,3395,-3,0)
+Ret()
+
+
+;===Event OnNPCAppeared NewNPC
+; If NPC appeared is a banker,
+; store his ID for later use
+@NewNPC:
+GoToIfVarEqualNum(@BankerAppeared,%type,95)
+ERet()
+@BankerAppeared:
+PutVarInArray(%ID,%BankerI,%B1,%B2,%B3,%B4,%B5)
+AddVarNum(%BankerI,1)
+ERet()
+
+
+;===Event OnRetryDest ABitStuck
+; Check where exactly we're stuck
+; If it's at doors, then try to
+; open them, wait a bit and move
+@ABitStuck:
+GoToIfCoordsIn(@StuckOutsideBank,287,571,287,571)
+GoToIfCoordsIn(@StuckInsideBank,286,571,286,571)
+GoToIfCoordsIn(@StuckOutsideBedRoom,297,576,297,576)
+GoToIfCoordsIn(@StuckInsideBedRoom,297,577,297,577)
+GoToIfCoordsIn(@StuckOutsideGuild,274,562,274,562)
+GoToIfCoordsIn(@StuckInsideGuild,274,563,274,563)
+--Debug("stuck")
+ERet()
+
+
+;===Procedure StuckOutsideBank
+; Get's called if bank is closed
+@StuckOutsideBank:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck outside bank, trying to open door")
+ERetToRet()
+Action(287,571)
+AtObject(287,571)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(285,571,-1,-1)
+Ret()
+
+
+;===Procedure StuckInsideBank
+; Get's called if bank is closed
+@StuckInsideBank:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck inside bank, trying to open door")
+ERetToRet()
+Action(286,571)
+AtObject(287,571)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(287,571)
+Ret()
+
+
+;===Procedure StuckOutsideBedRoom
+; Get's called if room with bed is closed
+@StuckOutsideBedRoom:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck outside bedroom, trying to open door")
+ERetToRet()
+Action(297,576)
+OpenDoor(297,577,0)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(297,579,-1,1)
+Ret()
+
+
+;===Procedure StuckInsideBedRoom
+; Get's called if room with bed is closed
+@StuckInsideBedRoom:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck inside bedroom, trying to open door")
+ERetToRet()
+Action(297,577)
+OpenDoor(297,577,0)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(297,576,-1,0,-8,-7)
+Ret()
+
+
+;===Procedure StuckOutsideGuild
+; Get's called if guild is closed
+@StuckOutsideGuild:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck outside guild, trying to open door")
+ERetToRet()
+Action(274,562)
+OpenDoor(274,563,0)
+Wait(20)
+MoveTo(274,564)
+Ret()
+
+
+;===Procedure StuckInsideGuild
+; Get's called if guild is closed
+@StuckInsideGuild:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck inside guild, trying to open door")
+ERetToRet()
+Action(274,563)
+OpenDoor(274,563,0)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(274,562,12,0,13,1,13,9,12,9,12,6,11,5)
+Ret()
+
+
+
+;===Procedure GetToStart
+; Check if we're at mines
+; If we're not, try to get there
+@GetToStart:
+
+GoToIfCoordsIn(@StartInBank,280,564,286,573)
+GoToIfCoordsIn(@StartInBed,295,580,299,577)
+GoToIfCoordsIn(@StartInGuild,277,567,272,563)
+GoToIfCoordsIn(@StartIn1,287,563,299,576)
+GoToIfCoordsIn(@StartIn3,272,563,296,559)
+GoToIfCoordsIn(@StartInMines,277,3400,263,3381)
+;Kamu added vvv
+GoToIfCoordsIn(@BehindBank,278,564,279,574)
+;Yes yw :)  ^^^
+Debug("This script should be started in miners guild")
+Debug("Please go to miners guild and run the script there!")
+Wait(30)
+Stop()
+Ret()
+
+
+;Added By KAMU vvv
+@BehindBank:
+MoveTo(278,564)
+MoveTo(278,562,-4,0,-4,3)
+Ret()
+
+@StartInBank:
+MoveTo(286,571,1,0,5,-4)
+Ret()
+
+@StartInBed:
+MoveTo(297,577,0,-5,-6,-11)
+Ret()
+
+@StartInGuild:
+GoSub(@DoClimbingDown)
+Ret()
+
+@StartIn3:
+MoveTo(274,562,0,2)
+Ret()
+
+@StartIn1:
+MoveTo(287,562)
+Ret()
+
+@StartInMines:
+SetVarNum(%AtStart,1)
+Ret()
+
+
+;===Event OnTimer 1 MiningTimeout
+; Is executed if nothing has been mined
+; during last minute and 20 seconds
+@MiningTimeOut:
+Debug("We haven't gained mining anything for a long time... Let's leave guild")
+Debug("Or we have a full bag of coal, yippe!")
+EnableEvents()
+GoTo(@LeaveMiningGuild)
+ERet()
+
+
+;===Procedure CheckPickaxe
+; If we have pickaxe visible, warn
+; user and stop the script
+@CheckPickaxe:
+GoToIfInInventory(@HavePickaxe,156)
+Ret()
+@HavePickaxe:
+MessageBox("Before starting the script, get rid of everything but pickaxe and press menu Script > Forget Items")
+Stop()
+
+
+;===Event OnItemLost
+; Log ot if we lost invisible item
+@ItemLost:
+GoToIfVarEqualNum(@RunAndHidePick,%ItemID,-2)
+ERet()
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+StopAndLogOut()
+
+
+;===Event OnCoordsChanged CoordsChange
+; If we moved 40 or more tiles instantly
+; then most likely we got teleported
+; save snapshot and log out
+@CoordsChange:
+SetVar(%x1,%oldX)
+SetVar(%y1,%oldY)
+SetVar(%x2,%oldX)
+SetVar(%y2,%oldY)
+AddVarNum(%x1,-40)
+AddVarNum(%y1,-40)
+AddVarNum(%x2,40)
+AddVarNum(%y2,40)
+GoToIfCoordsInVars(@NoTeleporting,%x1,%y1,%x2,%y2)
+SetVarMyX(%x)
+SetVarMyY(%y)
+DebugVar(%oldX,%oldY,%x,%y)
+Debug("You were teleported! Better let's log out...")
+SaveScreenshot()
+StopAndLogOut()
+@NoTeleporting:
+ERet()
+
+
+;===Event OnLogged JustLoggedIn
+;
+@JustLoggedIn:
+SaveScreenshot()
+EnableEvents()
+GoTo(@ReInitialize)
+
+
+
+;===Event OnTimer3
+;  For changing servers
+@Timer3:
+SetVarNum(%ChangeServer,1)
+OnTimer(@Timer3,3,72000)
+ERet()
+
+;===Change server procedure
+@ChangeServer:
+; set it to  re-loging
+Debug("Trying to relogin")
+;Log in after 1 minute
+GoToRandom(@World7,@World9,@World10,@World11)
+@World7:
+Debug("Going to world 7")
+RedirectDest(3,30,217,138,31,250,43594)
+GoTo(@EndWorldSelect)
+@World9:
+Debug("Going to world 9")
+RedirectDest(3,30,217,138,31,251,43594)
+GoTo(@EndWorldSelect)
+@World10:
+Debug("Going to world 10")
+RedirectDest(3,30,217,138,31,251,43595)
+GoTo(@EndWorldSelect)
+@World11:
+Debug("Going to world 12")
+RedirectDest(3,30,217,138,31,252,43595)
+@EndWorldSelect:
+OnLogin(-1)
+Wait(50)
+LogOut()
+Wait(50)
+OnLogin(@JustLoggedIn)
+Ret()
+
+;=== On Chat message
+@Chat:
+GoToIfInLastChatMessageIs(@MeMentioned,"sulasp")
+ERet()
+@MeMentioned:
+SetVarTime(%t)
+SubVar(%t,%LastChatTime)
+-DebugVar(%t)
+GoToIfVarAboveNum(@MustReply,%t,2000)
+ERet()
+@MustReply:
+SetVarTime(%LastChatTime)
+Wait(50)
+GoToRandom(@SayGoAway,@SayLeaveAlone,@SayGiveBreak)
+ERet()
+@SayGoAway:
+Say(73 32 D3 )
+Debug("Saying: go away")
+ERet()
+@SayLeaveAlone:
+Say(33 14 5D 00 0B 0E 0D 04 )
+Debug("Saying: leave me alone")
+ERet()
+@SayGiveBreak:
+Say(8E 5D 5E 37 1E )
+Debug("Saying: give me a break")
+ERet()

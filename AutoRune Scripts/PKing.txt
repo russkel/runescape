@@ -1,0 +1,41 @@
+
+SetVarMyX(%X)
+SetVarMyY(%Y)
+SetVarMyHP(%HP)
+DebugVar(%HP)
+GoToIfVarEqualNum(@DontEatAtAll,%HP,0)
+GoToIfVarAboveNum(@DontEat1,%HP,35)
+MoveToNoWaitVarVar(%X,%Y)
+Wait(4)
+--just run in his direction
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+ActionVarVar(%x,%y)
+UseItem(7)
+Wait(10)
+Debug("Eating lobster")
+@DontEat1:
+GoToIfVarAboveNum(@DontEat2,%HP,25)
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+ActionVarVar(%x,%y)
+UseItem(7)
+Wait(10)
+Debug("Eating lobster")
+@DontEat2:
+GoToIfVarAboveNum(@DontEat3,%HP,15)
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+ActionVarVar(%x,%y)
+UseItem(7)
+Wait(10)
+Debug("Eating lobster")
+@DontEat3:
+@DontEatAtAll:
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+ActionVarVar(%x,%y)
+AttackPlayerVar(%ID)
+Wait(1)
+Stop()
+

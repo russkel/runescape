@@ -1,0 +1,164 @@
+WatchObjects(1)
+SetVarNum(%times,0)
+OnItemLost(@ItemLost,%ItemID,%ItemPos)
+OnCoordsChanged(@CoordsChanged,%LX,%LY)
+OnItemAppeared(@NewItem,%ID,%x,%y)
+OnChatMessage(@Chat)
+
+@MiningStart:
+
+GoToIfInLastServerMessageIs(@GetSomeSleep,"@gam@You are too tired to")
+; If north rock has respawned, mine it
+SetVarObject(%d,75,543)
+GoToIfVarEqualNum(@MineNRock,%d,102)
+; If south rock has respawned, mine it
+SetVarObject(%d,76,544)
+GoToIfVarEqualNum(@MineSRock,%d,103)
+; If corner rock has respawned
+SetVarObject(%d,76,543)
+;DebugVar(%d)
+;Disable next line to not mine corner rock
+;GoToIfVarEqualNum(@MineCornerRock,%d,102)
+
+Wait(2)
+-GoToIfVarAboveNum(@GetSomeSleep,%times,150)
+GoTo(@MiningStart)
+
+@MineNRock:
+Action(75,544)
+AtObject(75,543)
+Wait(25,27)
+AddVarNum(%times,1)
+GoTo(@MiningStart)
+
+@MineSRock:
+Action(75,544)
+AtObject(76,544)
+Wait(25,27)
+AddVarNum(%times,1)
+GoTo(@MiningStart)
+
+@MineCornerRock:
+--Debug("Mining corner")
+Action(75,544)
+AtObject(76,543)
+Wait(25,27)
+AddVarNum(%times,1)
+GoTo(@MiningStart)
+
+
+@GetSomeSleep:
+UseItem(0)
+ResetLastServerMessage()
+SetVarNum(%secs,0)
+@JustWait:
+Wait(10)
+AddVarNum(%secs,1)
+GoToIfVarAboveNum(@GetSomeSleep,%secs,70)
+GoToIfLastServerMessageIsNot(@JustWait,"You wake up - feeling refreshed")
+SetVarNum(%times,0)
+GoTo(@MiningStart)
+
+
+;===Event OnItemLost
+; Log ot if we lost invisible item
+@ItemLost:
+GoToIfVarEqualNum(@RunAndHidePick,%ItemID,-2)
+ERet()
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+SaveScreenshot()
+StopAndLogOut()
+
+
+;====Event OcCoordsChanged
+@CoordsChanged:
+GoToIfCoordsIn(@GoodCoords,70,540,80,550)
+Debug("Oooops, we are not at mining site. Teleported?")
+SaveScreenshot()
+Wait(20)
+StopAndLogOut()
+
+@GoodCoords:
+ERet()
+
+;====Event OnItemAppeaered
+@NewItem:
+GoToIfVarBetweenNum(@IsGem,%ID,156,161)
+ERet()
+@IsGem:
+GoToIfVarEqualNum(@GoodX,%x,75)
+ERet()
+@GoodX:
+GoToIfVarEqualNum(@GoodY,%y,544)
+ERet()
+@GoodY:
+OnItemLost(-1,%ItemID,%ItemPos)
+DropItem(8)
+Wait(15)
+TakeItemVarVarVar(%x,%y,%ID)
+Wait(15)
+Debug("Taking a gem")
+OnItemLost(@ItemLost,%ItemID,%ItemPos)
+ERet()
+
+
+;=== On Chat message
+@Chat:
+GoToIfInLastChatMessageIs(@MeMentioned,"sulasp")
+GoToIfInLastChatMessageIs(@MiningLvlAsked,"r mining")
+GoToIfInLastChatMessageIs(@MiningSaid,"mining")
+@NoMiningAndLvl:
+
+ERet()
+@MiningSaid:
+GoToIfInLastChatMessageIs(@MiningLvlAsked,"lvl")
+GoToIfInLastChatMessageIs(@MiningLvlAsked,"level")
+GoTo(@NoMiningAndLvl)
+
+@MeMentioned:
+SetVarTime(%t)
+SubVar(%t,%LastChatTime)
+-DebugVar(%t)
+GoToIfVarAboveNum(@MustReply,%t,3000)
+ERet()
+@MustReply:
+SetVarTime(%LastChatTime)
+Wait(50)
+GoToRandom(@SayGoAway,@SayLeaveAlone,@SayGiveBreak)
+ERet()
+@SayGoAway:
+Say(D5 40 3D 13 D3 )
+Debug("Saying: go away")
+ERet()
+@SayLeaveAlone:
+Say(B1 3D 81 0D 01 03 B4 71 )
+Debug("Saying: leave me alone")
+ERet()
+@SayGiveBreak:
+Say(D5 5D 81 0D 01 03 0D 79 13 D9 )
+Debug("Saying: give me a break")
+ERet()
+
+@MiningLvlAsked:
+SetVarTime(%t)
+SubVar(%t,%LastChatTime2)
+-DebugVar(%t)
+GoToIfVarAboveNum(@MustReply2,%t,2000)
+ERet()
+@MustReply2:
+SetVarTime(%LastChatTime2)
+Wait(50)
+GoToRandom(@Say97,@Say97,@Say97Mining)
+ERet()
+@Say97:
+Say(E7 E6 )
+Debug("Saying: 98")
+ERet()
+@Say97Mining:
+Say(E7 E6 0D 05 75 7D 50 )
+Debug("Saying: 98 mining")
+ERet()
+
+
+

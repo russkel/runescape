@@ -1,0 +1,13 @@
+//Simple script that turns map around
+program SendArrowSilentTest;
+begin
+  MoveMouse(460,15);
+  Wait(200);
+  if(ProcessMap)then
+    Writeln('arrows ok');
+  while(not Processmap)do
+  begin
+    SendArrowSilent(1);
+    Wait(0);
+  end;
+end.

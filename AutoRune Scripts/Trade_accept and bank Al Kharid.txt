@@ -1,0 +1,101 @@
+;will trade with player polish monk
+;and accept everything she gives
+@VeryStart:
+EnableEvents()
+ResetLastServerMessage()
+OnTradeAccepted(@TradeAccepted)
+OnTrade1(@Trade1)
+SetVarTime(%lasttrade)
+
+
+@Loopy:
+SetVarTime(%t)
+SubVar(%t,%lasttrade)
+;stop if no trades last 5 mins
+GoToIfVarAboveNum(@JustStop,%t,3000)
+;GoToIfInInventory(@banking,171)
+GoToIfBagFull(@banking)
+Wait(20)
+;DebugLastServerMessage()
+GoToIfLastServerMessageIs(@TradeFol,"@bor@Polish Monk: wishes to trade with you")
+ResetLastServerMessage()
+GoTo(@Loopy)
+
+
+@banking:
+OnTimer(@VeryStart,1,1200)
+
+@BankingTalk:
+ResetQuestMenu()
+ResetLastServerMessage()
+SetVarsRandomNPCIn(%x,%y,%ID,87,689,93,700,268)
+GoToIfVarEqualNum(@Loopy,%ID,-1)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(15)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+WaitForQuestMenu(15)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+WaitForQuestMenu(15)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@BankingTalk)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+Wait(5)
+DepositEverything()
+Wait(10)
+CloseBank()
+Wait(10)
+;GoToIfInInventory(@banking,171)
+GoTo(@Loopy)
+
+
+
+
+
+@TradeFol:
+ResetLastServerMessage()
+SetVarPlayerByName(%ID,"polish monk")
+GoToIfVarNotEqualNum(@FoundPlayer,%ID,-1)
+Debug("cant trade")
+GoTo(@Loopy)
+
+@FoundPlayer:
+ResetLastServerMessage()
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+DebugVar(%ID,%x,%y,%lvl,%HP)
+GoToIfPlayerVisibleVar(@visible,%ID)
+GoTo(@visible)
+
+GoTo(@Loopy)
+
+@visible:
+Debug("I can see them")
+TradePlayerVar(%ID)
+SetVarTime(%lasttrade)
+GoTo(@Loopy)
+
+
+
+;Event - trade accepted
+@TradeAccepted:
+Debug("Trade accepted")
+Wait(10)
+Accept1()
+Wait(10)
+Accept2()
+ERet()
+
+
+
+@Trade1:
+ERet()
+
+@JustStop:
+Debug("stopping")
+Stop()

@@ -1,0 +1,16 @@
+OnItemAppeared(@Item,%ID,%x,%y)
+
+@Loopy:
+Wait(20)
+GoTo(@Loopy)
+
+
+@Item:
+GoToIfVarEqualNum(@IsScyte,%ID,1289)
+ERet()
+
+@IsScyte:
+ActionVarVar(%x,%y)
+TakeItemVarVarVar(%x,%y,%ID)
+Wait(50)
+ERet()

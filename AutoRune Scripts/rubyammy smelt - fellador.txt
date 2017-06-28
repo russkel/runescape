@@ -1,0 +1,183 @@
+;==== RUBBY AMMY MAKER ==
+; Sleepwalker = Pos 0
+; Fixed By KAMU :)
+; Start in S Felly Bank
+;==== BY KAMU ====
+OnServerMessage(@Serv)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+
+@Main:
+@Banking:
+SetVarNum(%iron,14)
+GoToIfCoordsIn(@AmInsideBank,280,564,286,573)
+GoTo(@GoInsideBank)
+
+@GoInsideBank:
+MoveTo(290,573,-1,-1)
+MoveTo(285,572)
+GoTo(@Banking)
+
+@AmInsideBank:
+GoToIfNPCNear(@ISeeBanker,95)
+
+Debug("I don't see any bankers here!")
+MoveTo(285,570,1,1)
+MoveTo(291,571)
+GoTo(@Banking)
+
+; Talk to the nearest banker every time
+@ISeeBanker:
+ResetQuestMenu()
+SetVarsNearestNPCIn(%x,%y,%ID,280,564,286,573,95)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(45)
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@Banking)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+@WDCop:
+Withdraw(152,1)
+Withdraw(162,1)
+AddVarNum(%iron,-1)
+GoToIfVarEqualNum(@Close,%iron,0)
+Wait(1)
+GoTo(@WDCop)
+
+@Close:
+Wait(10)
+CloseBank()
+
+GoToIfCountInInventoryEqual(@Banking,0,152)
+
+@ToFurnace:
+MoveTo(285,571,1,1)
+MoveTo(289,572,1,-1)
+MoveTo(290,555)
+MoveTo(302,543)
+MoveTo(304,543,1,1)
+MoveTo(306,544)
+
+@Check:
+GoToIfCountInInventoryGreater(@Smelt,0,152)
+GoTo(@Check2)
+@Smelt:
+Action(306,545)
+AtObjectWithItemByID(306,546,152)
+
+Wait(8)
+GoTo(@Check)
+
+@Check2:
+GoToIfCountInInventoryGreater(@Smelt2,0,172)
+GoTo(@ToBank)
+@Smelt2:
+RepeatNextCommandUntilQuestMenu(10,2)
+Action(306,545)
+AtObjectWithItemByID(306,546,172)
+Answer(2)
+WaitForQuestMenu(10)
+Answer(0)
+WaitForQuestMenu(10)
+Answer(2)
+
+Wait(8)
+GoTo(@Check2)
+
+@ToBank:
+MoveTo(306,544)
+MoveTo(301,544,-1,1)
+MoveTo(300,546,-9,9)
+MoveTo(291,571,-1,1)
+MoveTo(285,572)
+
+; Fin =D
+
+GoTo(@Main)
+
+;==== Sleep ETC =====
+
+;--- OnServerMessage
+@Serv:
+;-- out of fatguie
+GoToIfLastServerMessageIs(@Sleep,"@gre@You are too tired to gain experience, get some rest!")
+ERet()
+
+@Sleep:
+UseItem(0)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,25)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()
+
+- Anti Jagex
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnPrivateMessage(@RunAndHidePM)
+Ret()
+
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+ERet()
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(16 13 05 )
+Debug("Saying 'Wtf'")
+Wait(10)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+SaveScreenshot()
+StopAndLogOut()
+Wait(1)
+

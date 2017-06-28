@@ -1,0 +1,1445 @@
+<html>
+
+<head>
+<title>The official AutoRune manual</title>
+<style>
+<!--
+.bordercolor  { background-color: FFFFFF; }
+
+TD            { font-family: Verdana, Helvetica, Arial; color: 000000; font-size:11px}
+.windowbg     { background-color: 444444; font-size: 11px; font-family: Verdana; color: 000000; }
+-->
+</style>
+</head>
+
+<body>
+
+<p align="center">
+
+<font face="Verdana" size=2>
+Check out a great software site, <a href="http://www.blumentals.net">CLICK HERE!</a>
+</font>
+</p>
+<p align="center">
+
+<b><font size="7" face="Impact" color="#006600">AutoRune Manual</font></b></p>
+<p>
+
+<font face="Verdana" size=6>
+<u><b>Table Of Contents</b></u></font></p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="38%" id="AutoNumber2" height="156">
+  <tr>
+    <td width="100%" height="2"><font color="#000000" face="Verdana" size="2">
+    <a href="#terms">Terms</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font color="#000000" face="Verdana" size="2">
+    <a href="#aruse">AutoRune Usage</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font color="#000000" face="Verdana" size="2">
+    <a href="#important">Important</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font color="#000000" face="Verdana" size="2">
+    <a href="#scriptref">AutoRune Scripting Interface</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="7"><font color="#000000" face="Verdana" size="2">
+    <a href="#diy">Making Your Own Scripts</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="6"><font face="Verdana" size="2"><a href="#label">
+    Labels</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font color="#000000" face="Verdana" size="2">
+    <a href="#commandref"><b>AutoRune Script Command Reference</b></a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font face="Verdana" color="#000000" size="2">
+    <a href="#events">Events</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="7"><font face="Verdana" color="#000000" size="2">
+    <a href="#var">Variables</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="6"><font face="Verdana" size="2" color="#000000">
+    <a href="#tutorial1">Tutorial - Jageks Protection</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font face="Verdana" color="#000000" size="2">
+    <a href="#history">History And Story</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font face="Verdana" color="#000000" size="2">
+    <a href="#arhistory">AutoRune History</a></font></td>
+  </tr>
+  <tr>
+    <td width="100%" height="13"><font face="Verdana" color="#000000" size="2">
+    <a href="#thanks">Thanks</a></font></td>
+  </tr>
+</table>
+
+<font face="Verdana" size=2>
+
+<a name="contact"></a>
+<h1><u>Contact Information</u></h1>
+
+E-Mail: <a href="mailto:aivars@serveris.lv">aivars@serveris.lv</a><br>
+Home page: none<br>
+MSN: aivars@serveris.lv<br><br>
+Forum: <a href="http://evilcowgod.conforums.com">www.bovinelabs.com</a><br>
+
+
+
+
+<a name="terms"></a>
+<h1><u>Terms and Conditions</u></h1>
+
+Use this program at your own risk, it's provided AS IS and with all faults, you
+and only you will be responsible if it does any damage to your computer, RS account,
+internet connection, hardware, furniture or
+global climate. Even if this program contains hostile viruses, trojans or backdoors,
+I do not take any responsibility. This program is in a direct violation with RS rules
+(point 5 and 6) so use of it
+is totally illegal. It's however legal to keep it on your computer.
+You are not allowed to disassemble, modify, hex view or decompile ANY of AutoRune files or
+use them in other projects without permission. You are not allowed to sell this program,
+or give it away to anyone. You are not allowed to use this project if you don't
+know what it does and what it is for. You are not allowed to use or even launch it if you are against bots or
+work in a game company. You are not allowed to use it if you don't have the authorization
+code. You are not allowed to let anyone else know your code. If we notice that 2 or
+more people will use the same authorization code, you lose it. You are allowed to
+contact me by email but not expect me to answer you or even read your suggestions or
+bug reports. I will however try to do it as often as I can. If you start worshiping me,
+you are not allowed to sacrifice live people or animals.<br>
+<i>There are inherent dangers in the use of any software available for downloading on
+the Internet, and I caution you to make sure that you completely understand the potential
+risks before downloading any of the Software. You are solely responsible for adequate
+protection and backup of any data and equipment used in connection with any of the Software,
+and I will not be liable for any damages that you may suffer in connection with using,
+modifying or distributing any of the Software. <br>
+</i>Not knowing these rules does not take away the responsibility. <i>Jason</i><br><br>
+
+<a name="aruse"></a>
+<h1><u>AutoRune Usage</u></h1>
+
+<p>Warning: This information applies to the old versions mostly, but you can 
+read it anyway to get an idea.</p>
+
+When you launch AutoRune you will be asked for username and password. Everyone 
+has his own unique username/password, if you don't have one, you won't be able 
+to use it, until Jason gives you your username and password.<br><br>
+<img src="scrshot.gif" width="537" height="474"><br>
+The main areas of the AutoRune window are Server selection, on the left side the Script box and 
+to the right the Log box.
+To start using AutoRune, make sure you downloaded RS client. This version
+will not work with RS online client, and it's not planned any further. After selecting the world, click 
+&quot;<b><u>Launch RS</u></b>&quot; button,
+browse for the <u>client</u> and launch it. <u>Select the same server you selected in AutoRune 
+(!!!).</u>
+Now when you log in, you should get some activity in the Log box. If you don't, then there is
+some error and make sure you selected the same server as in AutoRune. Also make sure you have
+all files required. If everything is ok and you get activity in the Log box then carry on.
+Try moving around and doing stuff. You will see everything you're doing in the Log box, like:<br>
+&nbsp;MoveTo(48,579)<br>
+&nbsp;MoveTo(46,579,-3,-3)<br>
+
+<a name="important"></a>
+<h1><u>Important</u></h1>
+
+The biggest pain for RS bot makers are the regular updates. After each update you should avoid
+using the bot for a couple of days just to ensure, that THEY haven't set up traps to
+sweep out bot users (everyone remembers what happened to RuneBot users), but if you do use it,
+play a bit manually and check if all commands appear in the Log box as they used to.<br>
+When making scripts try to avoid using simple short loops like only standing on place, mining
+and letting all ores fall on the ground. Be more creative - bring all ores to bank or something,
+choose random paths, don't let it look like autominer.<br>
+The bot can't handle disconnects well. If it stops because of disconnect, don't blame AutoRune,
+blame your connection :) 
+<p>Update: Last time The Company was detecting AutoRune for a month and then 
+banned all who ever used AutoRune in one day. It's recommended to keep your 
+valuables on another account, make a special character for AutoRuning.</p>
+<p>
+
+
+<a name="scriptref"></a> </p>
+<h1><u>AutoRune scripting reference</u></h1>
+
+This section will teach you how to use pre-made scripts. Just read it quickly, the explaination comes later.
+To load a script, use main menu <u>File &gt;
+Load Script</u>. There are few sample scripts, let's describe some of them.
+<p><b>NOTE:</b></p>
+<p>AutoRune has an &quot;<b>anti logout</b>&quot;-feature, means as soon as you start a 
+script, AutoRune <u>automatically</u> moves after some time to a new spot and 
+back again, so &quot;<u>RS</u>&quot; won't log you out because of <u>inactivity</u>.</p>
+<p> <br><br>
+
+<b>Coins collector script</b><br>
+<small>--- Money Collector<br>
+OnItemAppeared(@NewItem,%ID,%x,%y)<br>
+<br>
+--- Main Loop<br>
+@LookForCoins:<br>
+Wait(50)<br>
+GoTo(@LookForCoins)<br>
+--- End<br>
+<br>
+@NewItem:<br>
+GoToIfVarEqualNum(@GoodItem1,%ID,<font color="#FF0000">10</font>)<br>
+ERet()<br>
+@GoodItem1:<br>
+SetVarNum(%d,<font color="#008000">3</font>)<br>
+SetVar(%x1,%x)<br>
+SetVar(%y1,%y)<br>
+SetVar(%x2,%x)<br>
+SetVar(%y2,%y)<br>
+SubVar(%x1,%d)<br>
+SubVar(%y1,%d)<br>
+AddVar(%x2,%d)<br>
+AddVar(%y2,%d)<br>
+GoToIfCoordsInVars(@GoodItem2,%x1,%y1,%x2,%y2)<br>
+ERet()<br>
+@GoodItem2:<br>
+ActionVarVar(%x,%y)<br>
+TakeItemVarVarVar(%x,%y,%ID)<br>
+ERet()<br>
+--- End<br><br></small>All this script does is wait for coins to appear nearby and collect them. The best place to use it
+is in bank vault. If you want, you can transform it in air-rune collector or something else, you just
+have to modify 3 values marked in red. Change them... to what? It's item ID, for money it's 10, for
+other items it's different. When you take item in RS manually, you will get something like:
+TakeItem(65,557,20) in your Log box. "20" - <u>that's the number you're looking for</u>. Change the red
+10 to your number (20 in my sample which means <b>bones</b>) and you will have a script collecting something
+that is not <b>coins</b> :). So let's try it: <u>Drop</u> an <b>Air-Rune</b> and 
+pick it up again. You will see the <b>Air-Rune</b> ID behind the last ',' .
+This script will pick up all coins appearing in distance "3" or closer, to change that, modify
+the green 3. If you change it to 0 then it will collect items only right below feet.<br><br>
+
+<br><br><font size="+1" color="#FF0000">Warning!</font> The script below is an old script, it won't work anymore,
+just look at it to see what the scripting looks like.<br>
+<b>Iron miner/smelter/smither script</b><br>
+
+<small>
+----- Automine iron script&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- comments, they describe the script for the user, they <b>
+don't</b> affect the script</font><br>
+-- 1st rock<br>
+GoToIfBagFull(<font color="#FF0000">15</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- When the bag is full, it jumps <b>15</b> lines</font>. Good style is to use labels instead, this is an old script.<br>
+ResetLastItemGained()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- The bot <u>notices every item you get while the bot is 
+running</u>. this command resets the last item you gained.</font><br>
+Action(<font color="#FF0000">27,544</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- This command does a action at an object. the <b>red 
+coordinates</b> may change, with moving objects. In this case it mines the rock</font><br>
+AtObject(<font color="#FF0000">28,544</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- same as above</font><br>
+Wait(<font color="#FF0000">20</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- this one &quot;waits&quot; 2 seconds.Means, the bot waits 2 
+seconds. to find the right wait number take the seconds and add one &quot;0&quot;</font><br>
+GoToIfLastItem(<font color="#008000">2</font>,<font color="#FF0000">151</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- this is an advanced command. When you got an item(in 
+this case iron ore= ID = 151) </font><font color="#008000">it jumps 2 lines(to
+-- 2nd rock)</font><br>
+GoTo(<font color="#FF0000">-7</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- goes 7 lines back, to start mining the rock again</font><br>
+-- 2nd rock                       <br>
+GoToIfBagFull(7)                      <br>
+ResetLastItemGained()                     <br>
+Action(27,544)                                <br>
+AtObject(27,543)                                  <br>
+Wait(20)                                              <br>
+GoToIfLastItem(-14,151)                                   <br>
+GoTo(-7)                                                      <br>
+---- Leave iron mine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&nbsp;&lt;- now the bot leaves the iron mine and walks to 
+varrok bank</font><br>
+MoveTo(<font color="#008000">24,544</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font color="#FF0000">&lt;- MoveTo means, to walk to the specified </font>
+<font color="#008000">coordiante</font>                                                        <br>
+MoveTo(<font color="#008000">24,545</font>)                                                            <br>
+MoveTo(<font color="#008000">19,545</font>)<br>
+MoveTo(<font color="#008000">19,549</font>)    <br>
+MoveTo(<font color="#008000">22,552</font>)        <br>
+MoveTo(22,565)            <br>
+MoveTo(29,573)                <br>
+MoveTo(44,573)                    <br>
+MoveTo(44,577)                        <br>
+MoveTo(46,580)                            <br>
+MoveTo(52,580)                                <br>
+MoveTo(58,585)                                    <br>
+MoveTo(58,595)                                        <br>
+MoveTo(65,602)                                            <br>
+MoveTo(65,613)                                                <br>
+MoveTo(63,615)                                                    <br>
+MoveTo(63,619)                                                        <br>
+MoveTo(61,619)                                                            <br>
+MoveTo(61,625)<br>
+MoveTo(73,625)    <br>
+MoveTo(86,625)        <br>
+MoveToRandomly(<font color="#0000FF">86,628</font>,<font color="#FF0000">87,628</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;- Because varrok bank is usually very crowded, <font color="#008000">2 MoveTo 
+coordinates</font> are specified. in this case <font color="#0000FF">blue</font>+<font color="#FF0000">red</font><br>
+-- Walk through door             <br>
+MoveToRandomly(85,628,84,628)        <br>
+-- smelt                                 <br>
+SmeltOre(84,627,82,626,151)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;- Advanced 
+command. I will explain it later                  <br>
+Wait(35)                                         <br>
+GoToIfInInventory(-3,151)                            <br>
+MoveToRandomly(85,628,84,628)                            <br>
+-- Exit                                                      <br>
+MoveToRandomly(86,628,87,628)                                    <br>
+MoveTo(86,625)                                                       <br>
+MoveTo(75,625)<br>
+MoveTo(61,625)    <br>
+MoveTo(61,618)        <br>
+MoveTo(61,616)            <br>
+MoveTo(65,611)                <br>
+MoveTo(65,602)                    <br>
+MoveTo(59,595)                        <br>
+MoveTo(59,585)                            <br>
+MoveTo(53,579)                                <br>
+MoveTo(45,579)                                    <br>
+MoveTo(45,577)                                        <br>
+MoveTo(43,576)                                            <br>
+MoveTo(43,573)                                                <br>
+MoveTo(49,573)                                                    <br>
+MoveToRandomly(53,571,53,572)<br>
+MoveTo(64,571)                   <br>
+MoveTo(67,568)                       <br>
+MoveTo(67,562)                           <br>
+MoveTo(69,560)                               <br>
+MoveTo(78,560)                                   <br>
+MoveTo(78,546)                                       <br>
+MoveTo(83,541)                                           <br>
+MoveTo(83,519)                                               <br>
+MoveToRandomly(83,513,83,512)<br>
+MoveToRandomly(88,508,89,508)    <br>
+MoveToRandomly(98,507,97,507)        <br>
+MoveToRandomly(98,509,98,508)            <br>
+-- Enter blacksmith                          <br>
+MoveToRandomly(98,510,98,511)                    <br>
+@Kal:                                                <br>
+ForgeBar(97,511,97,512,170)                              <br>
+GoToIfCountInInventoryGreater(<font color="#0000FF">@MakePlate</font>,<font color="#008000">4</font>,<font color="#FF0000">170</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;- this command goes to the <font color="#0000FF">&quot;label&quot; @MakePlate</font> when 
+there are at least <font color="#008000">4</font> <font color="#FF0000">bars</font> 
+in&nbsp; your iventory.              <br>
+WaitForQuestMenu(<font color="#FF0000">50</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;- This command waits for the menu, what you wanna smith. <font color="#FF0000">
+50 = 5 seconds</font>, that's the timeout.                                             <br>
+Answer(<font color="#008000">0</font>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;- now it tells <b>Autorune </b>which <font color="#008000">answer</font> to 
+choose. In this case the <font color="#008000">3 answers 0 1 0 </font>are the 
+plate<br>
+WaitForQuestMenu(<font color="#FF0000">50</font>)<br>
+Answer(<font color="#008000">1</font>)               <br>
+WaitForQuestMenu(<font color="#FF0000">50</font>)        <br>
+Answer(<font color="#008000">0</font>)                       <br>
+GoTo(@BeidzKalt)                    <br>
+@MakePlate:                             <br>
+WaitForQuestMenu(50)<br>
+Answer(1)               <br>
+WaitForQuestMenu(50)        <br>
+Answer(2)                       <br>
+WaitForQuestMenu(50)                <br>
+Answer(1)                               <br>
+@BeidzKalt:                                 <br>
+Wait(15)                                        <br>
+GoToIfInInventory(@Kal,170)                         <br>
+MoveToRandomly(98,510,98,511)                           <br>
+-- Exit blacksmith                                          <br>
+MoveToRandomly(98,509,98,508)                                   <br>
+MoveToRandomly(102,507,103,507)<br>
+-- Enter bank                      <br>
+MoveToRandomly(103,506,102,506)        <br>
+<font color="#FF0000">--- talk to banker&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;- here comes the bank run, means it deposits everything I will explain it later                         <br>
+RepeatNextCommandUntilQuestMenu(50,3)          <br>
+MoveToRandomly(103,506,102,506,99,506)             <br>
+Action(102,505)                                        <br>
+TalkToNPC(556,557,559)                                     <br>
+Answer(0)                                                      <br>
+WaitForBankWindow(50)                                              <br>
+DepositEverything()                                                    <br>
+Wait(10)                                                                   <br>
+CloseBank()                                                                    <br>
+Wait(20)                                                                           </font>                                                                           <br>
+MoveToRandomly(103,506,102,505,102,506)<br>
+--- Exit bank                              <br>
+MoveToRandomly(103,509,103,508)                <br>
+MoveToRandomly(100,509,100,508)                    <br>
+MoveToRandomly(85,508,85,510,85,509)                   <br>
+MoveTo(64,510)                                             <br>
+MoveTo(61,507)                                                 <br>
+MoveTo(40,507)                                                     <br>
+MoveTo(25,519)                                                         <br>
+MoveTo(25,537)                                                             <br>
+MoveTo(25,544)                                                                 <br>
+<br><br></small>This script should be started at Varrock East mines.<br>
+<br>
+What it does is following:
+</p>
+<ol>
+  <li>Mines iron until hands are full
+  <li>Goes to Lumbrige and smelts all iron ores
+  <li>Goes to Varrock blacksmith
+  <li>Makes iron plate if there are enough bars
+  <li>Makes iron short swords if there are less than 5 iron bars in hands
+  <li>Goes to bank and deposits everything
+</ol>
+Let's describe it a bit, check the <font color="#FF0000"><b>red things</b></font> 
+in the script.<br><br>
+</font>
+<font color="#FF0000"><b>
+<u>
+
+<font face="Verdana" size=5>
+!!!</font><font face="Verdana" size=4>Important</font></u></b></font><font face="Verdana" size=2>
+- all commands that work with items in your bag only see those items,
+that you have gained while playing RS through AutoRune. If you had a hammer in
+hands before you logged in and you didn't touch it (drop and then take or anything)
+then bot won't see the hammer at all and commands like DepositEverything() will
+leave it in untouched hands. If you dropped it accidentally and you want the bot to
+forget it, <b>you have 2 choices</b>: <b>1)</b> <font color="#FF0000">Close everything and reopen</font>
+<b>2)</b> <font color="#FF0000">Leave only the things you don't want the bot to 
+see in backpack and press in menu </font><b>Script &gt; Forget</b><font color="#FF0000"> 
+Items.</font><br><br>
+
+<a name="diy"></a>
+<h1><u>Making your own scripts</u></h1>
+It's very important that you make your own cool scripts, because if everyone starts
+using the same scripts all the time, there is a chance it will be noticed by THEM.
+In this section I will try to explain how to do it, the main techniques.<br><br>
+<b>Moving</b><br>
+Just for training purposes do following: Go to some place where there are no many people
+in your way. Clear the list by pressing the button.<br>
+When you have done that click where you want to move in your RS window. You
+will notice that a command MoveTo(some numbers) appear in your AR window's Log box.<br>
+
+After your char reaches the coord you clicked, click to next coord, wait for it to
+get there and so few times. At the end you should have something like this in your Log box:<br>
+<font size="-1">
+MoveTo(24,541)<br>
+MoveTo(24,540,5,-5)<br>
+MoveTo(24,535)<br>
+
+<font face="Verdana" size=2><font size="-1"><br></font><br>
+Copy (<b>ctrl+C</b>) and paste (<b>ctrl+V</b>) the commands from your <u>Log box</u> to 
+<u>Script box</u>. Then go with your
+RS char to the place you started this training at and launch the script by pressing Run button.
+If you did everything correctly, you will see your character moving. After executing the last
+MoveTo, AR will return to 1st line and start all over.<br>
+Tips for longer paths:
+</p>
+<ul>
+  <li>Try to keep as less MoveTo commands as possible. Especially in crowded areas.
+  <li>In very crowded areas use MoveToRandomly and choose 3-4 alternative destinations.
+</ul>
+<br><br>
+For easier writing use autocomplete. You can write part of the command and by pressing
+CTRL + Space getthe suggested commands list.<br><br>
+
+<b>Mining</b><br>
+Go to some mining site. Click on all rocks you want to mine from. You will get lines like:<br>
+<font size="-1">
+Action(27,544)<br>
+AtObject(28,544)<br></font><br>
+The AtObject always should come together with Action. In this example 27,544 are coords the character
+will stand at when mining and 28,544 are the coords of the rock. Here is a script that mines
+from one rock all the time and does nothing else:<br>
+<font size="-1">
+Action(27,544)<br>
+AtObject(28,544)<br>
+Wait(20)<br></font><br>
+It swings the pick at the rock, waits 2 seconds, then repeats. All ores fall down, the guy just mines
+and mines, never goes anywhere else, ppl get suspicious... Don't use so simple scripts :)<p><br>
+Here is a bit more complex:</p>
+<p><b>Mining from 2 rocks</b><br>
+
+<font size="-1">
+@Rock1:<br>
+ResetLastItemGained()<br>
+Action(27,544)<br>
+AtObject(28,544)<br>
+Wait(20)<br>
+<font color="#008000">GoToIfLastItem</font>(<font color="#0000FF">@Rock2</font>,<font color="#008000">151</font>)<br>
+GoTo(@Rock1)<br>
+@Rock2:<br>
+ResetLastItemGained()<br>
+Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)<br>
+<font color="#008000">GoToIfLastItem</font>(<font color="#0000FF">@Rock1</font>,<font color="#008000">151</font>)<br>
+GoTo(@Rock2)<br></font><br>
+
+This one mines from 2 rocks. When you look at it really carefully, it's not 
+complex at all. You should change the coords for Action and AtObject commands. 
+As soon as you get iron ore (<font color="#008000">green</font>) it will jump to 
+the &quot;<u>label</u>&quot; called &quot;<font color="#0000FF">@Rock2</font>&quot;. <u>What is a 
+label?</u></p>
+</font><font face="Verdana" size=6>
+<p><font face="Verdana" size=2> <a name="label"></a> 
+</font><b>Labels</b></p>
+</font><font face="Verdana" size=2>
+<p>GoTo(<font color="#0000FF">@fishing</font>)</p>
+<p>What the hell is that, you may think now. But labels are really easy to 
+understand and very, very useful. For example you want it to fish at the same 
+place (think without fatigue ;) over and over again. <b>First solution</b>:</p>
+</font><font face="Verdana" size=2>Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)</font></p>
+<font size="2" face="Verdana">Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)</font><font face="Verdana"></font></font></p>
+<font size="2" face="Verdana">Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)</font><font face="Verdana"></font></font></p>
+<font size="2" face="Verdana">Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)</font><font face="Verdana"></font></font><p>
+<font face="Verdana" size="2">...</font></p>
+<p><font face="Verdana" size="2">The ... means you do that again and again and 
+again...and again... means, for a night of pure fishing you need to copy it &quot;<font color="#FF0000">some</font>&quot; 
+times :D. This example script only fishes 4 times at the same place. <b>Second 
+solution:</b></font></p>
+<font size="2" face="Verdana"><font color="#0000FF">@fishing:<br>
+</font>Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)<br>
+<font color="#FF0000">GoTo</font>(<font color="#0000FF">@fishing</font>)</font></p>
+<p><font face="Verdana"><font size="2">Now , this one is shorter, isn't it? It 
+fishes 1 times, waits 2 seconds and then it<font color="#008000"> </font>
+<font color="#FF0000">&quot;GoesTo&quot;</font>&nbsp; the &quot;label&quot;</font><font color="#0000FF">
+</font></font><font face="Verdana" size="2" color="#0000FF">@fishing</font><font face="Verdana">
+</font>
+<font face="Verdana" size="2">again. Make sure, when you use labels, there is a 
+':' behind the start of a label and no one at the <font color="#FF0000">
+GoTo***-command</font>. Also take care of your spelling.</font></p>
+<p>&nbsp;</p>
+<p><font face="Verdana"><b>Bank Run - leave rocks</b><br>
+</font>
+<font size="2" face="Verdana">To make it leave mine when hands are full, just add few lines:</font></p>
+
+
+<p><font face="Verdana"><br>
+</font>
+<font face="Verdana" size="-1">
+@Rock1:<br>
+<font color="#FF0000">GoToIfBagFull(@HandsFull)</font> <br>
+ResetLastItemGained()<br>
+Action(27,544)<br>
+AtObject(28,544)<br>
+Wait(20)<br>
+GoToIfLastItem(@Rock2,151)<br>
+GoTo(@Rock1)<br>
+@Rock2:<br>
+<font color="#FF0000">GoToIfBagFull(@HandsFull)</font> <br>
+ResetLastItemGained()<br>
+Action(27,544)<br>
+AtObject(27,543)<br>
+Wait(20)<br>
+GoToIfLastItem(@Rock1,151)<br>
+GoTo(@Rock2)<br>
+<font color="#FF0000">@HandsFull:<br>
+--- Leave mine<br>
+--- ...<br>
+--- ...</font><br></font><font face="Verdana"><br>
+
+</font>
+
+<font face="Verdana" size="2">You could make it go to furnace and smelt all ores then or simply put them in bank.
+It's up to you but when hands will be full bot will start executing lines after
+the label @HandsFull:</font><font face="Verdana"><br><br>
+
+<b>Smelting</b><br>
+Take a look at the sample:<br>
+</font>
+<font face="Verdana" size="-1">
+@Smelt:<br>
+SmeltOre(<font color="#008000">27,544</font>,<font color="#0000FF">28,544</font>,<font color="#FF0000">151</font>)<br>
+Wait(35)<br>
+GoToIfInInventory(@Smelt,<font color="#FF0000">151</font>)<br>
+-- End of smelting<br>
+-- ...<br>
+</font><font face="Verdana"><br>
+
+<font size="2">Use this command to smelt the ore to bars (you can also use it for cooking 
+lobbies 
+;]). When you smelt an <font color="#FF0000">ore</font>, you will see something 
+like:</font></font></p>
+
+
+<p>
+<font face="Verdana" size="-1">
+Action(<font color="#008000">27,544</font>)<br>
+AtObject(<font color="#0000FF">28,544</font>)</font></p>
+
+
+<p><font face="Verdana"><font size="2">Use this Log to complete your &quot;SmeltOre&quot; 
+command. Check the colours to see what to put in. Only put in the
+<font color="#FF0000">ore ID</font>.</font><br><br>
+
+<b><font size="2">Smithing</font></b><font size="2">
+This sample makes short swords from iron bars. It will make the swords until there
+are no iron bars left in hands.</font><br>
+</font>
+<font face="Verdana" size="-1">
+@Kal:<br>
+ForgeBar(<font color="#008000">97,511</font>,<font color="#0000FF">97,512</font>,<font color="#FF0000">170</font>)<br>
+WaitForQuestMenu(50)<br>
+Answer(0)<br>
+WaitForQuestMenu(50)<br>
+Answer(1)<br>
+WaitForQuestMenu(50)<br>
+Answer(0)<br>
+Wait(15)<br>
+GoToIfInInventory(@Kal,<font color="#FF0000">170</font>)<br>
+-- End of smithing<br>
+-- ...<br>
+</font><font face="Verdana"><br>
+
+<font size="2">Again: <font color="#008000">97,511 = your coords when you're forging</font>, 
+<font color="#0000FF">97,512 = anvils coords</font>, <font color="#FF0000">170 - iron bar ID</font>.<br>
+If you want to make it more advanced, you can make it check if your char has 5 iron bars
+then make plate mail, otherwise short swords or something, you will need variable commands
+for that.</font><br><br>
+
+<b><font size="2">Bank</font></b><font size="2"><br>
+The next script deposits everything in the bank. <u>Important:</u> 
+<font color="#FF0000">Only the items that are
+visible by the bot get deposited</font>. The bot won't see items that you already had before logging
+in unless you drop them and take again.</font></font></p>
+
+
+<p><font face="Verdana"><br>
+</font>
+<font face="Verdana" size="-1">
+<font color="#008000">RepeatNextCommandUntilQuestMenu(50,2)</font><br>
+<font color="#0000FF">Action(55,511)<br>
+</font>TalkToNPC(<font color="#FF0000">532,528,527</font>)<br>
+Answer(0)<br>
+WaitForBankWindow(<font color="#FF9900">50</font>)<br>
+DepositEverything()<br>
+Wait(10)<br>
+CloseBank()<br>
+Wait(10)<br></font><font face="Verdana"><br>
+
+The </font>
+<font face="Verdana" size="-1">
+<font color="#008000">RepeatNextCommandUntilQuestMenu(50,2)</font>
+command will wait for the text, to choose if you want to bank or not (&quot;<font color="#FF0000">I'd 
+like to access to my bank account please.</font>&quot;). The
+<font color="#0000FF">Action(55,511)</font>
+command doesn't matter very much, it should be in bank middle. in the next 
+command you have to put in all banker IDs from your bank (before running a script 
+you should always check <font color="#FF0000">NPC-IDs</font>), you get them by 
+clicking each of them once. After that it <font color="#FF9900">waits 5 seconds</font><font color="#FFCC00">
+</font>for the bank window.
+DepositEverything()
+means it deposits everything, the bot can see. After that it just waits a bit 
+and finally closes the bank.</font><font face="Verdana"><br><br>
+
+<b><font size="2">AutoFight</font></b><font size="2"><br>
+Making autofight is not too hard, but it's also not at all as easy as it was in RuneBot.
+The first thing you need to do is to find out NPC types. NPC type is a number, all bankers
+have 1 type, dwarves another, lvl2 rats another, lvl13 rats another etc... To find out
+type of NPC that interests you, open a script called NPCTest. It will show types of all NPCs
+that appear on your sight in The Game, like:<br>
+<small>
+A NPC appears. ID, X, Y, Type.<br>
+398 228 435 66<br>
+</small>
+The first 2 numbers are coordinates, the 3rd is ID and then the number you're looking for - NPC type.
+Type 66 stands for a black knight.<br>
+Now you can make a simple AutoFight script:<br>
+<small>
+@Start:<br>
+Wait(30)<br>
+GoToIfNPCNear(@Attack,<font color="#FF0000">66</font>)<br>
+GoTo(@Start)<br>
+@Attack:<br>
+SetVarsNearestNPC(%x,%y,%ID,<font color="#FF0000">66</font>)<br>
+ActionVarVar(%x,%y)<br>
+AttackNPCVar(%ID)<br>
+</small>
+This script attacks black knights every 3 seconds. It attacks all guards it sees no matter
+if it's behind wall or other obstacles. Also it will attack even if your hit points are 0 or close
+to that.<br>
+Good thing would be if we could make it attack in a specified area, like a room or otherwise.
+Actually, we can do it!<br>
+<small>
+@Start:<br>
+Wait(30)<br>
+GoToIfNPCNearIn(@Attack,<font color="#008000">100,200,110,210</font>,66)<br>
+GoTo(@Start)<br>
+@Attack:<br>
+SetVarsNearestNPCIn(%x,%y,%ID,<font color="#008000">100,200,110,210</font>,66)<br>
+ActionVarVar(%x,%y)<br>
+AttackNPCVar(%ID)<br>
+</small>
+Numbers in green - the coordinates of box to look the NPCs for.<br>
+Also it would be good to add lines to check if you are too low on health to attack.<br>
+Advanced scripters can add item collection, auto healing, Jageks protection and other
+features. For further reference use <a href="http://evilcowgod.conforums.com">AutoRune forums</a>.<br><br>
+
+
+
+
+
+
+<br>
+If you make cool, universal scripts, please send them to <a href="mailto:aivars@sos.lv">aivars@sos.lv</a>
+and share it with AR-Groups
+and I might include them with next versions.<br><br>
+
+
+</font>
+
+
+</p>
+
+<a name="commandref"></a>
+<h1><font face="Verdana"><u>AutoRune script command reference</u></font></h1>
+<font face="Verdana" size="2">To become a very good 
+l337-scripter, you should learn those commands, and info.</font><p>
+<font size="2" face="Verdana"><br>
+
+* All labels and variables are case sensitive<br>
+* Labels are defined by @LabelName: and jumped GoTo(@LabelName). You should make sure there are no 
+duplicate
+labels or jumping to non-existing labels, bot doesn't check it.<br>
+* There are totally 101 variables to use numbered 0..100. Variables are usually addressed through %variablename
+(with percent in front), like this SetVarNum(%a,10).<br>
+* All scripts loop automatically - after last line return to line 0.<br>
+* Every coordinate is represented by 2 parameters - X and Y coordinate.<br>
+* When making loops, make sure there is Moving or Waiting command included. Otherwise in case of infinite loops
+the bot will freeze.<br>
+* When using string parameters, they must be in quotes, like Debug("test")<br>
+<br>
+<b>Hex</b> (HexText) - send raw data to server.<br>
+<b>MoveTo</b>(x1,y1[,x2,y2,...]) - if it has 2 params, then it moves to the coordinate specified by the params,
+otherwise it will take every next pair of params as relative coordinate to move to. For an example
+MoveTo(100,200,0,1) will move to coordinate 100,200 and then go 1 square to south.<br>
+<b>MoveToVarVar</b>(var1,var2) - 2 params, variable numbers. Will go to coords specified by those variables.<br>
+<b>MoveToRandomly</b>(x1,y1[,x2,y2,...]) - at least 1 pair of parameters specifying coords. Works as MoveTo, but it will
+choose destination randomly from the given pairs. For an example MoveToRandomly(100,200,101,200) will
+go to either 100,200 or 101,200 and if one of them is occupied by a player or NPC (non playing character)
+then it will go to the other one.<br>
+<b>Action</b>(x,y) - 2 params, coords. This function is used together with a number of other functions right
+before them, like AtObject, AtObjectWithItem, TalkToNPC, TakeItem.<br>
+<b>ActionVarVar</b>(var1,var2) - 2 params, variable numbers containing coords. Works like Action but with variables.<br>
+<b>AtObject</b>(x,y) - 2 params, coords. Use in pair Action + AtObject. AtObject is called when mining for
+an example.<br>
+<b>AtObject2</b>(x,y) - 2 params, coords. Use in pair Action + AtObject2. AtObject2 is called when caging lobsters for
+an example.<br>
+<b>AtObjectWithItem</b>(x,y,num) - 3 params, coords and item number in the backpack. Used together with Action.<br>
+<b>AtObjectWithItemByID</b>(x,y,ID) - 3 params, coords and item in the backpack ID. Used together with Action.<br>
+<b>MineNearest</b>(type[,type2,..]) - type of rocks to mine. This command will only work if WatchObjects is turned on.<br>
+<b>FarActionAtObject</b>(x,y) - Finds path through visible objects to object at x,y. Only works if WatchObjects is turned on.<br>
+<b>TalkToNPC</b>(ID1[,ID2,...]) - at least 1 param representing ID of NPC. Talks to non playing character (NPC). If more
+than 1 parameters are given, it will talk to any of them randomly. Used together with Action.<br>
+<b>TalkToNPCVar</b>(var1[,var2,...]) - Like TalkToNPC but uses variables.<br>
+<b>AttackNPC</b>(ID1[,ID2,...]) - attack one of NPCs ID given as params.<br>
+<b>AttackNPCVar</b>(ID1[,ID2,...]) - Like AttackNPC but uses variables.<br>
+<b>ThieveNPC</b>(ID1[,ID2,...]) - pickpocket one of NPCs ID given as params.<br>
+<b>ThieveNPCVar</b>(ID1[,ID2,...]) - Like ThieveNPC but uses variables.<br>
+<b>MagicNPC</b>(ID,num) - Cast on NPC with ID spell number num.<br>
+<b>MagicNPCVar</b>(ID,num) - Like MagicNPC but uses variable for ID.<br>
+<b>Deposit</b>(ID,count) - 2 params, item ID and amount to deposit. Bank window must be open.<br>
+<b>Withdraw</b>(ID,count) - 2 params, item ID and amount to withdraw. Bank window must be open.<br>
+<b>Answer</b>(choice) - 1 param, choice number starting from 0. When talking to NPCs a quest menu sometimes appears
+giving you choices of what to say or do. This command selects one of the choices.<br>
+<b>UseItem</b>(number) - 1 param, item number in backpack. Used to burry bones, eat food etc.<br>
+<b>UseItemByID</b>(ID) - 1 param, item ID. The same as UsedItem but uses item ID instead of number in backpack.<br>
+<b>UseItemWithItem</b>(Pos1,Pos2) - 2 params, first item's position and second item's position in inventory.<br>
+<b>UseItemWithItemByID</b>(ID1,ID2) - 2 params, first item's ID and second item's ID. Both items must be in
+inventory and visible to bot.<br>
+<b>Say</b>(HexText) - use this command exactly as it appears in debug box, for an example Say(01 ). You don't see what you're
+saying yourself, but others will see.<br>
+<b>CloseShop</b>() - no params, closes shop window.<br>
+<b>CloseBank</b>() - no params, closes bank window.<br>
+<b>LogOut</b>() - no params, log out from RS.<br>
+<b>DropItem</b>(number) - 1 param, item number in backpack. Drops the item on ground.<br>
+<b>DropItemByID</b>(ID) - 1 param, item ID, item must be in inventory and visible.<br>
+<b>TakeItem</b>(x,y,ID) - 3 params, coords and item ID. Tries to take item ID at given coordinates. Used together
+with Action.<br>
+<b>TakeItemVarVar</b>(var1,var2,ID) - 3 params, 2 variable numbers containing coords and item ID. Works like TakeItem
+but coords are read from variables.<br>
+<b>TakeItemVarVarVar</b>(var1,var2,var3) - 3 params, 3 variables containing coords and item ID. Works like TakeItem
+but coords and id are read from variables.<br>
+<b>SmeltOre</b>, <b>ForgeBar</b>, <b>Cook</b>(X,Y,oX,oY,ID) - 5 params, your coordinates while smelting/smithing, object (furnace, anvil)
+coordinates and item ID (ore or bar ID). <u>These commands are no longer supported. Use Action and
+AtObjectWithItemByID instead.</u><br>
+<b>DepositEverything</b>() - deposits every item the bot knows of. It will only see those items you gained
+while playing through AutoRune, everything that you had before logging in won't be deposited.<br>
+<b>SellItem</b>(ID,base,inc,div) - 4 params, item ID, base price, step increaser, step increaser divider. This is a
+complex function, use it only if you are desperate. The bot has to calculate prices and only if
+the prices are calculated correctly, the item will be sold. It calculates the price by formula:
+Price = base price * ( 1 - ( Items in shop * step increaser / step increaser divider) ). All these values
+are different for every item I think, if you find a better formula, let me know. Shop window must
+be open.<br>
+<b>BuyItem</b>(ID,base,inc,div) - 4 params, the same as for SellItem.<br><br>
+<b>MagicOnItemByPos</b>(pos,num) - 2 params, item position in inventory and spell number.<br>
+<b>MagicOnItemByID</b>(ID,num) - 2 params, item ID and spell number. The item must be in inventory and visible to bot.<br>
+<b>PickItemWithItem</b>(x,y,ID,pos) - Use item with item on ground. x, y - coords of the item on ground, ID - id of
+item on ground and pos - position in inventory of item you want to use with it.<br>
+<b>PickItemWithItemID</b>(x,y,ID,ID2) - Use item with item on ground. x, y - coords of the item on ground, ID - id of
+item on ground and ID2 - ID of item in inventory you want to use with it.<br>
+<b>SetFire</b>() - tries to lighten fire at characters position. Tinderbox must be in blackbox and visible to bot,
+there must be wooden logs on ground where the character is standing.<br>
+<b>SetFireAtCoords</b>(x,y) - tries to lighten fire at given position. Tinderbox must be in blackbox and visible to bot,
+there must be wooden logs on ground at the given coords.<br>
+<b>SetFireTinderPos</b>(Pos) - tries to lighten fire at characters position. Tinderbox must be in the given position,
+there must be wooden logs on ground where the character is standing.<br>
+<b>OpenDoor</b>(x,y,dir) - Opens doors at coordinates x,y on direction dir.<br>
+<b>CloseDoor</b>(x,y,dir) - Closes doors at coordinates x,y on direction dir.<br>
+<b>PrayerOn</b>(num) - Turns on prayer with number num.<br>
+<b>PrayerOff</b>(num) - Turns off prayer with number num.<br>
+<b>FightMode</b>(num) - Sets fight style. Important! The command won't visuall change the menu used for selecting
+fight style - that is, if you had fight style 0 (conrolled) and you set it to 1, then menu will still show
+as if it was controlled, but factically experience will be added to strength and hitpoints only.<br>
+<b>Wait</b>(time) - 1 param, pause length in 1/10 seconds. You should use this function for waiting and also
+for avoiding freezing of AutoRune because of infinite loops in script. If yo have an infinite loop,
+insert Wait(1) in it.<br>
+<b>Sleep</b>(time*100) - 1 param, pause length in 1/1000 seconds. It's analogic to Wait, except time
+gets divided by 100.<br>
+<b>WaitForQuestMenu</b>(time) - 1 param, timeout in 1/10 seconds. Waits until quest menu appears but if it
+doesn't in time specified by param, stop waiting.<br>
+b>WaitForServerMessage</b>(time) - 1 param, timeout in 1/10 seconds. Waits until server message appears but if it
+doesn't in time specified by param, stop waiting.<br>
+<b>WaitForBankWindow</b>(time) - 1 param, timeout. Waits until bank window appears or time runs out.<br>
+<b>WaitForShopWindow</b>(time) - 1 param, timeout. Waits until shop window appears or time runs out.<br>
+<b>WaitForCoordChange</b>() - no params. Waits until the character changes it's location. You should
+use this when climbing ladders, teleporting etc.<br>
+<b>RepeatNextCommandUntilQuestMenu</b>(time,count) - 2 params, timeout and command count. It will execute
+next commands count specified by 2nd parameter, then wait for quest menu. If waiting times out,
+it repeats the commands again and so on until the quest menu appears.<br>
+<b>GoTo</b>(label) - jump to label. It can also be a number, specifying how many lines to skip. Can be negative.<br>
+<b>GoSub</b>(label) - calls the label as procedure. Ret() will return back to the line it was called from.<br>
+<b>Ret()</b> - return from procedure. Jumps back to the last GoSub() it came from.<br>
+<b>ERet()</b> - use to return from events. If you want to jump instead of return, you should restore events
+with EnableEvents()<br>
+<b>EnableEvents</b>() while event is caled, other events are disabled. Use this to enable them.<br>
+<b>ERetToRet()</b> - Enables events and puts the return address from the event to ret stack. When you
+execute this command, the event now is executed like subroutine (procedure) and you can return from it with Ret().<br>
+<b>ResetLastItemGained</b>() - forgets the last item the character has gained.<br>
+<b>ResetLastItemLost</b>() - forgets the last item the character has lost.<br>
+<b>GoToIfLastItem</b>(label,ID) - jumps to label if the last item ID gained by character is equal to 2nd parameter.<br>
+<b>GoToIfLastItemLost</b>(label,ID) - jumps to label if the last item ID gained by character is equal to 2nd parameter.
+ID is -2 for invisible items.<br>
+<b>GoToIfItemGained</b>(label) - jumps to label if item gained since the last ResetLastItemGained.<br>
+<b>GoToIfItemLost</b>(label) - jumps to label if item is gained since the last ResetLastItemLost.<br>
+<b>GoToIfBagFull</b>(label) - jumps to label if character's backpack is full.<br>
+<b>GoToIfInInventory</b>(label,ID1[,ID2,...]) - jumps to label if all of IDs given as params can be found in
+the backpack.<br>
+<b>GoToIfCountInInventoryEqual</b>(label,num,ID1[,ID2,...]) - jumps to label if all item numbers with IDs given
+are equal to 2nd parameter in inventory.<br>
+<b>GoToIfCountInInventoryGreater</b>(label,num,ID1[,ID2,...]) - jumps, if all item numbers in backpack with given
+IDs are larger than 2nd parameter.<br>
+<b>GoToIfVarEqual</b>(label,var1,var2) - jump to label if variable1 = variable2.<br>
+<b>GoToIfVarNotEqual</b>(label,var1,var2) - jump to label if variable1 != variable2.<br>
+<b>GoToIfVarAbove</b>(label,var1,var2) - jump if variable1 &gt; variable2.<br>
+<b>GoToIfVarBelow</b>(label,var1,var2) - jump if variable1 &lt; variable2.<br>
+<b>GoToIfVarEqualNum</b>(label,var1,num1) - jump to label if variable1 = number1.<br>
+<b>GoToIfVarNotEqualNum</b>(label,var1,num1) - jump to label if variable1 != number1.<br>
+<b>GoToIfVarAboveNum</b>(label,var1,num1) - jump if variable1 &gt; number1.<br>
+<b>GoToIfVarBelowNum</b>(label,var1,num1) - jump if variable1 &lt; number1.<br>
+<b>GoToIfVarBetween</b>(label,var,varmin,varmax) - jump if var &gt; varmin and var &lt; varmax.<br>
+<b>GoToIfVarBetweenNum</b>(label,var,num1,num2) - jump if var &gt; num1 and var &lt; num2.<br>
+<b>ResetLastServerMessage</b>() - forgets last server message.<br>
+<b>GoToIfLastServerMessageIs</b>(label,"String") - jumps to label, if last server message is equal to String.<br>
+<b>GoToIfLastServerMessageIsNot</b>(label,"String") - jumps to label, if last server message is not equal to String.<br>
+<b>SetVarNum</b>(var1,num1) - sets variable1 to constant number. variable1 := number1.<br>
+<b>SetVar</b>(var1,var2) - sets variable1 to variable2. variable1 := variable2.<br>
+<b>SetVarRandom</b>(var1,num1) - sets variable to random value from 0 to num1.<br>
+<b>AddVarNum</b>(var1,num1) - increases variable1 by number1. variable1 := variable1 + number1.<br>
+<b>AddVar</b>(var1,var2) - increases variable1 by variable2. variable1 := variable1 + variable2.<br>
+<b>SubVar</b>(var1,var2) - decreases variable1 by variable2. variable1 := variable1 - variable2.<br>
+<b>SetVarItemCount</b>(var1,ID1) - sets variable1 to number of items with ID1 in backpack.<br>
+<b>SetVarCountInShop</b>(var,ID) - sets variable to number of items with ID in shop.<br>
+<b>SetVarCountInShopVar</b>(var1,var2) - sets variable1 to number of items with ID equal to variable2 in shop.<br>
+<b>SetVarMyX</b>(var1) - sets variable1 to your X coordinate.<br>
+<b>SetVarMyY</b>(var1) - sets variable1 to your Y coordinate.<br>
+<b>SetVarMyHP</b>(var1) - sets variable to your hit points value.<br>
+<b>SetVarTime</b>(var1) - sets variable to timestamp. You can use this to get out of loops if you're in them
+for too long.<br>
+<b>SetCoordsNearer</b>(var1,var2) - assumes that var1,var2 are coordinates and make them one step closer to your position.<br>
+<b>GoToIfCoordsCloserThan</b>(label,x1,y1,x2,y2) - jumps if coordinates x1,y1 are closer to you than x2,y2.<br>
+<b>GoToIfCoordsCloserThanVars</b>(label,vx1,vy1,vx2,vy2) - jumps if coordinates vx1,vy1 are closer to you than vx2,vy2.
+vx1, vy1, vx2, vy2 are variables.<br>
+<b>GoToIfCoordsIn</b>(label,x1,y1,x2,y2) - jumps if your coordinates are in box specified by (x1,y1,x2,y2).<br>
+<b>GoToIfCoordsInVars</b>(label,vx1,vy1,vx2,vy2) - jumps if your coordinates are in box specified by (vx1,vy1,vx2,vy2).
+vx1, vy1, vx2, vy2 are variables.<br>
+<b>GoToIfNPCNear</b>(@label,type[,type2,...]) - jumps if NPC specified by type is near.<br>
+<b>SetVarsNearestNPC</b>(vx,vy,vID,type[,type2,...]) - puts coords of nearest NPC specified by type in vx and vy and it's
+ID in vID.<br>
+<b>SetVarsRandomNPC</b>(vx,vy,vID,type[,type2,...]) - puts coords of random NPC of type in vx and vy and ID in vID.<br>
+<b>SetVarsNearestNPCIn</b>(vx,vy,vID,x1,y1,x2,y2,type[,type2,...]) - puts coords of nearest NPC specified by type in vx and vy and it's
+ID in vID if the NPC is in box specified by x1,y1,x2,y2.<br>
+<b>SetVarsRandomNPCIn</b>(%x,%y,%ID,x1,y1,x2,y2,type[,type2,...]) - puts coords of random NPC of type in vx and vy and ID
+in vID if the NPC is in box specified by x1,y1,x2,y2.<br>
+<b>GoToIfNPCNearIn</b>(@label,x1,y1,x2,y2,type[,type2,...]) - jumps if there is NPC in coords x1,y1,x2,y2 specified by type.<br>
+<b>SetVarNPCType</b>(vartype,ID) - sets vartype to type of NPC with ID.<br>
+<b>SetVarNPCCoords</b>(vx,vy,ID) - sets vx and vy to coords of NPC with ID.<br>
+<b>GoToIfNPCVisible</b>(@label,vID) - will jump if NPC is visible (not dead or out of screen).<br>
+<b>SetVarObject</b>(vartype,x,y) - sets vartype to object type at location x,y.<br>
+<b>SetVarsNearestObjectXY</b>(vx,vy,dist,type[,type2,...]) - sets vx and vy to the coords of nearest object with type
+at distance dist or closer.<br>
+<b>GoToIfObjectNear</b>(@label,dist,type[,type2,...]) - jumps if object specified by type is at distance dist or closer.<br>
+<b>SetObject</b>(x,y,type) - tells AutoRune, that there is objec with type at x,y.<br>
+<b>PutVarInArray</b>(var,i,a1[,a2,...]) - put variable in "array" specified by a1, a2, ... If i=0 then it will put variable in
+a1, if i=1 it will put it in a2 etc.<br>
+<b>PutNumInArray</b>(num,i,a1[,a2,...]) - put number in "array" specified by a1, a2, ... If i=0 then it will put number in
+a1, if i=1 it will put it in a2 etc.<br>
+<b>GetVarFromArray</b>(var,i,a1[,a2,...]) - read value from array in variable. i is index, where if i=0 then it will put
+in variable a1 contents, if i=1 then contents of a2 etc.<br>
+<b>Push</b>(var) - puts variable into stack. You can put up to 50 values in stack and get them out with Pop.<br>
+<b>PushNum</b>(num) - puts number into stack. You can put up to 50 values in stack and get them out with Pop.<br>
+<b>Pop</b>(var) - gets the most recently Pushed value from stack and puts it into variable.<br>
+<b>GoToRandom</b>(label1[,label2,...]) - jumps to any of labels given chosen randomly.<br>
+<b>GoSubRandom</b>(label1[,label2,...]) - calls any of given labels as subroutines.<br>
+<b>GoToCase</b>(i,label1[,label2,...]) - if i=1 it will jump to label1, if i=2 then to label2 etc.<br>
+<b>Debug</b>("String") - Output text in the left Debug box.<br>
+<b>DebugVar</b>(var1[,var2,...]) - Output contents of variables in Debug box.<br>
+<b>DebugLastServerMessage</b>() - Output the last server message to Debug box.<br>
+<b>MessageBox</b>("String") - Show message box with custom text.<br>
+<b>GoToIfQuestion</b>(label,"Question") - displays yes/no messagebox and jumps, if user answers with "yes".<br>
+<b>Stop</b>() - stops script execution.<br>
+<b>StopAndLogOut</b>() - stops script execution and logs out.<br>
+<b>SetTraceMode</b>(num) - num is 0, 1 or 2. If it's 0 then trace mode is set to normal, 1 - events are not traced, 2 - nothing is traced.<br>
+<b>SetTimeSinceMovingToDest</b>() - give to bot another time since moving to destination.<br>
+<b>SetOnPlaceTime</b>(time) - changes the standing on the same place timeout. After character
+stands on the same place for given time, it will move randomly a bit. Default timeout is 2400 which is 4 minutes.<br>
+<b>SetSkipDestTime</b>(time) - changes the skip destination timeout. This is the time after which the bot will move to
+next command even if the destination with MoveTo is not reached. Default time is 2000.<br>
+<b>SetCheatDestTime</b>(time) - changes the cheat destination timeout. If you haven't reached MoveTo destination in
+this time, then AR will try to pick up unexisting item at the destination, thus going there even if someone is standing
+in the way. Default time is 800.<br>
+<b>SetRetryDestTime</b>(time) - changes the retry destination timeout. If you haven't reached MoveTo destination in
+this time, AR will retry going there. Default time is 30.<br>
+<b>SetSkipDestMode</b>(num) - num is 1 or 0. If num is 1 then AR will skip the destination on skip destination timeout,
+otherwise it will only trigger the even but won't skip.<br>
+<b>SetCheatDestMode</b>(num) - num is 1 or 0. If num is 1 then AR will cheat the destination on cheat destination timeout,
+otherwise it will only trigger the even but won't cheat (by trying to take unexisting item at destination coords).<br>
+<b>SetRetryDestMode</b>(num) - num is 1 or 0. If num is 1 then AR will retry to reach the destination on retry destination
+timeout, otherwise it will only trigger the even but won't retry.<br>
+<b>SaveScreenshot</b> - Saves a picture of RS window in AutoRune ScrShots folder. It only works if RS client is visible
+(it can't be minimized or behind another window).<br>
+<b>WatchObjects</b>(num) - num can be 1 (on) or 0 (off). If you turn this on, then it will remember coordinates of all
+objects appeared thus giving you possibility to use such commands as MineNearest and FarActionAtObject. Default is off.<br>
+<b>Click</b>(x,y) - Left click at x,y on RS client. x and y are RS applet not screen relative coordinates.<br>
+<b>ClickVar</b>(%x,%y) - Left click, coordinates in variables.<br>
+<b>GetColor</b>(x,y,%c) - Read color value at x,y and put it into %c.<br>
+<b>ClickColor</b>(c) - Scan all RS screen to find color c and click it.<br>
+<b>ClickColorAt</b>(c,x1,y1,x2,y2) - Scan all the rectangle specified by x1,y1,x2,y2 for color c and click ir.<br>
+<b>ClickColorSpiral</b>(c,x,y,x1,y1,x2,y2) - The fastest scanning function. It starts scanning from x,y and then goes in bigger and bigger circles.
+You can set all x1,y1,x2,y2 to -1 to scan the whole RS screen.<br>
+<b>FindColor</b>(col,%x,%y,x1,y1,x2,y2) - Find color in the rectangle and put it's coords in %x and %y.<br>
+<b>FindColorSpiral</b>(col,%x,%y,x1,y1,x2,y2) - The fastest color finder, set %x and %y to coords you want to start scanning from.<br>
+<b>SetLagSafe</b>(0-1) - Turn off/on Lag Safe mode.<b><br>
+SetVarPlayerSkulled</b>(ID,%v) - sets %v to 0 if player ID<b> </b>if not sculled 
+and 1 if is skulled<b><br>
+DebugRS</b>(&quot;text&quot;) - sends text to client as server message.<b><br>
+DebugRSVar</b>(%v1[,%v2,...]) - sends variables to client as server message.<b><br>
+HTTPGet</b>(&quot;text&quot;) - text has to be a valid http address. AR connects to it and 
+receives data to LastHTTPResponse.<b> </b>It takes time to receive the data 
+depending on the connection and during that time AR keeps running script. Don't 
+expect server response to be received instantly after execution of this command.<b><br>
+HTTPGetParamVar</b>(%var1[,%var2,...]) - parameters that will be used with the 
+next HTTPGet. Will send in format ?v1=%var1&amp;v2=%var2.<b><br>
+GoToIfLastHTTPResponseIs</b>(@Label,&quot;text&quot;) - jumps if text is last HTTP 
+response.<b><br>
+GoToIfLastHTTPResponseIsNot</b>(@Label,&quot;text&quot;) - jumps if text is not last HTTP 
+response.<b><br>
+</b>
+</font>
+<font size="2"><b>GoToIfInLastHTTPResponseIs</b>(@Label,&quot;text&quot;) - jumps if text 
+in last HTTP response.<b><br>
+GoToIfInLastHTTPResponseIsNot</b>(@Label,&quot;text&quot;) - jumps if text not in last 
+HTTP response.<b><br>
+DebugLastHTTPResponse</b>() - displays last HTTP response.<b><br>
+ResetLastHTTPResponse</b>() - sets last HTTP response to empty string.<b><br>
+PlaySound</b>(&quot;file&quot;) - plays wav file (maybe mid as well).<b><br>
+SetVarItemPosByID</b>(%pos,ID) - sets %pos to item ID position in inventory.<b><br>
+SetPMReceiver</b>(&quot;name&quot;) - set next person to receive PM by name.<b><br>
+SetPMReceiverByID</b>(ID) - set next person to receive PM by ID.<b><br>
+SetPMReceiverLastPMer</b>() - set last person who PMed you as the next person to 
+receive PM.<b><br>
+PM</b>(hex data) - send private message.<b><br>
+GoToIfLastPMIs</b></font><font size="2" face="Verdana">(@Label,&quot;text&quot;) - jumps 
+if text is last PM.</font><font size="2"><b><br>
+GoToIfLastPMIsNot</b></font><font size="2" face="Verdana">(@Label,&quot;text&quot;) - 
+jumps if text is not last PM.</font><font size="2"><b><br>
+GoToIfInLastPMIs</b></font><font size="2" face="Verdana">(@Label,&quot;text&quot;) - jumps 
+if text in last PM.</font><font size="2"><b><br>
+GoToIfInLastPMIsNot</b></font><font size="2" face="Verdana">(@Label,&quot;text&quot;) - 
+jumps if text not in last PM.</font><font size="2"><b><br>
+ResetLastPM</b>() - sets last PM to empty string.<b><br>
+TradePlayer</b>(ID) - send trade request to player ID.<br>
+<b>Accept1</b>() - accept in first trade screen.<b><br>
+Accept2</b>() - accept in second trade screen.<b><br>
+Decline</b>() - decline trade.<b><br>
+PutTrade</b>(ID,count[,%ID,%count,...]) - put items for trade in first trade 
+screen.<b> <br>
+ForgetItems</b>() - same as menu Script &gt; Forget Items.<b><br>
+SetNoMouseMovement</b>(0-1) - do not simulate mouse movements while running 
+script if on.<b><br>
+GoSubNext</b>() - put next line into return stack.<b><br>
+Wield</b>(pos) - wield item.<b><br>
+Unwield</b>(pos) - unwield item.<br>
+<b>ClearDebug</b>() - clear debug box.<b><br>
+SetVarFatigue</b>(%v) - set %v to fatigue<b> </b>level. This isn't the same as 
+fatigue %, %v can go up to 800.<b><br>
+MagicPlayer</b>(%ID,num) - cast spell num on player %ID.<b><br>
+</b><br>
+
+
+
+<br>
+</font>
+</p>
+<a name="events"></a>
+<p align="left"><u><b><font size="5" face="Verdana">Events</font></b></u></p>
+<font face="Verdana"><br>
+<font size="2">Events are procedures, that get executed every time when specified event occurs.</font></font><p>
+<font face="Verdana" size="2">&nbsp;For an example, OnHPChanged event
+will be executed every time when hitpoints change. If you have set this event, as, for an example,
+OnHPChanged(@HPChanged,%HP), then every time your hit points change, the script will jump to 
+the <font color="#0000FF">label @HPChanged:</font> and
+insert the current value of hit points into he variable %HP. After you finish processing the event, return to the main
+script with ERet(). <br>
+<b>Look at EventTest sample script as example</b>.</font>
+<font face="Verdana" size="2"><br><br>
+<b>OnItemLost</b>(label,%ItemID,%ItemPos) - event gets executed every time an 
+item is lost from inventory. It will copy item position and ID to the variables 
+specified, if item, that is not visible to bot disappears, then %ItemID is set 
+to -2. You could use this event for detecting if admins took 
+your pickaxe or rod.<br>
+<b>OnItemGained</b>(label,%ItemID,%ItemPos) - Same as above, but for gaining 
+items.<br>
+<b>OnServerMessage</b>(label) - event gets executed on server messages. You can use commands GoToIfLastServerMessageIs
+and GoToIfLastServerMessageIsNot to find out what message it was here.<br>
+You could 
+use this event for the new fatigue system, let me show you this:</font><br>
+<font size="2" face="Verdana">GoToIfLastServerMessageIs(<font color="#0000FF">@sleep</font>,&quot;@gam@You
+are too tired to fish here&quot;)<br>
+You could use it with this command, it jumps to 
+the label <font color="#0000FF">@sleep</font> when RS shows you, that you 
+are to tired to fish here. Don't forget to EnableEvents() if you're jumping from event.</font>
+<font face="Verdana" size="2"><br>
+<b>OnPrivateMessage</b>(label) - event gets executed on private messages. If you block private messages and yet
+a private message is being sent, it's a reason for LogOut() and Stop().<b><br>
+OnCoordsChanged</b>(label,%LastX,%LastY) - gets executed every time the coordinates change. %LastX and %LastY
+contain the coordinates you are coming from. Here you can detect if you possibly get teleported by admins.<b><br>
+OnDestinationReached</b>(label) - gets executed every time when MoveTo reaches the destination.<br>
+<b>OnIdle</b>(label,time) - gets executed when script sits on the same line for time given and is not moving.
+You can use this to detect if the script is stuck.<br>
+<b>OnHPChanged</b>(label,%HP) - gets executed when hit points change. %HP will contain the amount of hit points.<br>
+<b>OnStatsChanged</b>(label,%StatNumber) - gets executed when stats change. %StatNumber will contain number of
+stat that changes (0 - attack, 1 - defense, 2 - strength, 3 - hits, 4 - range, 5 - prayer, 6 - magic, ...).<br>
+<b>OnChatMessage</b>(label) - gets executed when someone talks in game. If you have chat messages blocked and
+someone still talks - it's admin, beware!!!<br>
+<b>OnShopClosed</b>(label) - Shop window closes.<br>
+<b>OnNPCAppeared</b>(label,%ID,%x,%y,%type) - New NPC (non playing character) appeared. %ID will contain it's ID,
+%x and %y - it's coords and %type - it's type (what kind of monster is it).<br>
+<b>OnItemAppeared</b>(label,%ID,%x,%y) - new item appears. %ID - item's ID, %x and %y item's coords.<br>
+<b>OnItemDisappeared</b>(label,%ID,%x,%y) - an item disappears. %ID - item's ID, %x and %y item's coords.<br>
+<b>OnNPCMoved</b>(label,%ID,%x,%y,%type) - NPC is moving. Params the same as in OnNPCAppeared.<br>
+<b>OnObject</b>(label,%type,%x,%y) - Object appears or changes. %type - object type, %x and %y - coordinates.<br>
+<b>OnRetryDest</b>(label) - when you get stuck when moving, it will retry to reach the destination and trigger this event.<br>
+<b>OnSkipDest</b>(label) - when you get stuck for longer time, it will quit trying to reach the destination and
+start with the next command in script.<br>
+<b>OnCheatDest</b> - when you get stuck for some time it will try to "fool" The 
+Game and try to take unexisting
+item from groung thos moving to the destination even if someone is standing there.<br>
+<b>OnQuestMenuAppeared</b>(label) - gets triggered when quest menu appears.<br>
+<b>OnTimer</b>(label,num,time) - num is timer number 1-10, time is time in 1/10 seconds after what the event gets triggered.
+It will only be triggered once, you have to set the timer again to trigger it several times.<br>
+<b>OnLogin</b>(label) - get's executed when you log in (re-login because of lag or because of Login on Disconnect)<br>
+
+
+</font>
+</p>
+<p>&nbsp;</p>
+<p>
+<a name="var"></a>
+<p><u><b><font face="Verdana" size="6">Variables</font></b></u><font face="Verdana" size="5"><br>
+<br>
+</font><font face="Verdana" size="2">Definition</font></p>
+<p><font face="Verdana" size="2">var·i·a·ble ( P ) Pr&#111;&#110;&#117;nciation Key (vâr--bl, 
+vr-)<br>
+adj. <br>
+<br>
+Likely to change or vary; subject to variation; changeable. <br>
+Mathematics. Having no fixed quantitative value. <br>
+<br>
+n. <br>
+Something that varies or is pr&#111;&#110;&#101; to variation. <br>
+<u>Mathematics. </u></font></p>
+<ul>
+  <li><font face="Verdana" size="2">A quantity capable of assuming any of a set 
+  of values. <br>
+&nbsp;</font></li>
+  <li><font face="Verdana" size="2">A symbol representing such a quantity. For 
+  example, in the expression a2 + b2 = c2, a, b, and c are variables. <br>
+  <br>
+  from Dicti&#111;&#110;&#097;ry.Com</font></li>
+</ul>
+<p><font face="Verdana" size="2">Yes a variable is a symbol representing a 
+number, or a letter that contains a number. for example..<br>
+SetVarNum(%d,20) %d being the variable (or symbol). 20 is the number the 
+variable contains.<br>
+That would be used to define a variable lets say if you needed to do something 
+20 times (withdraw 20 iron).<br>
+I will explain in detail (I hope) a variable adding, and subtracting script.</font></p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: double; border-width: 3; padding-left: 4; padding-right: 4; padding-top: 1; padding-bottom: 1" bordercolor="#111111" width="88%" id="Aut&#111;&#078;&#117;mber1" bgcolor="#C0C0C0">
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">SetVarNum(%a,30)</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Ok here it defines the 
+    variable, if it was inside the loop then it would keep going and never end. 
+    Pers&#111;&#110;&#097;lly I always add it above the time Its needed, for certain 
+    reas&#111;&#110;&#115; (redoing parts of a script). This line makes %a contain a number 30.</font></td>
+  </tr>
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">@wd:</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Label, Wow :D</font></td>
+  </tr>
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">Withdraw(373,1)</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Here is the command I want to 
+    do 20 times.. which is withdraw a cooked lob.</font></td>
+  </tr>
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">AddVarNum(%a,-1)</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Here it is the variable 
+    changing part. This will subtract 1 number for the variable %a.</font></td>
+  </tr>
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">Wait(1)</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Wait for it!</font></td>
+  </tr>
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">GoToIfVarEqualNum(@close,%a,0)</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Here is use of a of variable. This checks to see if the variable %a is 0, if not then continue 
+    on, but if so then it breaks out of the loop and go to the label @close.</font></td>
+  </tr>
+  <tr>
+    <td width="28%"><font face="Verdana" size="2" color="#000000">GoTo(@wd)</font></td>
+    <td width="72%"><font face="Verdana" size="2" color="#000000">Loop</font></td>
+  </tr>
+</table>
+<p><font face="Verdana" size="2">Pretty simple eh? Its not rocket science. Test 
+it with a few scripts you will see its very simple. It can also be used with 
+commands such as <b>ActionVarVar, AttackVar, SetVarMyX, SetVarMyY.</b> Which you 
+will understand if you read this manual.</font></p>
+
+<p><font face="Verdana" size="2">That's it for now I will right some more if it 
+is needed and with some more advance commands.</font></p>
+
+<a name="tutorial1"></a><p><b><font face="Verdana" size="6">Tutorial - Jageks Protection</font></b></p>
+
+<p><font face="Verdana" size="2">This is one of the ways to avoid being banned, 
+because we all know that nobody likes to get banned!<br>
+What it does: When teleported/ PMed /see's chat messages it logs out quick. So, 
+we try to explain you how to add a good Jageks-Admin-protection to your script. 
+You must have read this manual to understand everything, especially events. 
+Let's look at this example script:</font></p>
+
+<table border="1" cellpadding="0" cellspacing="0" style="border-style:double; border-width:3; border-collapse: collapse; padding-left:4; padding-right:4; padding-top:1; padding-bottom:1" bordercolor="#111111" width="93%" id="AutoNumber3" height="391" bgcolor="#C0C0C0">
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">- 
+    Protection</font></td>
+    <td width="27%" height="13">&nbsp;Comment =D</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">
+    OnChatMessage(@RunAndHideChat)</font></td>
+    <td width="27%" height="13">Trigger for a Chat Message if there is any chat 
+    messages then it will goto that label.</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">
+    OnPrivateMessage(@RunAndHidePM)</font></td>
+    <td width="27%" height="13">Trigger for a PM.</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">@script:</font></td>
+    <td width="27%" height="13">This is where your basic script goes what ever 
+    it may be.</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">- Your script goes here</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">- Anti Jageks scheme</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">@RunAndHideChat:</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">Debug(&quot;Ooops someone is talking in the game. If chat messages are blocked - its 
+an admin!!!&quot;)</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">GoTo(@RunAndHide)</font></td>
+    <td width="27%" height="13">Goes to Log Out</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">@RunAndHidePM:</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">Debug(&quot;Ooops someone is PMing you in the game. If PMs are blocked - its an 
+admin!!!&quot;)</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">GoTo(@RunAndHide)</font></td>
+    <td width="27%" height="13">Goes to Log Out</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">@RunAndHide:</font></td>
+    <td width="27%" height="13"></td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">StopAndLogOut()</font></td>
+    <td width="27%" height="13">Stops AR and logs out.</td>
+  </tr>
+  <tr>
+    <td width="73%" height="13"><font face="Verdana" size="2">Wait(1)</font></td>
+    <td width="27%" height="13">&nbsp;</td>
+  </tr>
+</table>
+
+<font face<br>
+<h1><span style="font-weight: 400"><font face="Verdana" size="2">Its very simple
+as you see, its not much work but adds a great part to your script! and probably 
+eliminating the threat of being banned.<br>
+&nbsp;</font></span></h1>
+
+
+<a name="history"></a>
+<h1><font face="Verdana">History and story</font></h1>
+<font face="Verdana">
+<b>Background story</b><br><br>
+Hello, my nick is Kaitnieks, name Aivars Irmejs.<br>
+My hobby is bot making for various online games. I personally don't think that it makes from me a hacker,
+although many people think so. I personally dislike hackers, but again it depends on what you call hackers.
+I've always told they are the people who deface webbies, root boxes and love to break in somewhere.
+Others say that it's wrong and all smart computer users are hackers. By their classification I could
+be called hacker, although I have never defaced a site, rooted a box, ok there were some online games
+that I... some systems that I... some softs that I... nevermid :)<br>
+I'm making bots for 2 years already. Here are the main of them with a short description:<br>
+<b>Food Fight bot (FF.exe)</b>. Unfortunately all sources and even executables are lost :( It wasn't really
+a bot, it was more like advisor, which calculated for me who is the best attack target and spy target.
+It let me be quicker than other players but that's all. It was my first try, kind of lame, in VB,
+to adapt it to different user I had to change several files manually, there was no Log in box :)
+Update: I found the sources in archive CDs recently! Yay!<br>
+<b>Zoles Bots</b> for a Latvian card game. My first JAVA bot, it didn't act as 
+proxy between server and client but completely simulated the client.<br>
+<b>rwk</b>. <a href="http://www.racewarkingdoms.com/">For Race War Kingdoms</a>. It was a simple clicker, VB.<br>
+<b>Sol</b> for <a href="http://www.knkonline.net/">Sol</a>. Also quite simple, I don't remember what it did,
+I think trained my stats, VB.<br>
+<b>BWBots</b> - bot for Bunkerwars (the game doesn't exist anymore, the bot can be found
+<a href="http://bwbots.yo.lv">here</a>). It was a legal bot because game rules allowed bots.
+Although there were several bots, more than 90% used my bot and other bots (except one) died. It's VB.<br>
+<b>DaExplorer</b> - my ultimate bot for <a href="http://www.droidarena.com">DroidArena</a>. It was very
+universal, it practically played for me, had quite a good AI and it got me into #3. Everyone in top6 had
+used the bot at least for some time :) It's VB.<br>
+<b>CBbot</b> - simple clicker for <a href="http://www.carnageblender.com/">Carnage Blender</a>, Delphi.
+The cool thing about it was that it had human check images and I figured a way to bypass them. Then
+I had a talk with game creator and it's better now. I have no idea what's happening in that game now.<br>
+<b>LostBot</b> for <a href="http://www.lost.no/">LOST</a>. It played automatically, but was very
+simple. A bit more advanced than a clicker. It's made in Delphi.<br>
+<b>AutoRune</b> - bot for <a href="http://www.runescape.com">Runscape</a> - the first bot for non-web game.
+It has a scripting system, I've never used that in bots until now. That way I don't have to build a complex
+AI into bot, every user can write his own scripts for different purposes. It's made in Delphi.</font><br><br>
+<u>
+<a name="arhistory"></a>
+<b><font size="6">AutoRune history</font></b></u><br>
+&nbsp;<p>Version 2.8 new features:<br>
+Let's hope there is no more lag!</p>
+<ul>
+  <li>Reduced lag</li>
+  <li>PMs: SetPMReceiver, SetPMReceiverByID, SetPMReceiverLastPMer, PM, 
+  GoToIfLastPMIs, GoToIfLastPMIsNot, GoToIfInLastPMIs, GoToIfInLastPMIsNot, 
+  ResetLastPM</li>
+  <li>SetLagSafe, SetVarPlayerSkulled</li>
+  <li>DebugRS, DebugRSVar</li>
+  <li>HTTPGet, HTTPGetParamVar, GoToIfLastHTTPResponseIs, 
+  GoToIfLastHTTPResponseIsNot, GoToIfInLastHTTPResponseIs, 
+  GoToIfInLastHTTPResponseIsNot, DebugLastHTTPResponse, ResetLastHTTPResponse</li>
+  <li>PlaySound</li>
+  <li>SetVarItemPosByID</li>
+  <li>Big Logout button<br>
+&nbsp;</li>
+</ul>
+<p>Version 2.7 new features:</p>
+<p>Some stuff that was requested</p>
+<ul>
+  <li>Far movements range check error fixed</li>
+  <li>Added crosshair for specifying RS window</li>
+  <li>Fixed chat</li>
+  <li>Autotrading support (TradePlayer, Accept1, Accept2, Decline, PutTrade)</li>
+  <li>Commands like SetLagSafe, ForgetItems, SetNoMouseMovements, GoSubNext, Weild, Unweild, ClearDebug, SetVarFatigue, MagePlayer, etc)</li>
+</ul>
+<p>Version 2.5, 2.6 new features:</p>
+<p>Just lots of minor fixes and improvements.</p>
+<ul>
+  <li>Added minimap</li>
+  <li>Added commands like Hex, WaitForServerMessage etc</li>
+  <li>Reduced lag that causes commands to mess up</li>
+  <li>Other things, who can remember them?</li>
+</ul>
+<p>Version 2.4 new features:</p>
+<p>And THEY did it again! THEY disabled AutoRune and RuneBot by changing JAVA 
+obfuscator and network protocol. This is the second time AutoRune has been 
+resurrected from death. Thank you for the challenge!<br>
+Thank you Vee for inspiring me, only because of you I didn't give up.</p>
+<ul>
+  <li>Added support for the new protocol</li>
+</ul>
+<p>Version 2.2 and 2.3 new features: </p>
+<p>This was where AutoRune was revived after the mass ban. As we know THEY 
+detected AutoRune for several weeks before banning, so making those who 
+purchased AR during that time suffer. That ban was a bit of shock and I had 
+other things I was very busy with so AR was put aside for more than 2 months. 
+Now it has split into 2 very similar versions with a tiny difference - 2.2 still 
+gets you banned while 2.3 doesn't. </p>
+<ul>
+  <li>Added color detection and clicking commands </li>
+  <li>Added features for server switching </li>
+  <li>AutoRune now works with Internet Explorer </li>
+  <li>Added command Magic for teleporting spells </li>
+  <li>Selling and buying works now </li>
+  <li>AutoRune can show player chat messages </li>
+  <li>Bugs fixed as usually </li>
+</ul>
+<p>
+<br>
+<font face="Verdana">Version 2.1 news: </font>
+<br>
+Many things have changed since the last version. The main thing I should mention is:
+AutoRune is not property of Kaitnieks anymore. I have sold it to Jason, so any further assistance
+will be from him. I am however keeping to develop AR.<br>
+<font face="Verdana">Version 2.1 new features: </font>
+</p>
+<ul>
+  <li>Added OnItemDisappeared event
+  <li>Find In Script window
+  <li>Many new commands for objects and NPCs
+  <li>FarAction and FarMoveTo commands
+  <li>GoToIfInLastServerMessage command
+  <li>Easier autofighting and automining
+</ul>
+<font face="Verdana">Version 1.3 (2.0) new features: </font>
+<ul>
+  <li>Added some events (starting from OnNPCAppeared to OnLogin)
+  <li>Added many new commands (Push, Pop, Cook, Array commands, SetTraceMode, ItemCountInShop, SaveSnapshot, AttackNPC, MagicNPC, FightStyle and many many other)
+  <li>Added AutoComplete
+  <li>Added stack (Push and Pop)
+  <li>Seperated ERet and Ret stacks
+  <li>Feature that prevents RS client from detecting online client on Windows2000 and XP only
+  <li>Online client support, if you specify it's title
+  <li>Ability to change trace mode
+  <li>Added timers support (OnTimer)
+  <li>Removed item commands - they lagged too much. Use OnItemAppeared instead
+  <li>Added AutoFighting, Thieving, Prayer, Magic
+  <li>Added AutoMining with fatigue some very sweet commands (WatchObjects and MineNearest)
+  <li>Fixed many bugs, the main would be MoveTo and Action with many params ar supported correctly now.
+</ul>
+Version 1.29 (special edition)<ul>
+  <li><font face="Verdana">AutoFight BETA</font></li>
+  <li><font face="Verdana">AutoComplete</font></li>
+</ul>
+<p>
+<font face="Verdana">
+Version 1.26 (special edition for Bl4ck1E) </font>
+</p>
+<ul>
+  <li><font face="Verdana">HP bug fixed </font>
+</ul>
+<font face="Verdana">Version 1.25 new features: </font>
+<ul>
+  <li><font face="Verdana">Fixed events </font>
+  <li><font face="Verdana">Added some events </font>
+  <li><font face="Verdana">Added some commands </font>
+  <li><font face="Verdana">Fixed some interface bugs </font>
+  <li><font face="Verdana">Prevent Logouts work again </font>
+</ul>
+<font face="Verdana">Version 1.2 new features: </font>
+<ul>
+  <li><font face="Verdana">Fixed bug with events </font>
+  <li><font face="Verdana">Fixed (at least minimized) Win 98/ME lag </font>
+  <li><font face="Verdana">Added auto-logout </font>
+</ul>
+<font face="Verdana">Version 1.1 new features: </font>
+<ul>
+  <li><font face="Verdana">Fixed bug, that disallowed to launch RS when folder names contained spaces
+  </font>
+  <li><font face="Verdana">Fixed minimal item selling price </font>
+  <li><font face="Verdana">Implemented many new commands </font>
+  <li><font face="Verdana">Implemented event system </font>
+  <li><font face="Verdana">Can now write variable names instead of numbers
+  </font>
+  <li><font face="Verdana">Two members servers are added </font>
+</ul>
+<font face="Verdana">The version 1.0 key features: </font>
+<ul>
+  <li><font face="Verdana">Supports Worlds 1,2 and 7 </font>
+  <li><font face="Verdana">Has user authorization </font>
+  <li><font face="Verdana">Has scripting support </font>
+  <li><font face="Verdana">Has mechanism to bypass inactivity logout </font>
+</ul>
+<font face="Verdana">
+<br>
+Making AutoRune was fun, although I think I'm experienced bot maker, AutoRune was something completely
+different from previous bots. It took a whole week for me to make it and all I want right now is to sleep
+and sleep and sleep.... I'm very tired, I hope you enjoyed this document, I will complete it after
+I have a rest. All I want to say - even if the bot gets discovered and banned already tomorrow,
+even then I would not be disappointed. My goal was to make a bot not to have a bot.<br><br>
+Kaitnieks<br>
+
+
+
+
+</font>
+
+
+
+
+<a name="thanks"></a>
+<h1><u><font face="Verdana">Thanks</font></u></h1>
+<font face="Verdana">Thank you <a href="http://www.blumentals.net">Rapids</a> for the very l33t interface.<br>
+Thank you <a href="http://www.evilcowgod.com">evilcowgod</a> for inspiring me to making this. It wasn't
+actually you but your site forums.<br>
+Thanks to Bl4ck1e and KAMU for improving this manual.<br>
+</font>
+</font>
+</body>
+
+</html>

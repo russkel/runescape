@@ -1,0 +1,24 @@
+@attack:
+SetVarLastPlayerID(%ID)
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+ActionVarVar(%x,%y)
+AttackPlayerVar(%ID)
+
+@loop:
+Wait(1)
+-DebugLastServerMessage()
+GoToIfLastServerMessageIs(@attack,"Your opponent is retreating!")
+SetVarMyHP(%HP)
+DebugVar(%HP)
+GoToIfVarBelowNum(@Heal,%HP,15)
+GoTo(@loop)
+
+@Heal:
+SetVarMyX(%x)
+SetVarMyY(%y)
+AddVarNum(%x,1)
+MoveToVarVar(%x,%y)
+UseItem(1)
+
+GoTo(@attack)
+

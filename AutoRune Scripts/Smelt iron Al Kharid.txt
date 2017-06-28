@@ -1,0 +1,146 @@
+WatchObjects(1)
+OnRetryDest(@ABitStuck)
+OnCoordsChanged(@CoordsChanged,%LX,%LY)
+
+
+SetSkipDestTime(155)
+SetRetryDestTime(10)
+SetVarNum(%runs,0)
+
+@banking:
+AddVarNum(%runs,1)
+GoToIfVarAboveNum(@GetSomeSleep,%runs,15)
+;Debug("=========BANK=====")
+
+
+@BankingTalk:
+ResetQuestMenu()
+ResetLastServerMessage()
+SetVarsNearestNPCIn(%x,%y,%ID,87,689,93,700,268)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(10)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+WaitForQuestMenu(10)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+WaitForQuestMenu(10)
+GoToIfLastServerMessageIs(@BankingTalk,"Banker is busy at the moment")
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@BankingTalk)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+Wait(5)
+DepositEverything()
+Wait(10)
+ResetLastServerMessage()
+@WithdrawStuff:
+Withdraw(155,1)
+Wait(2)
+Withdraw(155,1)
+Wait(2)
+Withdraw(151,1)
+Wait(2)
+GoToIfLastServerMessageIsNot(@WithdrawStuff,"You don't have room to hold that object!")
+Wait(10)
+CloseBank()
+Wait(10)
+GoToIfInInventory(@banking,170)
+;- go back mining
+
+MoveTo(87,695)
+MoveTo(85,695)
+MoveTo(85,687,-1,-1)
+MoveTo(84,685,-3,-3,-3,-6)
+MoveToNoWait(84,679)
+Wait(20)
+
+;- smithing
+@SmeltStuff:
+Action(84,679)
+AtObjectWithItem(85,679,1)
+Wait(10)
+WaitForServerMessage(20)
+GoToIfInInventory(@SmeltStuff,151)
+
+
+
+;- back to bank
+MoveTo(80,679)
+MoveTo(80,682,2,2,2,9,5,12)
+MoveTo(86,695,2,0,3,1)
+Wait(30)
+
+GoTo(@banking)
+
+
+
+@GetSomeSleep:
+SetVarNum(%runs,0)
+UseItem(0)
+ResetLastServerMessage()
+SetVarNum(%secs,0)
+@JustWait:
+Wait(10)
+AddVarNum(%secs,1)
+GoToIfVarAboveNum(@GetSomeSleep,%secs,70)
+GoToIfLastServerMessageIsNot(@JustWait,"You wake up - feeling refreshed")
+SetVarNum(%times,0)
+GoTo(@banking)
+
+
+
+
+;===Event OnRetryDest ABitStuck
+; Check where exactly we're stuck
+; If it's at doors, then try to
+; open them, wait a bit and move
+@ABitStuck:
+GoToIfCoordsIn(@StuckOutsideBank,86,695,86,696)
+GoToIfCoordsIn(@StuckInsideBank,87,695,87,696)
+--Debug("stuck")
+ERet()
+
+
+;===Procedure StuckOutsideBank
+; Get's called if bank is closed
+@StuckOutsideBank:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck outside bank, trying to open door")
+ERetToRet()
+Action(86,695)
+AtObject(86,695)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(90,695)
+Ret()
+
+
+;===Procedure StuckInsideBank
+; Get's called if bank is closed
+@StuckInsideBank:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck inside bank, trying to open door")
+ERetToRet()
+Action(87,695)
+AtObject(86,695)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(86,695,-1,-1)
+Ret()
+
+
+
+
+;====Event OcCoordsChanged
+@CoordsChanged:
+GoToIfCoordsIn(@GoodCoords,75,675,93,700)
+Debug("Oooops, we are not at smelting site. Teleported?")
+SaveScreenshot()
+Wait(20)
+StopAndLogOut()
+
+@GoodCoords:
+ERet()
+

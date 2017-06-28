@@ -1,0 +1,119 @@
+-w1r3 Guild miner 1.3
+-Banks Gems
+-Opens doors
+-Anti Fagex built in.
+-Start At fally east bank with pick + sleping bag.
+@Start:
+GoToIfBagFull(@ToBank)
+MoveTo(286,571,1,0,1,-8,-7,-8,-8,-9,-10,-9,-11,-10)
+MoveTo(274,562)
+Wait(10)
+Action(274,562)
+OpenDoor(274,563,0)
+Wait(5)
+MoveTo(274,565)
+Wait(5)
+Action(274,565)
+AtObject(274,566)
+Wait(50)
+GoTo(@Mine)
+
+@Mine:
+ResetLastServerMessage()
+MineNearest(111)
+Wait(25)
+GoToIfBagFull(@ToBank)
+GoTo(@Mine)
+
+@ToBank:
+MoveTo(270,3398,3,0)
+Action(273,3398)
+AtObject(274,3398)
+Wait(10)
+MoveTo(273,564,1,-1)
+Wait(10)
+Action(274,563)
+OpenDoor(274,563,0)
+Wait(5)
+MoveTo(274,562,12,0,13,1,13,9,12,9,12,8,10,6)
+GoTo(@TalkToBanker)
+
+@TalkToBanker:
+SetVarsNearestNPC(%x,%y,%id,95)
+RepeatNextCommandUntilQuestMenu(50)
+TalkToNPCVar(%id)
+Answer(0)
+Wait(60)
+DepositEverything()
+Wait(5)
+CloseBank()
+Wait(15)
+GoTo(@Start)
+
+@zzz:
+UseItem(0)
+ResetLastServerMessage()
+@justwait:
+Wait(10)
+GoToIfInLastServerMessageIs(@Mine,"You wake up")
+GoTo(@justwait)
+
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnPrivateMessage(@RunAndHidePM)
+Ret()
+
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+ERet()
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(16 13 05 )
+Debug("Saying 'Wtf'")
+Wait(10)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+SaveScreenshot()
+StopAndLogOut()
+Wait(1)

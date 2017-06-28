@@ -1,0 +1,45 @@
+// tree chopper. start anywhere (more trees preffered :P :)
+// ::Made by Slingy::
+
+program kill_beavers_save_trees;
+  var Tree, notree: Boolean;
+  fx, fy: Integer;
+Function TreeCheck (var x, y :integer): Boolean;
+begin
+  x:= 270;
+  y:= 160;
+  Result:= False;
+  repeat
+    if(x>510)or(y>330)or(x<0)or(y<0) then
+    begin
+      x:= 270;
+      y:= 160;
+    end;
+  MoveMouse(x,y);
+  Wait(200);
+  If(IsTextAt(6,2,'Tree: Chop'))then
+  Result:= True else
+    begin
+      x:= x + Random(200)-100;
+      y:= y + Random(200)-100;
+    end;
+  until(Result)
+  end;
+begin
+  repeat
+    Tree:= TreeCheck(fx, fy);
+    ClickMouse(fx, fy, True);
+    Wait(5000);
+      begin
+      notree:= False;
+      repeat
+        If(IsTextAt(6,2,'Tree: Chop'))then
+          begin
+            ClickMouse(fx, fy, True);
+            Wait(3500)
+          end else
+        notree:= True;
+      until(notree)
+      end;
+  until(Pos('You are too tired ',GetChatMsg) = 1);
+end.

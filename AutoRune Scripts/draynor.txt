@@ -1,0 +1,30 @@
+OnServerMessage(@Boo)
+
+@Fish:
+Action(221,663)
+AtObject(221,664)
+Wait(7)
+GoTo(@Fish)
+
+@Boo:
+GoToIfLastServerMessageIs(@Sleep,"@gam@You are too tired to catch this fish")
+GoToIfInLastServerMessageIs(@LVL,"advance")
+ERet()
+
+@LVL:
+Debug("1 LVL")
+ResetLastServerMessage()
+ERet()
+
+@Sleep:
+UseItem(0)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,35)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()
+

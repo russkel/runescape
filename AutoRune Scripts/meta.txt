@@ -1,0 +1,27 @@
+@MainLoop:
+
+---meta: shove these under MainLoop
+GoToIfCoordsIn(@InRoom,345,1569,348,1569)
+GoToIfCoordsIn(@BehindRail,345,1570,350,1571)
+
+GoTo(@MainLoop)
+----Meta
+---- Add the followin
+---- to the bottom of script
+@InRoom:
+MoveTo(346,1569)
+Action(346,1569)
+OpenDoor(346,1570,0)
+Wait(30)
+MoveTo(346,1570)
+MoveTo(345,1570)
+MoveTo(345,1574)
+MoveTo(347,1574)
+GoTo(@MainLoop)
+
+@BehindRail:
+MoveTo(347,1570)
+MoveTo(349,1570)
+MoveTo(349,1574)
+MoveTo(347,1574)
+GoTo(@MainLoop)

@@ -1,0 +1,127 @@
+<p align="center"><b><font size="6">Landmark help with pictures</font></b></p>
+<p align="left"><font size="2" face="Arial">In this sample I will simply make a 
+path for going from Falador north gate to Dorik's place. Please try to follow 
+these steps and make a path yourself to learn it better. I'm afraid path making 
+won't get any easier than it is now.<br>
+In this sample I am giving a picture for each step and a text description about 
+what to do under the picture.</font></p>
+<p align="left"><font face="Arial">
+<img border="0" src="step1.png" width="876" height="636"></font></p>
+<p align="left"><font face="Arial" size="2">1. Go to the Falador north gate as 
+shown in picture. To create landmarks do following steps:<br>
+Turn map with north up and compass arrows forming a perfect cross as shown in 
+the sample.<br>
+Open the minimap. Press Ctrl+Alt+L. The landmark editor should open.</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step2.png" width="439" height="541"></font></p>
+<p align="left"><font face="Arial" size="2">2. Cut out the area as shown in 
+picture above. Let's suppose that we want to move somewhere a bit up and left 
+from the selected landmark's corner's, to the place marked with 3,-8 for an 
+example. Why is it 3, -8? 3 - it's how many squares to right from landmark's 
+left side, -8 - it's how many squares down from landmark's upper edge. Remember 
+the coordinate, we will need it for creating path (you can also use the red 
+diagonal cross tool to mark the place). After you have dome, press Ok and you 
+should get a new line in your debug box.</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step3.png" width="439" height="541"></font></p>
+<p align="left"><font face="Arial" size="2">3. Go a little up, cut out the 
+landmark, press Ok. Because there are no obstacles or walls here, make the 
+landmark a bit bigger than usually.</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step4.png" width="439" height="541"></font></p>
+<p align="left"><font face="Arial" size="2">4. Cut out the landmark again, press 
+Ok</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step5.png" width="494" height="547"></font></p>
+<p align="left"><font face="Arial" size="2">5. Notice that you have 3 lines with 
+CreateLandmark(...) in your debug box. Copy them to script as shown above. Add 
+the rest of the lines to the script too. The variable Path should be called in 
+some other name, something, that represents the path. <br>
+Notice how we create the path. As we remember l1 contains landmark at town gate, 
+l2 - at crossroads, l3 - at blacksmith. Here is a part of the script:<br>
+AddLandmarkToPath(DorikPath, l3, 2, 2);<br>
+AddLandmarkToPath(DorikPath, l2, -5, -5);<br>
+AddLandmarkToPath(DorikPath, l1, 3, -8);<br>
+Notice - l3 comes first, then l2 and l1. That's because we add the destination 
+landmarks first and the ones we start the path at as very last.<br>
+Relative coordinates are the coordinates that we wrote down when making 
+landmarks. Basically it's like this<br>
+AddLandmarkToPath(PathVar, LandMarkvar, Something Big Positive, ...); - go far 
+to right from the landmark<br>
+AddLandmarkToPath(PathVar, LandMarkvar, Something Big Negative, ...); - go far 
+to left from the landmark <br>
+AddLandmarkToPath(PathVar, LandMarkvar, ..., Something Big Positive); - go far 
+down from landmark<br>
+AddLandmarkToPath(PathVar, LandMarkvar, ..., Something Big Negative); - go far 
+up from landmark<br>
+They can be zeros - then your character will walk exactly to the upper left 
+corners of the landmarks.</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step6.png" width="491" height="675"></font></p>
+<p align="left"><font face="Arial" size="2">6. Open any script that has GoByPath 
+in it (bedbankrun) and copy the procedure. Paste it somewhere before var's 
+(right after program ProgramName;). You shouldn't 
+change anything but accuracy - if your landmarks are inaccurate and it is not 
+moving as you would like it to - increase this number.</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step7.png" width="491" height="591"></font></p>
+<p align="left"><font face="Arial" size="2">7. Add the final line to make it 
+actually move. Use Path variable as you named it.</font></p>
+<p align="left"><font face="Arial" size="2">
+<img border="0" src="step8.png" width="870" height="544"></font></p>
+<p align="left"><font face="Arial" size="2">8. Launch the script and watch it 
+reach the destination successfully :)</font></p>
+<p align="left"><font face="Arial" size="2">Notes: Be careful with similar 
+landmarks. If you would like to rewrite this tutorial, make it better 
+undersnatndable, send me an e-mail message.<br>
+Don't be afraid to play with landmarks, constants, lines - try to change the 
+numbers, see what happens, change landmark order in path etc. Experiment! That's 
+the only way to learn something, by experimenting.</font></p>
+<p align="left"><font face="Arial" size="2">The final script:</font></p>
+<form method="POST" action="--WEBBOT-SELF--">
+  <!--webbot bot="SaveResults" U-File="fpweb:///_private/form_results.csv" S-Format="TEXT/CSV" S-Label-Fields="TRUE" --><p align="left">
+  <textarea rows="15" name="S1" cols="69">program SimplePath;
+var
+  l1, l2, l3: Integer;
+
+procedure GoByPath(path: Integer);
+var
+  HowFar: Integer;
+  x, y: Integer;
+  r: Extended;
+  Dest: Boolean;
+begin
+  repeat
+    MoveMouse(460,15);
+    Wait(300);
+    ProcessMap;
+    HowFar:= ProcessPath(Path, x, y, r, 0.1);
+
+    Status('HowFar='+IntToStr(HowFar)+' x='+IntToStr(x) + ' y='+IntToStr(y)+' r='+FloatToStr(r));
+    if(r > 0.6)then
+    begin
+      if(HowFar = 0)then
+        ClickMap(x, y, True)
+      else
+        ClickMap(x + Random(3)-1, y + Random(3) - 1, True);
+    end;
+    Dest:= (HowFar=0)and(x<=19)and(x>=17)and(y<=19)and(y>=17);
+    if(not Dest)then
+      Wait(5000);
+  until(Dest);
+end;
+
+var
+  DorikPath: Integer;
+
+begin
+  l1:= CreateLandmark(10, 9, '000005020002000008020002000008020002000003700003500001000001020002200001700002B00002B10001900001000001020002210001F00001B10001000005020002000001E00001100001000005020002000001E00001110001000005020003E20001720001000005020003A20001B20001');
+  l2:= CreateLandmark(14, 15, '00000202000400000B02000300000C02000200000C02000200000C02000200000D02000200000D02000200000D02000200000C02000700000702000700000702000700000602000400000902000400000A02000300000B020002000007');
+  l3:= CreateLandmark(9, 12, '600001720002320001720002500001000002E00001B30001B20001320001B20001F30001D00001000002E00001120001020003E20001D00001000002E00001120001020003E20001D00001000002E00001130001020003E20001D00001000002E00001120001020003E20001D00001000002E20001720002320001720001F20001D00001000002A20001B20002320001B20001B00001900001000002020006000006020004000006020004000006020004');
+  DorikPath:= CreatePath;
+  AddLandmarkToPath(DorikPath, l3, 2, 2);
+  AddLandmarkToPath(DorikPath, l2, -5, -5);
+  AddLandmarkToPath(DorikPath, l1, 3, -8);
+  GoByPath(DorikPath);
+end.</textarea></p>
+</form>

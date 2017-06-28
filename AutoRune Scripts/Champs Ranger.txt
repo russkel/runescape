@@ -1,0 +1,174 @@
+;---------------
+; By KillYuRi
+; Use at champs guild.....
+; Dont use on server 1....
+
+
+@Boo:
+OnLogin(@Init)
+@Init:
+EnableEvents()
+; Set up some events
+OnStatsChanged(@StatsChange,%Stat)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+OnServerMessage(@ServMes)
+
+; Set it to train strength or whatever
+FightMode(1)
+; Ignore those NPCs that are in fight
+; Let AR know, that we are not in fight
+SetVarNum(%FightOver,1)
+
+
+@MainLoop:
+; Don't attack if we are already fighting
+GoToIfVarEqualNum(@DontAttack,%FightOver,0)
+; Attack if any enemies visible
+GoToIfNPCNearIn(@Attack,144,563,147,558,3)
+; Otherwise don;t attack
+GoTo(@DontAttack)
+GoToIfCoordsIn(@MoveBack1,144,563,147,565)
+GoToIfCoordsIn(@MoveBack2,138,552,147,556)
+
+
+@Attack:
+; Attack only if my HP is above certain number
+; or unknown
+GoToIfCoordsIn(@MoveBack1,144,563,147,565)
+GoToIfCoordsIn(@MoveBack2,138,552,147,556)
+SetVarMyHP(%HP)
+GoToIfVarEqualNum(@Attack2,%HP,0)
+GoToIfVarBelowNum(@DontAttack,%HP,5)
+GoToIfLastServerMessageIs(@Sleep,"@gre@You are too tired to gain experience, get some rest!")
+
+
+@Attack2:
+; get coords and ID of nearest enemy
+SetVarsNearestNPC(%x,%y,%ID,3)
+; attack the enemy
+ActionVarVar(%x,%y)
+AttackNPCVar(%ID)
+; let AR know that we are in fight now
+SetVarNum(%FightOver,0)
+; reset idle counter
+SetVarNum(%IdleC,0)
+
+
+@DontAttack:
+Wait(5,6)
+
+; count how many loops we are idling
+AddVarNum(%IdleC,1)
+; if more than 20 loops - attack next enemy
+GoToIfVarAboveNum(@FightNext,%IdleC,1)
+GoTo(@MainLoop)
+
+
+@FightNext:
+; tell AR that we are not fighting
+SetVarNum(%FightOver,1)
+; reset idle counter
+SetVarNum(%IdleC,0)
+GoTo(@MainLoop)
+
+
+
+;--- OnStatChaged
+@StatsChange:
+@CanMove:
+;If my HitPoints skill changed, it means
+;fight is over
+GoToIfVarEqualNum(@SetCanMove,%Stat,3)
+ERet()
+@SetCanMove:
+SetVarNum(%FightOver,1)
+SetVarNum(%IdleC,0)
+ERet()
+
+
+;--- OnServerMessage
+@ServMes:
+;-- If someone stole your enemy
+GoToIfLastServerMessageIs(@Sleep,"@gre@You are too tired to gain experience, get some rest!")
+
+ERet()
+
+
+
+@MoveBack1:
+MoveTo(144,560)
+ERet()
+
+@MoveBack2:
+MoveTo(144,560)
+ERet()
+
+
+@Sleep:
+UseItem(5)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,25)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()
+
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+ERet()
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(16 13 05 )
+Debug("Saying 'Wtf'")
+Wait(10)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+SaveScreenshot()
+StopAndLogOut()
+Wait(1)

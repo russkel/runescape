@@ -1,0 +1,28 @@
+@Boo:
+Action(106,503)
+AtObject(106,502)
+Wait(5)
+GoToIfLastServerMessageIs(@Drink,"@gam@There is nothing more you can learn from hitting a dummy")
+Action(106,503)
+AtObject(106,504)
+Wait(5)
+GoToIfLastServerMessageIs(@Drink,"@gam@There is nothing more you can learn from hitting a dummy")
+GoTo(@Boo)
+
+@Drink:
+UseItemByID(193)
+Wait(30)
+ResetLastServerMessage()
+GoTo(@Boo)
+
+@Buy:
+RepeatNextCommandUntilQuestMenu(20,1)
+TalkToNPC(279)
+Answer(0)
+Wait(20)
+GoTo(@Buy)
+
+@Drop:
+DropItemByID(620)
+Wait(5)
+GoTo(@Drop)

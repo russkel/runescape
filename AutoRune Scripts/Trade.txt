@@ -1,0 +1,47 @@
+;will trade with player folija
+;and accept everything she gives
+
+ResetLastServerMessage()
+OnTradeAccepted(@TradeAccepted)
+
+
+@Loopy:
+Wait(10)
+;DebugLastServerMessage()
+GoToIfLastServerMessageIs(@TradeFol,"@bor@Folija: wishes to trade with you")
+GoTo(@Loopy)
+
+
+@TradeFol:
+ResetLastServerMessage()
+SetVarPlayerByName(%ID,"folija")
+GoToIfVarNotEqualNum(@FoundPlayer,%ID,-1)
+Debug("cant trade")
+GoTo(@Loopy)
+
+@FoundPlayer:
+SetVarsPlayer(%ID,%x,%y,%lvl,%HP)
+DebugVar(%ID,%x,%y,%lvl,%HP)
+GoToIfPlayerVisibleVar(@visible,%ID)
+
+GoTo(@Loopy)
+
+@visible:
+Debug("I can see them")
+TradePlayerVar(%ID)
+
+GoTo(@Loopy)
+
+
+
+;Event - trade accepted
+@TradeAccepted:
+Debug("Trade accepted")
+Wait(10)
+Accept1()
+Wait(30)
+Accept2()
+Wait(30)
+ERet()
+
+

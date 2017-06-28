@@ -1,0 +1,401 @@
+<style>
+<!--
+body         { font-family: Verdana; font-size: 9pt; letter-spacing: -0 }
+a            { font-family: Verdana; font-size: 8pt; font-weight: bold }
+-->
+</style>
+<p align="center"><b><font size="4">SCAR CDE Manual 1.0</font></b></p>
+<p align="left"><b><font size="2">Introduction<br>
+</font></b>There used to be a cheat for THE GAME which was able to do virtually every 
+boring action the players do every day over and over again. The name was 
+AutoRune. It worked on almost all Windows systems and introduced scriptable 
+cheats for the game, it could do anything except auto-PKing. The problem however 
+was, that THE COMPANY could easily make it cease to work by changing the game 
+communication protocol, which they did. Now the AutoRune and other bots, like 
+RuneBot are useless and dead. AutoRune due to communication protocol change, 
+RuneBot due to making the JAVA code undecompilable or at least much harder to 
+decompile. So people have to get their old clickers out of the shelves, clean 
+dust off them and cheat as much as they can, which is not very much, but at least  
+something.<br>
+My ultimate goal was to make the best clicker for the game, however I realized 
+fast, that there could be no &quot;best&quot; as some people prefer functionality but 
+others ease to use. So I decided to design a CDE for the game, something that 
+has never been tried before. CDE stands for cheat development environment. SCAR 
+stands for Shite Compared to AutoRune. It's not just a clicker, it's a 
+programmable clicker using Pascal language and I'm also planning to add 
+possibility to compile the scripts to exe files, so anyone with basic Pascal and 
+SCAR knowledge can create their own fully functional cheats. Do it while you 
+can, color macros is not the future of THE GAME, I have my own reasons to 
+believe in it, I will however keep them with myself.<br>
+I won't go deep into explanation of Pascal language, there are plenty tutorials 
+out there, use <a href="http://www.google.com">www.google.com</a> but I will 
+demonstrate some basic control structures and compare some of them to AutoRune script.</p>
+<p align="left"><b><font size="2">General<br>
+</font></b>You should start with trying out sample scripts. The shortcut keys 
+are Ctrl+Alt+R to run script and Ctrl+Alt+S to stop.<br>
+If it doesn't click for some reason or you are using SUN JAVA VM, turn off 
+silent mouse from Tools menu.<br>
+If it can't find the client window, select Specify Client title from Tools menu 
+and enter the title of the client you are using. Character case does matter.<br>
+If it can't handle the map (map failed), make sure you have turned it correctly 
+(the north should be pointing perfectly up and the cross should be perfectly 
+straight)<br>
+If it can't read texts or there are any other problems, make sure you have 
+extracted all required files and directories from the archive.</p>
+<p align="left"><b><font size="2">Pascal basics<br>
+</font></b>Some Pascal basics can be found here, but I must warn you that the site will 
+scare you: <a href="http://www2.iicm.edu/hmcard/courseware/pascal/Pascal2.htm">
+http://www2.iicm.edu/hmcard/courseware/pascal/Pascal2.htm</a><br>
+You really should find and read a serious Pascal tutorial, this will give you an 
+idea, not teach the Pascal language.<br>
+The simplest Pascal program:<br>
+<font face="Lucida Console" size="2">begin<br>
+end.<br>
+</font>As you see, it requires 2 lines - begin shows where the program starts, end with 
+dot - where it ends. Everything after it gets ignored. A better program would 
+be:</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left" style="margin-top: 5; margin-bottom: 5">
+<font face="Lucida Console" size="2">program MyFirst;<br>
+begin<br>
+&nbsp; Writeln ('Hello World!');<br>
+end.</font></p>
+</div>
+<p align="left">It's a good style to specify program name at the beginning, also pay attention 
+to spacing, small and capital letters, usage of semicolons.<br>
+Here is a thing about variables. I know most of you avoided them at all in AR 
+script, but they are easier here (I hope). The variables have types. SCAR 
+supports less types than Pascal and for those who are familiar with Pascal - it 
+doesn't support arrays (ok it actually does, I just didn't want to explain it 
+here :P). Here are types you will use:</p>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="33%">string</td>
+    <td width="33%">Text, string of characters</td>
+    <td width="34%">'a', 'some text', 'awaa'#13'bah'</td>
+  </tr>
+  <tr>
+    <td width="33%">Integer</td>
+    <td width="33%">Whole numbers, positive and negative</td>
+    <td width="34%">0, 1, 2, 3, ..., -1, -2, -3, ...</td>
+  </tr>
+  <tr>
+    <td width="33%">Extended</td>
+    <td width="33%">Real numbers, positive and negative</td>
+    <td width="34%">0, 1.5, -100.67, 100.3333</td>
+  </tr>
+  <tr>
+    <td width="33%">Boolean</td>
+    <td width="33%">Have only 2 values - true or false</td>
+    <td width="34%">True, False</td>
+  </tr>
+</table>
+<p align="left">There are other types too, but these are the main to operate with. A simple 
+example:</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left" style="margin-top: 5; margin-bottom: 5">
+<font face="Lucida Console" size="2">program VarDemo;<br>
+var s: string;<br>
+begin<br>
+&nbsp; s:= 'Hello World!';<br>
+&nbsp; Writeln(s);<br>
+end.</font></p>
+</div>
+<p align="left">As you see, we have to use var variable_name : type; to define the variable 
+before using it.<br>
+You will sometimes want to print out Integer and Extended type variable values, 
+so here is a sample to do it as only strings can be printed out. A sample of 
+type conversion:</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">program PrintNumbers;<br>
+var i: Integer;<br>
+&nbsp;&nbsp;&nbsp;
+e: Extended;<br>
+begin<br>
+&nbsp;
+i:= 10;<br>
+&nbsp;
+e:= 3.5;<br>
+&nbsp;
+Writeln('i=' + IntToStr(i) + ', e=' + FloatToStr(e));<br>
+end.</font></p>
+</div>
+<p align="left">(Copy and paste it in SCAR window to test)<br>
+What can you do with variables? It depends on variable type. You can concatenate 
+string variables: s:= 'wo' + 'rd'; will result with 'word' in variable s. You 
+can do a whole bunch of arithmetic operations with Integer and Extended: i:= 4 + 
+5 will result with 9 in i etc. Boolean are useful too. You can set it to true or 
+false: b:= True; or to logical condition b:= (a = 1); will result with True in b 
+is a is equal to 1 or False if a is equal to anything else.<br>
+Now about control types. I will use AR script to compare.<br>
+<i>Conditional statement</i>.</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">&nbsp; if( a = 1)or(a = 4)then<br>
+&nbsp; begin<br>
+&nbsp;&nbsp;&nbsp; a:= 0;<br>
+&nbsp;&nbsp;&nbsp; Writeln('a was 1 or 4 so we made it to zero');<br>
+&nbsp; end else<br>
+&nbsp; begin<br>
+&nbsp;&nbsp;&nbsp; Writeln('a was neither 1 nor 4');<br>
+&nbsp; end;</font></p>
+</div>
+<p align="left">This script checks if variable a is 1 or 4 and acts accordingly. Here is 
+AutoRune equivalent for ARscripters:</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">GoToIfVarEqualNum(@Label1, %a, 1)<br>
+GoToIfVarEqualNum(@Label1, %a, 4)<br>
+Debug(&quot;a was neither 1 nor 4&quot;)<br>
+GoTo(@Label2)<br>
+Label1:<br>
+SetVarNum(%a, 0)<br>
+Debug(&quot;a was 1 or 4 so we made it to zero&quot;)<br>
+Label2:</font></p>
+</div>
+<p align="left">Which one is easier?<br>
+<i>While loops.</i></p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">i:= 0;<br>
+while(i &lt; 10) do<br>
+begin<br>
+&nbsp; i:= i + 1;<br>
+&nbsp; Writeln(IntToStr(i));<br>
+end;</font></p>
+</div>
+<p align="left">AR script equivalent:</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">SetVarNum(%i, 0)<br>
+@LoopStart:<br>
+GoToIfVarAboveNum(@EndLoop, %i, 9)<br>
+AddVarNum(%i, 1)<br>
+DebugVar(%i)<br>
+GoTo(@LoopStart)<br>
+@EndLoop:</font></p>
+</div>
+<p align="left"><i>Repeat loop</i> is very similar, except the condition is checked at the end of the 
+loop and it's exit condition (if it's true, the loop ends), so it always go 
+through repeat-until loop at least 1 time.</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">i:= 0;<br>
+repeat<br>
+&nbsp; i:= i + 1;<br>
+&nbsp; Writeln(IntToStr(i));<br>
+until(i &gt;= 10);</font></p>
+</div>
+<p align="left">AR script equivalent:</p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">SetVarNum(%i, 0)<br>
+@LoopStart:<br>
+AddVarNum(%i, 1)<br>
+DebugVar(%i)<br>
+GoToIfVarBelowNum(@LoopStart, %i, 10)</font></p>
+</div>
+<p align="left"><i>For loops.</i></p>
+<div style="border-left-style: solid; border-left-width: 1; padding-left: 4">
+<p align="left"><font face="Lucida Console" size="2">for i:= 1 to 10 do<br>
+begin<br>
+&nbsp; Writeln(i);<br>
+end;</font></p>
+</div>
+<p align="left">In AR Script you would have to use while loop or repeat-until equivalent.&nbsp;
+<br>
+That's all about control structures. You will understand more from the examples 
+included with SCAR.</p>
+<p align="left"><b><font size="2">Creating map walking<br>
+</font></b>This section explains how to create map walking scripts. The 
+functions/procedures that you will have to use are: CreateLandmark, CreatePath, 
+AddLandmarkToPath, ProcessMap, ProcessPath.<br>
+How does it work? First thing to do is to create landmarks all along the path. 
+To do it, open the minimap (compass arrows have to make a perfect, straight 
+cross) and press &quot;Create Landmark&quot;. If everything is correct, a copy of minimap 
+should appear with all objects, walls etc in it. Cut out the area you want to 
+create the landmark of. I prefer landmarks in width and height 25% of minimap's 
+width and height and smaller. Then press ok. It should generate CreateLandmark 
+command for you. Do it all along the path, make sure every next landmark is 
+perfectly visible from the previous one. They can't be too close. After you have 
+done that, you will have a list of them. Assign them to variables (like in 
+sample scripts).<br>
+Next thing you do is creating the path. Create new path with CreatePath like in 
+sample scripts.<br>
+Now you need to add the landmarks to the path. The sequence is important - the 
+destination landmark comes first, then the one right before it etc, the last one 
+is the place you start at. Let's say we have AddLandmarkToPath(BedPath, 
+LandMark4, 5, -4); What do the numbers mean? BedPath is path variable, LandMark4 
+is landmark variable, 5, -4 are coordinates - x, y. x, y represents relative 
+coordinates from the landmark that should be clicked to move along the path. In 
+this example SCAR will click 5 squares to right from the landmark's left side 
+and 4 squares above the landmark's upper edge.<br>
+Now that the paths are created, we need to move by them somehow. I propose to 
+use this procedure:<br>
+<font face="Lucida Console">procedure GoByPath(path: Integer);<br>
+var<br>
+&nbsp; HowFar: Integer;<br>
+&nbsp; x, y: Integer;<br>
+&nbsp; r: Extended;<br>
+&nbsp; Dest: Boolean;<br>
+begin<br>
+&nbsp; repeat<br>
+&nbsp;&nbsp;&nbsp; MoveMouse(460,15);<br>
+&nbsp;&nbsp;&nbsp; Wait(200);<br>
+&nbsp;&nbsp;&nbsp; ProcessMap;<br>
+&nbsp;&nbsp;&nbsp; HowFar:= ProcessPath(Path, x, y, r, 0.1);<br>
+&nbsp;&nbsp;&nbsp; Status('HowFar='+IntToStr(HowFar)+' x='+IntToStr(x) + ' y='+IntToStr(y)+' 
+r='+FloatToStr(r));<br>
+&nbsp;&nbsp;&nbsp; if(r &gt; 0.6)then<br>
+&nbsp;&nbsp;&nbsp; begin<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(HowFar = 0)then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ClickMap(x, y, True)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ClickMap(x + Random(3)-1, y + 
+Random(3) - 1, True);<br>
+&nbsp;&nbsp;&nbsp; end;<br>
+&nbsp;&nbsp;&nbsp; Dest:= (HowFar=0)and(x&lt;=19)and(x&gt;=17)and(y&lt;=19)and(y&gt;=17);<br>
+&nbsp;&nbsp;&nbsp; if(not Dest)then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wait(5000);<br>
+&nbsp; until(Dest);<br>
+end;<br>
+</font>If you want to know how ProcessPath works, keep reading. It has 5 
+parameters ProcessPath(Path, x, y, r, tolerance); Path is path variable, x, y 
+are variables where coordinates to be clicked are returned, r returns 
+possibility that we are still on the path (0..1), where 0 means that we are 
+totally lost (or map is closed or turned to wrong angle) and 1 means it's a 
+perfect match. tolerance contains allowed error. Like, if you are near landmark 
+l2 and you see landmark l1 which is your destination, it will go to l1 whenever 
+match of that landmark + tolerance =&gt; match of the current landmark. I suggest 
+to use 0.1 or 0.2 as tolerance. If you are required to use bigger then your 
+landmarks are somehow bad.<br>
+&nbsp;</p>
+<p><b><font size="2">Standard functions.<br>
+</font></b>This is a list to functions you can use which do not requite THE CLIENT window. 
+The most useful (for you) functions are underlined.<br>
+<u>procedure Writeln(s: string);</u> - outputs string to debug box<u><br>
+procedure Status(s: string);</u> - shows a message in status bar<u><br>
+function Readln(question: string): string;</u> - asks question to user and 
+returns the answer<u><br>
+procedure Wait(ms: Integer);</u> - Waits ms milliseconds (Wait(1000) - wait 1 
+second). You should use this to avoid freezing.<u><br>
+function inttostr(i: Longint): string;</u> - converts integer to string.<u><br>
+function strtoint(s: string): Longint;</u> - converts string to integer.<u><br>
+</u>function strtointdef(s: string; def: Longint): Longint;<br>
+<u>function copy(s: string; ifrom, icount: Longint): string;</u> - returns part 
+of the string (Copy('abcde',2,3) would return 'bcd'.<u><br>
+function pos(substr, s: string): Longint;</u> - returns position of substring in 
+string. Returns 0 if not found.<u><br>
+procedure delete(var s: string; ifrom, icount: Longint): string;</u> - delete 
+part of string<u><br>
+procedure insert(s: string; var s2: string; ipos: Longint): string;</u> - insert 
+s into s2.<u><br>
+</u>function getarraylength: integer;<br>
+procedure setarraylength;<br>
+Function StrGet(var S : String; I : Integer) : Char;<br>
+procedure StrSet(c : Char; I : Integer; var s : String);<br>
+<u>Function Uppercase(s : string) : string;<br>
+Function Lowercase(s : string) : string;<br>
+Function Trim(s : string) : string;<br>
+Function Length(s : String) : Longint;<br>
+</u>procedure SetLength(var S: String; L: Longint);<br>
+function Random(Range: Integer): Integer;<br>
+Function Sin(e : Extended) : Extended;<br>
+Function Cos(e : Extended) : Extended;<br>
+Function Sqrt(e : Extended) : Extended;<br>
+Function Round(e : Extended) : Longint;<br>
+Function Trunc(e : Extended) : Longint;<br>
+Function Int(e : Extended) : Longint;<br>
+Function Pi : Extended;<br>
+Function Abs(e : Extended) : Extended;<br>
+<u>function StrToFloat(s: string): Extended;<br>
+Function FloatToStr(e : Extended) : String;<br>
+</u>Function Padl(s : string;I : longInt) : string;<br>
+Function Padr(s : string;I : longInt) : string;<br>
+Function Padz(s : string;I : longInt) : string;<br>
+Function Replicate(c : char;I : longInt) : string;<br>
+Function StringOfChar(c : char;I : longInt) : string;<br>
+function VarGetType(x: Variant): TVarType;<br>
+function Null: Variant;<br>
+procedure RaiseLastException;<br>
+procedure RaiseException(Ex: TIFException; Param: string);<br>
+function ExceptionType: TIFException;<br>
+function ExceptionParam: string;<br>
+function ExceptionProc: Cardinal;<br>
+function ExceptionPos: Cardinal;<br>
+function ExceptionToString(er: TIFException; Param: string): string;<br>
+Function means that the function returns a value, procedure just does something 
+and doesn't return anything. Parameters and their types are specified in 
+brackets and as the last comes type of function return value.</p>
+<p><b><font size="2">Client related functions<br>
+</font></b>function GetChatMsg: string; - get latest chat or system message<br>
+function GetUpperMsg: string; - get upper message, the one that shows what kind 
+of monster the mouse is over etc<br>
+function GetTextAt(x, y: Integer): string; - get text at the specified 
+coordinates. (For an example, chat message is at 7,304 and upper message is at 
+6,2)<br>
+function IsTextAt(x, y: Integer; S: String): Boolean; - works fater than 
+GetTextAt - compares if there is specified text at x,y.<br>
+function IsTextInArea(x1, y1, x2, y2: Integer; var x, y: Integer; S: String): 
+Boolean; - searches for text in S in box specified by x1, y1, x2, y2. Returns 
+coordinates of the text in x, y if found.<br>
+procedure MoveMouse(x,y: integer); - simulate mouse movement, move cursor to x,y.<br>
+procedure ClickMouse(x,y: integer; Left: boolean); - simulate mouse click at x,y.<br>
+procedure SetMouseMode(Silent: boolean); - if SetMouseMode(True) then it will 
+move and click without moving mouse cursor. If that doesn't work, use 
+SetMouseMode(False);<br>
+function Random(Range: Integer): Integer; - returns random 0 &lt;= number &lt; Range<br>
+function GetColor(x,y: Integer): Integer; - Return color number at x,y.<br>
+function GetFightMode: Integer; - Will return 0 is fight mode selection is 
+invisible, 1 for controlled, 2 for str, 3 for att and 4 for def.<br>
+function FindColor(var x,y: Integer; color, xs, ys, xe, ye: Integer): Boolean; - 
+find color in box specified by xs, ys, xe, ye starting from left to right. 
+Returns True if color found, the coordinates of the color if found is put in x,y.<br>
+function FindColorSpiral(var x,y: Integer; color, xs, ys, xe, ye: Integer): 
+Boolean; - find color in box specified by xs, ys, xe, ye but start from x,y.<br>
+function FindColorSpiral2(var x,y: Integer; color, xs, ys, xe, ye: Integer): 
+Boolean; - find color just like FindColorSpiral, and if there is a big spot of 
+that color then it finds the center of it.<br>
+SpiralFindObj(var x,y: Integer; color, xs, ys, xe, ye: Integer; Step: Integer; 
+Text: string; WaitTime, MaxTime: Integer): Boolean; - universal function for 
+easier object/monster finding. x, y contain coordinates to start search from and 
+return coordinates of spot if object found, color - object color or -1 if the 
+color is ignored, xs, ys, xe, ye specify box to search in (set them to -1 to 
+search the whole client screen), Step - how many pixels skip (as more as 
+faster), test - upper text to look for that appears when mouse is over the 
+object, WaitTime - time in milliseconds to wait before reading the text after 
+moving the mouse, MaxTime - maximum time to search (if not found during tha 
+time, give up)<br>
+procedure Wait(ms: Integer); -see above<br>
+function SetTimeout(secs: Integer; procname: string): Integer; - set timed 
+procedure. After secs seconds a procedure with name procname will be called. The 
+procedure has no parameters and it's only called once (you can SetTimeout again 
+in the procedure).<br>
+procedure SendKeys(S: String); - simulate key pressing to send a string to the 
+active window.<br>
+procedure SendKeysSilent(S: String); - send string to Client's window, if this 
+doesn;t work, use SendKeys<br>
+function StartScreen: Boolean; - returns True if the screen with buttons &quot;New 
+User&quot; and &quot;Existing User&quot; is visible<br>
+function LoginScreen: Boolean; - returns True if the login screen is visible<br>
+procedure FindRSWindow; - finds Client window (you can use it in cases if it's 
+not found before)<br>
+function CreateLandmark(W, H: Integer; Data: string): Integer; - creates 
+landmark. Use Script &gt; Create landmark from main menu to generate a correct 
+landmark<br>
+function FindLandmark(LandMark: Integer; var x,y: Integer; var accuracy: 
+Extended): Boolean; - searches for the landmark in map (Get map into memory with 
+ProcessMap first). x and y returns top left corner of the landmark in map, r 
+contains 1 if the place in map matches the landmark perfectly and 0 if it's 
+totally different.<br>
+procedure ProcessMap; - reads the map into memory. Minimap must be open.<br>
+procedure ClickMap(x,y: integer; Left: boolean); - click map coordinates. 18,18 
+are your coordinates.<br>
+function CreatePath: Integer; - Create new path<br>
+procedure AddLandmarkToPath(path, landmark, x, y: Integer); - add landmark to 
+path, x,y contain relative coordinates from the top left corner of the landmark 
+that should be clicked.<br>
+function ProcessPath(path: Integer;var x, y: Integer; var accuracy: Extended; 
+Tolerance: Extended): Integer; - moves further by the path. Returns x, y - map 
+coordinates that should be clicked, accuracy that we're on the path 0..1 and 
+function value is number of the current landmark in the path. <br>
+function LoadBitmap(path: string): Integer; - Loads bitmap (*.bmp) in memory and 
+returns handle to it. Path can be absolute or relative if starts with a dot.<br>
+function FindBitmap(bitmap: Integer; var x, y: Integer): Boolean; - search for 
+the bitmap in client window. If found coordinates are returned in x,y. bitmap 
+contains handle to bitmap generated by LoadBitmap.<br>
+&nbsp;</p>

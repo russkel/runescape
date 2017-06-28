@@ -1,0 +1,23 @@
+program New;
+procedure Timer; export;
+begin
+  Writeln('Timerproc');
+  Wait(2000);
+  Writeln('End TimerProc');
+  SetTimeout(5,'TIMER');
+end;
+
+procedure Timer_once; export;
+begin
+  Writeln('Timerproc_called once');
+end;
+
+begin
+  SetTimeout(5,'TIMER');
+  SetTimeout(10,'TIMER_ONCE');
+  while(true)do
+  begin
+    Wait(200);
+    Writeln('a');
+  end;
+end.

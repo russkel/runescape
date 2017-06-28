@@ -1,0 +1,154 @@
+//Rats fighter script
+//Start in Melzar's maze
+//by Kaitnieks
+program ClickerTest;
+//Uncomment the line that fits you
+//const FightM = 1;  //Controlled
+const FightM = 2;  //Agressive
+//const FightM = 3;  //Accurate
+//const FightM = 4;  //Defensive
+
+const MyWait = 200; //50 for fast computers
+
+
+
+var
+  f, x, y, i: Integer;
+  username, password: string;
+  Secs: Integer;
+  IsRat: Boolean;
+  IdleCount, Maze: Integer;
+  R: Extended;
+begin
+  //This line was not written manually but
+  //by pressing Script > Create Landmark
+  Maze:= CreateLandmark(9, 9, '000004400002E00001D00001000004200001B00001F00003100001000005E00001F00002100001000005E00001D00001E00001100001400005E00001D00001E00001100001F00001B00005900001E00001100001F00001710001700005F00001100001B00008100001000009');
+
+  //Don't save password in source code for safety
+  username:= readln('Enter your USERNAME for autologin:');
+  password:= readln('Enter your PASSWORD for autologin:');
+  Status('Here we go, '+username+'!');
+
+  //The main loop - it never ends
+  while (True) do
+  begin
+    //if logged out press Cancel
+    if(LoginScreen)then
+    begin
+      Writeln('Clearing username, password fields');
+      ClickMouse(400,280,True);
+      Wait(2000);
+    end;
+    //If logged out select Existing User
+    if(StartScreen)then
+    begin
+      Writeln('Choosing existing user');
+      ClickMouse(340,280,True);
+      Wait(4000);
+    end;
+    //If logged out, log in
+    if(LoginScreen)then
+    begin
+      Writeln('Trying to log in');
+      ClickMouse(100,260,True);
+      Wait(500);
+      SendKeysSilent(username);
+      Wait(2000);
+      ClickMouse(120,310,True);
+      Wait(500);
+      SendKeysSilent(password);
+      Wait(2000);
+      ClickMouse(380,250,True);
+      Wait(6000);
+    end;
+    //If we have Welcome to RuneScape open, close it
+    if(GetColor(56,117)=16777215)and
+      (GetColor(57,118)=0)and
+      (GetColor(455,216)=16777215)and
+      (GetColor(454,215)=0)
+    then
+    begin
+      Writeln('Closing Welcome box');
+      ClickMouse(250,208,True);
+      Wait(2000);
+    end;
+    //Choose random numbers for x and y
+    x:= Random(500);
+    y:= Random(320);
+    Secs:= MyWait;
+    //get fight mode (0 - not fighting)
+    f:= GetFightMode;
+    Wait(0);
+
+    if(f = 0)then //if we are not fighting
+    begin
+      //Search for rat at the randomly chosen x, y
+      //If you are changing this to fight other monsters
+      //Change 7159865 to the new monster's color
+      if(FindColorSpiral2(x,y,7159865,x-120,y-120,x+120,y+120))then
+      begin
+        //If rat color found
+        MoveMouse(x,y);
+        i:= 0;
+        IsRat:= False;
+        //A little loop which ends either when text appears
+        //or 0.2 seconds elapse
+        repeat
+          Wait(10);
+          //Change this text if making it to fight other monsters
+          IsRat:= IsTextAt(6,2,'Rat (level-13)');
+          i:= i + 1;
+        until(i>20)or(IsRat);
+        //if the text appeared
+        if(IsRat)then
+        begin
+          //Attack the rat
+          Writeln('It''s a rat!');
+          ClickMouse(x, y, True);
+          //next rat will be attacked after 4 seconds
+          Secs:= 4000;
+        end;
+        //reset idle counter
+        IdleCount:= 0;
+      end else
+      begin
+        //we haven't attacked anything, increase idle counter
+        IdleCount:= IdleCount + 1;
+        //if we haven;t attacked 50 times
+        //--If you are changing this script for other monsters
+        //--remove this if-then structure
+        if(IdleCount > 50)then //(10 seconds)
+        begin
+          //Move mouse to open minimap
+          MoveMouse(460,20);
+          Wait(MyWait);
+          //Read minimap
+          ProcessMap;
+          //Find the maze center in minimap
+          FindLandMark(Maze, x, y, R);
+          //output for debug purposes
+          Writeln('x='+IntToStr(x) + ', y='+IntToStr(y)+', R='+FloatToStr(R));
+          //R shows probability that the right thing has been found
+          //R=1.0 for perfect match, R=0 for the worst (usually it's 0.8, 0.9)
+          //If we are for 70% sure this is the maze that we found
+          //then click on it to move to center
+          if(R > 0.7)then
+            ClickMap(x+2,y+1,True);
+          Wait(100);
+          MoveMouse(10,10)
+          IdleCOunt:= 0;
+        end;
+        //--end of the if-then structure to remove if changing the script
+      end;
+    end else
+    begin
+      //if fight mode is not agressive
+      if(f <> FightM)then
+      begin
+        Writeln('Switching to right fightmode');
+        ClickMouse(100, 25 + 20*FightM, True);
+      end;
+    end;
+    Wait(Secs);
+  end;
+end.

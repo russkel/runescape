@@ -1,0 +1,271 @@
+; Start in Rimmington mines
+; between the 2 iron rocks
+; Created by Kaitnieks
+; Added some Jagex protection
+
+OnTimer(@Timer2,2,3000)
+OnTimer(@Timer3,3,216000)
+OnTimer(@Timer,1,1000)
+OnServerMessage(@ServerMessage)
+
+SetOnPlaceTime(2400)
+
+FightMode(1)
+SetVarNum(%BedTimes,5)
+ResetLastServerMessage()
+
+@BeforeMining:
+WatchObjects(1)
+
+; movement parameters
+SetSkipDestTime(175)
+SetRetryDestTime(15)
+SetRetryDestMode(1)
+OnRetryDest(-1)
+
+@MiningStart:
+GoToIfBagFull(@GoToBank)
+GoToIfLastServerMessageIs(@GoToBank,"@gam@You are too tired to mine this rock")
+GoToIfLastServerMessageIs(@LostPickaxe,"@gam@You need a pickaxe to mine the rock")
+
+; If north rock has respawned, mine it
+SetVarObject(%d,270,640)
+GoToIfVarEqualNum(@MineNRock,%d,102)
+; If south rock has respawned, mine it
+SetVarObject(%d,270,642)
+GoToIfVarEqualNum(@MineSRock,%d,102)
+Wait(2)
+GoTo(@MiningStart)
+
+@MineNRock:
+Action(270,641)
+AtObject(270,640)
+Wait(27,30,32)
+GoTo(@MiningStart)
+
+@MineSRock:
+Action(270,641)
+AtObject(270,642)
+Wait(27,30,32)
+GoTo(@MiningStart)
+
+@GoToBank:
+MoveTo(269,641,0,-4,-3,-7,-3,-9,-11,-17)
+MoveTo(257,624,-9,-9,-9,-10,-13,-14)
+MoveTo(244,594,-1,-1)
+MoveTo(243,579,1,-1)
+
+;-- Settings for door checking
+SetSkipDestTime(175)
+SetRetryDestTime(15)
+SetRetryDestMode(0)
+OnRetryDest(@ABitStuck)
+
+MoveTo(246,576,3,0,3,3,3,4)
+AddVarNum(%BedTimes,-1)
+DebugVar(%BedTimes)
+GoToIfVarAboveNum(@SkipSleep,%BedTimes,0)
+Action(250,578)
+AtObject(250,579)
+Wait(120)
+SetVarNum(%BedTimes,5)
+@SkipSleep:
+MoveTo(249,576,-6,0,-11,-5,-11,-6,-15,-10)
+
+@Banking:
+GoToIfCoordsIn(@AmInsideBank,238,573,232,564)
+GoTo(@GoInsideBank)
+
+@AmInsideBank:
+GoToIfNPCNear(@ISeeBanker,95)
+
+--- WTF - no bankers visible?
+--- maybe we should leave this screen
+--- and come back again
+Debug("I don't see any bankers here!")
+MoveTo(238,571,1,0,1,-11,7,-17)
+MoveTo(245,553,9,-9)
+MoveTo(254,548,-5,5,-5,6,-12,13)
+MoveTo(242,568,-3,3,-4,3,-8,-1)
+GoTo(@Banking)
+
+; Talk to the nearest banker every time
+@ISeeBanker:
+ResetQuestMenu()
+SetVarsNearestNPCIn(%x,%y,%ID,238,573,232,564,95)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(30)
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@Banking)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+Wait(5)
+DepositEverything()
+Wait(5)
+CloseBank()
+
+-- Leave the bank and go mining
+MoveTo(238,572,1,0,1,5,4,8,4,12,11,19)
+
+;--- Settings to retry/skip coords if needed
+SetSkipDestTime(175)
+SetRetryDestTime(15)
+SetRetryDestMode(1)
+OnRetryDest(-1)
+
+MoveTo(249,595,6,6,6,7,13,14)
+MoveTo(262,623,3,3)
+MoveTo(265,638,3,3)
+; Back to the start
+GoTo(@BeforeMining)
+
+
+@GoInsideBank:
+MoveTo(240,571)
+MoveTo(235,571,-2,-2)
+GoTo(@Banking)
+
+
+
+
+;===Event OnRetryDest ABitStuck
+; Check where exactly we're stuck
+; If it's at doors, then try to
+; open them, wait a bit and move
+@ABitStuck:
+GoToIfCoordsIn(@StuckOutsideBank,239,571,239,572)
+GoToIfCoordsIn(@StuckInsideBank,238,571,238,572)
+GoToIfCoordsIn(@StuckOutsideBedRoom,249,576,249,576)
+GoToIfCoordsIn(@StuckInsideBedRoom,249,577,249,577)
+--Debug("stuck")
+ERet()
+
+
+;===Procedure StuckOutsideBank
+; Get's called if bank is closed
+@StuckOutsideBank:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck outside bank, trying to open door")
+ERetToRet()
+Action(239,571)
+AtObject(239,571)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(237,571,-1,-1)
+Ret()
+
+
+;===Procedure StuckInsideBank
+; Get's called if bank is closed
+@StuckInsideBank:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck inside bank, trying to open door")
+ERetToRet()
+Action(238,571)
+AtObject(239,571)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(238,572,1,0,1,5,4,8,4,12,9,17)
+Ret()
+
+
+;===Procedure StuckOutsideBedRoom
+; Get's called if room with bed is closed
+@StuckOutsideBedRoom:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck outside bedroom, trying to open door")
+ERetToRet()
+Action(249,576)
+OpenDoor(249,577,0)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(249,579,-1,0)
+Ret()
+
+
+;===Procedure StuckInsideBedRoom
+; Get's called if room with bed is closed
+@StuckInsideBedRoom:
+SetTimeSinceMovingToDest(0)
+Debug("Stuck inside bedroom, trying to open door")
+ERetToRet()
+Action(249,577)
+OpenDoor(249,577,0)
+Wait(20)
+SetTimeSinceMovingToDest(0)
+MoveTo(249,576,-6,0,-11,-5,-11,-9,-13,-11)
+Ret()
+
+
+@Timer:
+; Check if we are all right
+SetVarMyX(%x)
+SetVarMyY(%y)
+GoToIfVarBelowNum(@SEXTooSmall,%x,242)
+GoTo(@NotSE)
+@SEXTooSmall:
+GoToIfVarAboveNum(@SEYTooBig,%y,581)
+GoTo(@NotSE)
+@SEYTooBig:
+---We are stuck somewhere we shouldn't be
+Debug("Ow, we're stuck in SE sector")
+SetVarNum(%x,242)
+MoveToVarVar(%x,%y)
+ERet()
+@NotSE:
+GoToIfCoordsIn(@BedroomWall,245,582,254,581)
+GoTo(@NotBedroomWall)
+@BedroomWall:
+Debug("Stuck somewhere at the wall west to Falador enterance")
+MoveTo(247,581,-1,1,-3,1,-4,2)
+@NotBedroomWall:
+OnTimer(@Timer,1,150)
+;Check if we have been teleported far away
+GoToIfCoordsIn(@TheRightArea,275,535,230,655)
+Debug("Ooops, we are not in the right area!")
+SetVarMyX(%x)
+SetVarMyY(%y)
+Wait(30)
+StopAndLogOut()
+@TheRightArea:
+ERet()
+
+@Timer2:
+; just output the coords
+SetVarMyX(%x)
+SetVarMyY(%y)
+DebugVar(%x,%y)
+OnTimer(@Timer2,2,3000)
+ERet()
+
+
+@Timer3:
+; set it to  re-loging
+Debug("Trying to relogin")
+;Log in after 10 minutes
+RedirectDest(3,600)
+Wait(50)
+LogOut()
+Wait(50)
+OnTimer(@Timer3,3,216000)
+ERet()
+
+@LostPickaxe:
+Debug("Funny, I have lost my pickaxe")
+Wait(25)
+Say(33 84 )
+Wait(10)
+StopAndLogOut()
+
+
+@ServerMessage:
+--DebugLastServerMessage()
+GoToIfInLastServerMessageIs(@ResetSleepVar,"too tired")
+ERet()
+@ResetSleepVar:
+SetVarNum(%BedTimes,1)
+ERet()
+

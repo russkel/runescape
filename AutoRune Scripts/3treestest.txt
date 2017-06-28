@@ -1,0 +1,8 @@
+WatchObjects(1)
+@Boo:
+SetVarObject(%t,78,436)
+SetVarObject(%t2,79,438)
+SetVarObject(%t3,78,440)
+DebugVar(%t,%t2,%t3)
+Wait(10)
+GoTo(@Boo)

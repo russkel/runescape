@@ -1,0 +1,228 @@
+
+- o0o0o0o0o0o0
+-- Trout and Salmon PRO
+--- Start fish FAREST from bridge
+---- Fly Rod, 28 Feathers
+---- Sleepbag in 0 pos
+----- Forget Items
+------ Made By Kamu for AR 2.1
+------- kamu@gawab.com
+OnLogin(@Setup)
+-GoToIfQuestion(@Filter,"Do you have chat messages blocked?")
+GoTo(@Beginning)
+@Filter:
+-OnChatMessage(@RunAndHideChat)
+@Beginning:
+OnServerMessage(@Serv)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+-OnPrivateMessage(@RunAndHidePM)
+
+@fish:
+ResetLastServerMessage()
+Action(209,501)
+AtObject(208,501)
+Wait(15)
+GoToIfBagFull(@tocook)
+GoTo(@fish)
+
+
+@tocook:
+GoToIfInInventory(@fish,381)
+
+MoveTo(217,501,1,-1)
+MoveTo(218,483)
+MoveTo(218,477,3,-3)
+MoveTo(221,471)
+MoveTo(222,471,1,-1,2,-1)
+MoveTo(224,458)
+MoveTo(221,458)
+MoveTo(221,450,1,-1)
+MoveTo(223,447)
+MoveTo(225,447)
+MoveTo(225,439)
+
+OnCoordsChanged(-1,%a,%a)
+Action(225,439)
+AtObject(226,439)
+
+WaitForCoordChange()
+GoSub(@goback)
+MoveTo(224,1386)
+
+@cook:
+- beware this is a powerful
+- cooking script!
+GoToIfInInventory(@cookt,358)
+GoToIfInInventory(@cooks,356)
+GoTo(@dropburnt)
+
+@cookt:
+Action(223,1386)
+AtObjectWithItemByID(222,1385,358)
+Wait(35)
+GoTo(@cook)
+
+@cooks:
+Action(223,1386)
+AtObjectWithItemByID(222,1385,356)
+Wait(35)
+GoTo(@cook)
+
+@dropburnt:
+GoToIfInInventory(@drop,360)
+GoTo(@tobank)
+
+@drop:
+DropItemByID(360)
+Wait(20)
+GoTo(@dropburnt)
+
+
+@tobank:
+MoveTo(226,1384)
+OnCoordsChanged(-1,%a,%a)
+Action(226,1384)
+AtObject(226,1383)
+WaitForCoordChange()
+GoSub(@goback)
+MoveTo(226,442,-1,1)
+MoveTo(225,444)
+MoveTo(221,444,-1,1,-2,1)
+MoveTo(219,446,-1,1,-1,2)
+MoveTo(217,448)
+
+@Banking:
+
+GoToIfCoordsIn(@AmInsideBank,212,448,220,453)
+GoTo(@GoInsideBank)
+
+@GoInsideBank:
+MoveTo(218,448)
+MoveTo(218,448)
+GoTo(@Banking)
+
+@AmInsideBank:
+GoToIfNPCNear(@ISeeBanker,95)
+
+Debug("I don't see any bankers here!")
+GoTo(@Banking)
+
+; Talk to the nearest banker every time
+@ISeeBanker:
+ResetQuestMenu()
+SetVarsNearestNPCIn(%x,%y,%ID,212,448,220,453,95)
+ActionVarVar(%x,%y)
+TalkToNPCVar(%ID)
+WaitForQuestMenu(30)
+GoToIfQuestMenu(@ContactWithBanker)
+GoTo(@Banking)
+
+@ContactWithBanker:
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+Withdraw(381,25)
+Withdraw(381,1)
+Withdraw(381,1)
+Withdraw(381,1)
+Wait(20)
+CloseBank()
+Wait(10)
+GoToIfInInventory(@Banking,359)
+
+@walkback:
+MoveTo(218,446)
+MoveTo(221,446)
+MoveTo(221,455,1,1)
+MoveTo(222,459)
+MoveTo(224,459)
+MoveTo(224,470,-2,0,-3,1,-3,6,-4,7)
+MoveTo(220,479,-1,1,-1,10,-6,15)
+MoveTo(214,497,-3,3)
+GoTo(@fish)
+
+@Serv:
+-DebugLastServerMessage()
+GoToIfLastServerMessageIs(@Sleep,"@gam@You are too tired to catch this fish")
+GoToIfLastServerMessageIs(@Sleep,"@gre@You are too tired to gain experience, get some rest!")
+ERet()
+
+@Sleep:
+UseItem(0)
+SetVarNum(%SleepTime,0)
+SetVarNum(%MaxSleepTime,30)
+@Sleeping:
+Wait(10)
+AddVarNum(%SleepTime,1)
+GoToIfVarAbove(@Sleep,%SleepTime,%MaxSleepTime)
+GoToIfLastServerMessageIsNot(@Sleeping,"You wake up - feeling refreshed")
+@Slept:
+ERet()
+
+
+
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+Ret()
+
+- Anti Jagex
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+ERet()
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(16 13 05 )
+Say(03 00 0C 24 42 1D )
+Debug("Saying 'Wdf'")
+Debug("Saying 'dam lag'")
+Wait(10)
+SaveScreenshot()
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHideChat:
+Debug("Ooops someone is talking in the game. If chat messages are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHidePM:
+Debug("Ooops someone is PMing you in the game. If PMs are blocked - its an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+SaveScreenshot()
+RedirectDest(50,111,111,111,111,111)
+StopAndLogOut()
+Wait(1)
+
+@Setup:
+OnServerMessage(@Serv)
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+ERet()

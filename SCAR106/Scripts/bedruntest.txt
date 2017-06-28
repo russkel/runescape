@@ -1,0 +1,146 @@
+//A working mining script
+//Start at Falador south gate
+//This one doesn't use ProcessPath
+program CopperTest;
+var
+  AtMine, Way1, Way2, InBedRoom: Integer;
+  x1, y1, x2, y2, x3, y3, x4, y4, x5, y5 : Integer;
+  r1, r2, r3, r4, r5: Extended;
+  x, y: Integer;
+  
+procedure WalkToBed;
+var
+  Dest: boolean;
+begin
+  Dest:= False;
+  repeat
+    MoveMouse(460,15);
+    Wait(200);
+    ProcessMap;
+    FindLandmark(AtMine, x1, y1, r1);
+    FindLandmark(Way1, x2, y2, r2);
+    FindLandmark(Way2, x3, y3, r3);
+//    FindLandmark(Way3, x4, y4, r4);
+    FindLandmark(InBedRoom, x5, y5, r5);
+    //ugh
+    if(r1<>0)or(r2<>0)or(r3<>0)or(r4<>0)or(r5<>0)then
+    begin
+      if(r5 >= r4)and(r5 >=r3)and(r5 >= r2)and(r5 >= r1)then
+      begin
+        ClickMap(x5, y5, True);
+        if(x5>=17)and(x5<=19)and(y5>=17)and(y5<=19)then
+        begin
+          Dest:= True;
+        end;
+      end else
+      if(r4 >=r3)and(r4 >= r2)and(r4 >= r1)then
+      begin
+        ClickMap(x4, y4, True);
+      end else
+      if(r3 >= r2)and(r3 >= r1)then
+      begin
+        ClickMap(x3, 2, True);
+      end else
+      if(r2 >= r1)then
+      begin
+        ClickMap(x2, 2, True);
+      end else
+      begin
+        ClickMap(x1, 5, True);
+      end;
+    end;
+    Wait(3000);
+  until(Dest);
+end;
+
+procedure WalkToMine;
+var
+  Dest: boolean;
+begin
+  Dest:= False;
+  repeat
+    MoveMouse(460,15);
+    Wait(200);
+    ProcessMap;
+    FindLandmark(AtMine, x1, y1, r1);
+    FindLandmark(Way1, x2, y2, r2);
+    FindLandmark(Way2, x3, y3, r3);
+//    FindLandmark(Way3, x4, y4, r4);
+    FindLandmark(InBedRoom, x5, y5, r5);
+    //ugh
+    if(r1<>0)or(r2<>0)or(r3<>0)or(r4<>0)or(r5<>0)then
+    begin
+      if(r1 >= r2)and(r1 >=r3)and(r1 >= r4)and(r1 >= r5)then
+      begin
+        ClickMap(x1, y1, True);
+        if(x1 = 18)and(y1>=18)and(y1<=19)then
+        begin
+          Dest:= True;
+        end;
+      end else
+      if(r2 >=r3)and(r2 >= r4)and(r2 >= r5)then
+      begin
+        ClickMap(x2, 30, True);
+      end else
+      if(r3 >= r4)and(r3 >= r5)then
+      begin
+        ClickMap(x3, 30, True);
+      end else
+      if(r4 >= r5)then
+      begin
+        ClickMap(x4, 30, True);
+      end else
+      begin
+        ClickMap(x5, 30, True);
+      end;
+    end;
+    Wait(3000);
+  until(Dest);
+end;
+  
+  
+begin
+  repeat
+    AtMine:= CreateLandmark(12, 11, '000001010002000006010001000002010001000021010001000006010001000015010001000013010001000008010001000003010001000005010001000011');
+    Way1:= CreateLandmark(19, 10, '04000200001104000201000100000101000100000E04000200000B01000100000504000200000701000100000601000100000204000200000201000100000E04000200000501000100000B04000200000101000100000F04000200000A010001000006040002000011040002000011');
+    Way2:= CreateLandmark(15, 12, '00000602000200000D02000200000301000100000201000100000101000100000402000200000D02000200000901000100000302000200000D02000200000D02000200000D02000200000901000100000302000200000D02000200000702001E');
+//    Way3:= CreateLandmark(18, 11, '100001000002600001700006F00001900001000003010001000002100001000002A10001B0000690000100003B01000100000C01000100002101000100001901000100001F010001000004');
+    InBedRoom:= CreateLandmark(10, 5, '020002E30001100001000002020002000002020002E30001100001000002020002000002720002F20001700002100001020002600001700001B00004B10001100001020002A10001B00001000006020002000002');
+    WalkToBed;
+    Writeln('We have successfully walked to the bedroom');
+    repeat
+      x:= Random(500);
+      y:= Random(340);
+      FindColorSpiral(x,y,9671571,x-50,y-50,x+50,y+50);
+      MoveMouse(x, y);
+      Wait(200);
+    until(IsTextAt(6,2,'Bed: rest'));
+    ClickMouse(x, y, True);
+    Wait(10000);
+    //Walk back
+    WalkToMine;
+    Writeln('We have successfully walked bak to mines');
+    x:= 250;
+    y:= 150;
+    MoveMouse(10,10);
+    Wait(200)
+    repeat
+      x:= x + Random(3)-1;
+      y:= y + Random(3)-1;
+      if(FindColorSpiral(x,y,3105,x-100,y-100,x+100,y+100))then
+      begin
+        MoveMouse(x, y);
+        Wait(200);
+        if(IsTextAt(6,2,'Hard rock: Mine'))then
+        begin
+          ClickMouse(x, y, True);
+          Wait(3400);
+        end;
+      end else
+      begin
+        MoveMouse(x, y);
+        Wait(1000);
+      end;
+    until(GetChatMsg = 'You are too tired to mine this rock');
+  until(False);
+end.

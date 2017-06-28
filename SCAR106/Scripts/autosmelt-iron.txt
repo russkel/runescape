@@ -1,0 +1,185 @@
+//A working mining script
+//Start at Falador furnaces
+//Hands must be empty!
+//If someone could create better landmarks it
+//would be nice
+//Created by Kaitnieks
+program smeltingTest;
+var
+  x, y: Integer;
+  l1, l2, l3: Integer;
+  SmeltPath, BankPath: Integer;
+  iron: Integer;
+  ironbar: Integer;
+  
+procedure GoByPath(path: Integer);
+var
+  HowFar: Integer;
+  x, y: Integer;
+  r: Extended;
+  Dest: Boolean;
+begin
+  repeat
+    MoveMouse(460,15);
+    Wait(300);
+    ProcessMap;
+    HowFar:= ProcessPath(Path, x, y, r, 0.15);
+    
+    Status('HowFar='+IntToStr(HowFar)+' x='+IntToStr(x) + ' y='+IntToStr(y)+' r='+FloatToStr(r));
+    if(r > 0.6)then
+    begin
+      if(HowFar = 0)then
+        ClickMap(x, y, True)
+      else
+        ClickMap(x + Random(3)-1, y + Random(3) - 1, True);
+    end;
+    Dest:= (HowFar=0)and(x<=19)and(x>=17)and(y<=19)and(y>=17);
+    if(not Dest)then
+      Wait(5000);
+  until(Dest);
+end;
+
+procedure DoSmelting;
+var x,y: Integer;
+    first: Boolean;
+    tries: Integer;
+begin
+  Wait(400);
+  repeat
+    MoveMouse(490,15);
+    Wait(500);
+    MoveMouse(290,50);
+    Wait(500);
+    if(IsTextAt(6,2,'iron ore: U'))or(IsTextAt(6,2,'Use iron ore with'))then
+    begin
+      ClickMouse(290,50,True);
+      Wait(300);
+      MoveMouse(10,10);
+      Wait(100);
+      MoveMouse(15,15);
+      Wait(100);
+      MoveMouse(20,20);
+      Wait(100);
+      first:= True;
+      Tries:= 0;
+      repeat
+        Tries:= Tries + 1;
+        if(First)then
+        begin
+          x:= x - 1 + Random(3);
+          y:= y - 1 + Random(3);
+          if(x<0)then x:= 10;
+          if(y<0)then y:= 10;
+
+        end else
+        begin
+          x:= Random(500);
+          y:= Random(320);
+        end;
+        MoveMouse(x,y);
+        Wait(200);
+        if(First)then
+          Wait(200);
+        First:= False;
+      until(IsTextAt(6,2,'Use iron ore with furnace'))or(IsTextAt(6,2,'furnace'))or(Tries > 200);
+      if(Tries > 200)then
+        Exit;
+      ClickMouse(x,y,True);
+      Wait(1000);
+    end else
+    begin
+      Break;
+    end;
+  until(False);
+end;
+
+//Find a banker and deposit all bars, and pick up new iron ores
+procedure DoBanking;
+begin
+  repeat
+    repeat
+      repeat
+        x:= Random(500);
+        y:= Random(340);
+        FindColorSpiral(x,y,10661355,x-50,y-50,x+50,y+50);
+        MoveMouse(x, y);
+        Wait(200);
+      until(IsTextAt(6,2,'Banker: Talk'))or(IsTextAt(6,0,'l d like to access my bank account please'));
+      ClickMouse(x, y, True);
+      Wait(4000);
+    until(IsTextAt(6,0,'l d like to access my bank account please'));
+    ClickMouse(17,8,True);
+    Wait(6000);
+  until(FindBitmap(ironbar,x,y));
+  ClickMouse(x,y,True);
+  Wait(1000);
+  while(IsTextAt(334,264,'25'))do
+  begin
+    ClickMouse(335,270,True);
+    Wait(300);
+  end;
+  while(IsTextAt(304,264,'Five'))do
+  begin
+    ClickMouse(305,270,True);
+    Wait(300);
+  end;
+  while(IsTextAt(274,264,'One'))do
+  begin
+    ClickMouse(275,270,True);
+    Wait(300);
+  end;
+  
+  if(FindBitmap(iron,x,y))then
+  begin
+    ClickMouse(x,y,True);
+    Wait(1000);
+    while(IsTextAt(274,239,'One'))and(GetChatMsg<>'You don t have room to hold that object!')do
+    begin
+      ClickMouse(284,246,True);
+      Wait(300);
+    end;
+  end;
+  //Close bank window
+  ClickMouse(410,5,True);
+  Wait(400);
+end;
+
+
+
+
+
+begin
+  //Initialization stuff
+  ironbar:= LoadBitmap('.\Pics\ironbar.bmp');
+  iron:= LoadBitmap('.\Pics\iron.bmp');
+
+  l1:= CreateLandmark(5, 9, '02000303000102000B420003020002F00003120001020001800002E00001130001020001000002E00001120001020001000002E00001130001020001000002E00001120001020001');
+  l2:= CreateLandmark(7, 7, '010003000003E00001000006E00001700006F00001B0000690000100000D080001000003080004');
+  l3:= CreateLandmark(10, 10, '02000103000102001E620001720001700001720001700003520001020002E00001B20005F20001D00001020002E00001120001020004E20001D00001020002E00001120001020004E20001D00001020002E00001120001030001020003E30001D00001020002E00001520001420004E20001D00001020002A00001B00006900001');
+  BankPath:= CreatePath;
+  AddLandmarkToPath(BankPath, l1, 1, 6);
+  AddLandmarkToPath(BankPath, l2, -5, 5);
+  AddLandmarkToPath(BankPath, l3, 5, 5);
+  SmeltPath:= CreatePath;
+  AddLandmarkToPath(SmeltPath, l3, 5, 5);
+  AddLandmarkToPath(SmeltPath, l2, 5, 4);
+  AddLandmarkToPath(SmeltPath, l1, 6, 6);
+
+  
+
+  //Main program loop (it never ends)
+  repeat
+    //Go to Smelting site
+    Status('Going to furnace');
+    GoByPath(SmeltPath);
+    //Smelt iron
+    DoSmelting;
+    //Going to bank
+    Status('Going to bank');
+    GoByPath(BankPath);
+    //Bank stuff
+    DoBanking;
+    //Banking complete, return to furnace
+
+  until(False);
+end.

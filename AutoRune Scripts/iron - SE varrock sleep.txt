@@ -1,0 +1,138 @@
+- Iron Miner
+-- Varrock SE Mine
+--- Made By Kamu
+-- For AutoRune 2.1
+- kamu@bluepoo.com
+
+; a bit modified by Kaitnieks
+; Fixed by BanneD
+; sleep bag must be in 0 spot
+; chat block must be on
+
+GoToIfQuestion(@Filter,"Do you have chat messages blocked?")
+GoTo(@Beginning)
+@Filter:
+OnChatMessage(@RunAndHideChat)
+@Beginning:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+
+@startmining:
+WatchObjects(1)
+
+@rock1:
+GoToIfBagFull(@bankrun)
+ResetLastServerMessage()
+ResetLastItemGained()
+Action(75,544)
+AtObject(75,543)
+Wait(30)
+GoToIfLastServerMessageIs(@zzz,"@gam@You are too tired to mine this rock")
+
+@rock2:
+GoToIfBagFull(@bankrun)
+ResetLastServerMessage()
+ResetLastItemGained()
+Action(75,544)
+AtObject(76,544)
+Wait(30)
+GoToIfLastServerMessageIs(@zzz,"@gam@You are too tired to mine this rock")
+SetVarObject(%d,27,543)
+GoToIfVarEqualNum(@rock1,%d,102)
+GoTo(@rock1)
+
+@zzz:
+UseItem(0)
+Wait(250)
+GoTo(@startmining)
+
+@bankrun:
+MoveTo(74,542)
+MoveTo(74,535)
+MoveTo(74,531)
+MoveTo(74,528,2,-2)
+MoveTo(75,525,4,-4)
+MoveTo(79,518,3,-3)
+MoveTo(82,512,3,-3)
+MoveTo(86,509,1,-1)
+MoveTo(93,508)
+MoveTo(99,508)
+MoveTo(101,508)
+MoveTo(102,510)
+MoveToRandomly(100,513,105,513)
+@banking:
+RepeatNextCommandUntilQuestMenu(50,1)
+TalkToNPC(2733,2732,2737)
+Wait(10)
+Answer(0)
+WaitForBankWindow(50)
+DepositEverything()
+Wait(10)
+CloseBank()
+Wait(10)
+GoToIfInInventory(@banking,151)
+- go back mining
+MoveTo(102,509)
+MoveTo(94,509)
+MoveTo(88,509)
+MoveTo(85,509)
+MoveTo(85,515,-1,1)
+MoveTo(84,518,-4,4)
+MoveTo(80,524,-4,4)
+MoveTo(76,535)
+MoveTo(76,537,-1,1,-1,3,-2,4)
+MoveTo(74,542,0,2)
+
+GoTo(@startmining)
+@goback:
+OnCoordsChanged(@CoordsChange,%oldX,%oldY)
+
+ERet()
+
+- Anti Jagex
+@CoordsChange:
+
+GoTo(@CheckTeleport)
+@CheckY:
+GoTo(@CheckGoUp)
+GoTo(@CheckTeleport)
+@CheckGoUp:
+GoTo(@rock1)
+
+
+
+@CheckTeleport:
+SetVarMyX(%x)
+SetVarMyY(%y)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%x,%diff)
+SetVar(%diff,%oldX)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%x,%diff)
+
+SetVar(%diff,%oldY)
+AddVarNum(%diff,40)
+GoToIfVarAbove(@RunAndHideTele,%y,%diff)
+SetVar(%diff,%oldY)
+AddVarNum(%diff,-40)
+GoToIfVarBelow(@RunAndHideTele,%y,%diff)
+
+ERet()
+
+@RunAndHideTele:
+Wait(25,30)
+Say(D1 63 20 26 1E BE BE BE B0 )
+Debug("Saying 'what the..'")
+Wait(10)
+Debug("Ooops we just got teleported! Must be an admin!!!")
+DebugVar(%x,%y,%oldX,%oldY)
+GoTo(@RunAndHide)
+
+@RunAndHidePick:
+Debug("Ooops we just lost pickaxe! Must be an admin!!!")
+GoTo(@RunAndHide)
+
+@RunAndHide:
+StopAndLogOut()
+Wait(1)
+

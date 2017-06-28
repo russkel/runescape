@@ -1,0 +1,13 @@
+@Start:
+GetColor(140,132,%c)
+GoToIfVarEqualNum(@LoggedIn,%c,65535)
+ClickColorSpiralAt(532504,244,176,-1,-1,-1,-1)
+Wait(3)
+GoTo(@Start)
+Stop()
+@LoggedIn:
+GetColor(122,130,%c)
+GoToIfVarNotEqualNum(@Start,%c,0)
+Click(208,208)
+Wait(10)
+GoTo(@Start)

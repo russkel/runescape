@@ -1,0 +1,107 @@
+----- Mining, Smelting, Smithing, Banking SCRIPT -----
+-
+----- Please place you character in Rimmington -----
+----- Before starting this script -----
+-
+----- (Please not that you need to -----
+----- (have completed Doric's quest) -----
+-----        Made by Olee
+- Tools:
+- Sleepbag
+- Pick
+- Hammer
+
+-- Mine First Iron Rock --
+@Copper:
+;======Copper======
+@rock1cop:
+ResetLastItemGained()
+GoToIfCountInInventoryEqual(@Tin,13,150)
+Action(262,636)
+AtObject(262,635)
+Wait(30)
+GoToIfLastItem(@rock2cop,150)
+GoTo(@rock1cop)
+
+-- Mine Second Iron Rock --
+@rock2cop:
+ResetLastItemGained()
+GoToIfCountInInventoryEqual(@Tin,13,150)
+Action(261,636)
+AtObject(261,635)
+Wait(30)
+GoToIfLastItem(@rock1cop,150)
+GoTo(@rock2cop)
+
+@Tin:
+;======Tin======
+@rock1tin:
+GoToIfCountInInventoryEqual(@tofurnace,13,202)
+Action(260,640)
+AtObject(260,641)
+Wait(30)
+GoTo(@rock1tin)
+
+-- Walk To Falador Furnace --
+@tofurnace:
+MoveTo(276,641)
+MoveTo(276,634)
+MoveTo(265,623)
+MoveTo(262,623,-1,-1)
+MoveTo(261,610)
+MoveTo(261,607,-2,-2)
+MoveTo(258,605,-1,-1)
+MoveTo(257,600)
+MoveTo(260,597)
+MoveTo(260,590,-1,-1)
+MoveTo(248,589)
+MoveTo(248,588,-5,-5)
+MoveTo(243,577)
+MoveTo(243,560)
+MoveTo(243,559,13,-13)
+MoveTo(260,544)
+-- Smelt Iron Ores --
+@Smelt:
+Action(259,545)
+AtObjectWithItemByID(258,546,202)
+Wait(35)
+GoToIfInInventory(@Smelt,202)
+-- Walk To Doric's Anvils --
+MoveTo(261,544)
+MoveTo(261,538)
+MoveTo(266,538)
+MoveTo(266,503)
+MoveTo(268,503)
+MoveTo(269,503,9,-9)
+MoveTo(277,493,0,-3)
+MoveTo(278,490)
+-- Forge Iron Bars Into Iron Maces --
+@Kal:
+Action(278,490)
+AtObjectWithItemByID(279,490,169)
+WaitForQuestMenu(50)
+Answer(2)
+WaitForQuestMenu(50)
+Answer(0)
+Wait(15)
+GoToIfInInventory(@Kal,169)
+-- Walk To lalaland --
+MoveTo(277,490)
+MoveTo(277,520)
+MoveTo(267,520)
+MoveTo(267,537)
+MoveTo(257,537)
+MoveTo(257,541)
+MoveTo(256,541,-11,11)
+MoveTo(242,571)
+MoveTo(234,571)
+-- Return To Rimmington --
+MoveTo(238,571)
+MoveTo(243,571)
+MoveTo(243,582)
+MoveTo(260,582)
+MoveTo(260,610)
+MoveTo(262,610)
+MoveTo(262,618)
+MoveTo(262,625,3,3)
+MoveTo(265,641)
